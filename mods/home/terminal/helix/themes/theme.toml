@@ -1,0 +1,108 @@
+"ui.background" = { fg = "color05", bg = "color00" }
+"ui.bufferline" = { fg = "color05", bg = "color00", modifiers = ["dim"] }
+"ui.bufferline.active" = { fg = "color05", bg = "color01", modifiers = [""] }
+"ui.bufferline.background" = { bg = "color00" }
+"ui.cursor.match" = { fg = "color11", underline.style = "line" }
+"ui.cursor.normal" = { fg = "color03", bg = "color09" }
+"ui.cursor.insert" = { fg = "color03", bg = "color10" }
+"ui.cursor.select" = { fg = "color03", bg = "color11" }
+"ui.cursor.primary.normal" = { fg = "color00", bg = "color09", modifiers = ["bold"] }
+"ui.cursor.primary.insert" = { fg = "color00", bg = "color10", modifiers = ["bold"] }
+"ui.cursor.primary.select" = { fg = "color00", bg = "color11", modifiers = ["bold"] }
+"ui.cursorline.primary" = { bg = "color01" }
+"ui.help" = { fg = "color05", bg = "color00" }
+"ui.highlight" = { bg = "color03" }
+"ui.linenr" = { fg = "color04", bg = "color00", modifiers = ["dim"] }
+"ui.linenr.selected" = { fg = "color04", modifiers = ["bold"] }
+"ui.menu" = { fg = "color05", bg = "color00" }
+"ui.menu.selected" = { fg = "color06", bg = "color01", modifiers = ["bold"] }
+"ui.menu.scroll" = { fg = "color05", bg = "color00" }
+"ui.popup" = { fg = "color05", bg = "color00" }
+"ui.selection" = { bg = "color02" }
+"ui.selection.primary" = { bg = "color03" }
+"ui.statusline" = { fg = "color05", bg = "color01" }
+"ui.statusline.inactive" = { fg = "color05", bg = "color00", modifiers = ["dim"] }
+"ui.statusline.normal" = { fg = "color09", bg = "color02", modifiers = ["bold"] }
+"ui.statusline.insert" = { fg = "color10", bg = "color02", modifiers = ["bold"] }
+"ui.statusline.select" = { fg = "color11", bg = "color02", modifiers = ["bold"] }
+"ui.text" = { fg = "color05" }
+"ui.text.focus" = { fg = "color05", bg = "color01", modifiers = ["bold"] }
+"ui.text.inactive" = { fg = "color05", modifiers = ["dim"] }
+"ui.virtual.indent-guide" = { fg = "color04", modifiers = ["dim", "italic"] }
+"ui.virtual.inlay-hint" = { fg = "color04", modifiers = ["italic"] }
+"ui.virtual.jump-label" = { fg = "color06", modifiers = ["bold"] }
+"ui.virtual.ruler" = { bg = "color01" }
+"ui.virtual.wrap" = { fg = "color04", modifiers = ["dim", "italic"] }
+
+"punctuation" = { fg = "color05", modifiers = ["dim"] }
+"operator" = { fg = "color05", modifiers = ["dim"] }
+
+"namespace" = { fg = "color05"}
+
+"tabstop" = { fg = "color06", modifiers = ["dim"] }
+
+"attribute" = { fg = "color07"}
+"type.enum.variant" = { fg = "color07" }
+"variable" = { fg = "color07" }
+
+"constant" = { fg = "color08" }
+"label" = { fg = "color08" }
+
+"type" = { fg = "color09" }
+
+"string" = { fg = "color10" }
+
+"constant.character.escape" = { fg = "color11" }
+"special" = { fg = "color11" }
+"string.regexp" = { fg = "color11" }
+
+"constructor" = { fg = "color12" }
+"function" = { fg = "color12" }
+
+"function.builtin" = { fg = "color13" }
+"keyword" = { fg = "color13" }
+"tag" = { fg = "color13" }
+"variable.builtin" = { fg = "color13" }
+
+"variable.parameter" = { fg = "color14" }
+
+"comment" = { fg = "color15" }
+
+"markup.bold" = { fg = "color09", modifiers = ["bold"] }
+"markup.italic" = { fg = "color13", modifiers = ["italic"]}
+"markup.heading" = { fg = "color12", modifiers = ["bold"] }
+"markup.link.text" = { fg = "color07" }
+"markup.link.url" = { fg = "color08", underline.style = "line" }
+"markup.list" = { fg = "color07" }
+"markup.quote" = { fg = "color11" }
+"markup.strikethrough" = { modifiers = ["crossed_out"] }
+"markup.raw" = { fg = "color10" }
+
+"diff.delta" = { fg = "color10" }
+"diff.minus" = { fg = "color11" }
+"diff.plus" = { fg = "color12" }
+
+"error" = { fg = "color11", modifiers = ["dim"] }
+"warning" = { fg = "color10", modifiers = ["dim"] }
+"info" = { fg = "color09", modifiers = ["dim"] }
+"hint" = { fg = "color05", modifiers = ["dim"] }
+
+"diagnostic" = { underline.style = "line" }
+
+[palette]
+color00="#050e1f" # Background:       262 58 7
+color01="#101f3b" # Light Background: 262 58 14
+color02="#1b2f55" # Other Selections: 262 58 21
+color03="#27406f" # Main Selection:   262 58 28
+color04="#686868" # Dark Foreground:  0 0 44
+color05="#d7d7d7" # Foreground:       0 0 86
+color06="#f2cddc" # Light Foreground: 352 58 86
+color07="#94cdf4" # Variables:        239 72 79
+color08="#bebff5" # Constants:        284 72 79
+color09="#65dbd9" # Types:            194 72 79
+color10="#d3c95e" # Strings:          104 72 79
+color11="#f5b0b5" # Support:          14 72 79
+color12="#80de93" # Functions:        149 72 79
+color13="#e8b0e3" # Keywords:         329 72 79
+color14="#f2b586" # Parameters:       59 72 79
+color15="#9c456f" # Comments:         352 58 44
