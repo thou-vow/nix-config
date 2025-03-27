@@ -66,19 +66,19 @@
       # NixOS configuration entrypoint
       # Available through 'nixos-rebuild --flake "path:$HOME/nix#hostname"'
       nixosConfigurations = {
-        "nezha" = nixpkgs.lib.nixosSystem {
+        "u" = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [ ./profiles/nezha/configuration.nix ];
+          modules = [ ./hosts/u/configuration.nix ];
         };
       };
 
       # Standalone home-manager configuration entrypoint
       # Available through 'home-manager --flake "path:$HOME/nix#username@hostname"'
       homeConfigurations = {
-        "thou@nezha" = home-manager.lib.homeManagerConfiguration {
+        "thou@u" = home-manager.lib.homeManagerConfiguration {
           pkgs = eachPkgs."x86_64-linux";
           extraSpecialArgs = { inherit inputs; };
-          modules = [ ./profiles/nezha/thou/home.nix ];
+          modules = [ ./hosts/u/thou/home.nix ];
         };
       };
     };

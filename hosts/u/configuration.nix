@@ -72,7 +72,7 @@
   };
 
   networking = {
-    hostName = "nezha";
+    hostName = "u";
     nameservers = [
       "1.0.0.1"
       "1.1.1.1"

@@ -31,14 +31,15 @@
     brave.enable = true;
     helix = {
       languages.language-server.nixd.config.nixd.options = {
-        "nixos".expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."nezha".options'';
-        "home-manager".expr =
-          ''(builtins.getFlake "${inputs.self}").homeConfigurations."thou@nezha".options'';
+        "nixos".expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options'';
+        "home-manager".expr = ''(builtins.getFlake "${inputs.self}").homeConfigurations."thou@u".options'';
       };
       settings.editor.statusline = {
-        mode.normal = "NORMAL";
-        mode.insert = "INSERT";
-        mode.select = "SELECT";
+        mode = {
+          normal = "NORMAL";
+          insert = "INSERT";
+          select = "SELECT";
+        };
       };
     };
     home-manager.enable = true;
