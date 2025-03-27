@@ -20,11 +20,7 @@
     kernelParams = [ "mitigations=off" ];
     loader = {
       efi.efiSysMountPoint = "/boot/efi";
-      systemd-boot = {
-        enable = true;
-        extraFiles."EFI/Microsoft/Boot/bootmgfw.efi" =
-          "${config.systemd.package}/lib/systemd/boot/efi/systemd-bootx64.efi";
-      };
+      systemd-boot.enable = true;
     };
   };
 
