@@ -16,11 +16,6 @@
   };
 
   config = lib.mkIf config.mods.home.terminal.helix.enable {
-    home.shellAliases = {
-      "h" = "hx";
-      "helix" = "hx";
-    };
-
     programs.helix = {
       enable = true;
       settings.theme = "theme";
