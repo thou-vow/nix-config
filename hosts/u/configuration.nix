@@ -1,6 +1,6 @@
 {
-  config,
   inputs,
+  lib,
   pkgs,
   ...
 }:
@@ -134,6 +134,8 @@
 
   time.timeZone = "America/Sao_Paulo";
 
+  system.stateVersion = "25.05";
+
   users.users.thou = {
     isNormalUser = true;
     description = "thou";
@@ -141,7 +143,6 @@
       "networkmanager"
       "wheel"
     ];
+    shell = "${lib.getExe pkgs.nushell}";
   };
-
-  system.stateVersion = "25.05";
 }
