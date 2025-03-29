@@ -6,12 +6,13 @@
 }:
 
 {
-  imports = [ ../../../mods/home ];
+  imports = [ ../../../mods/home/home.nix ];
 
   mods.home = {
     terminal = {
       fastfetch.enable = true;
       helix.enable = true;
+      nushell.enable = true;
       yazi.enable = true;
     };
   };
@@ -19,11 +20,11 @@
   home = {
     username = "thou";
     homeDirectory = "/home/${config.home.username}";
-    stateVersion = "25.05";
     packages = with pkgs; [
       libqalculate # Calculator
       unimatrix # Simulate display from matrix
     ];
+    stateVersion = "25.05";
   };
 
   programs = {

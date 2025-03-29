@@ -66,17 +66,17 @@
       nixosConfigurations = {
         "u" = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [ ./hosts/u/configuration.nix ];
+          modules = [ ./hosts/u/nixos-configuration.nix ];
         };
       };
 
       # Standalone home-manager configuration entrypoint
       # Available through 'home-manager --flake "path:$HOME/nix#username@hostname"'
       homeConfigurations = {
-        "thou@u" = home-manager.lib.homeManagerConfiguration {
+        "u@thou" = home-manager.lib.homeManagerConfiguration {
           pkgs = eachPkgs."x86_64-linux";
           extraSpecialArgs = { inherit inputs; };
-          modules = [ ./hosts/u/thou/home.nix ];
+          modules = [ ./hosts/u/thou/home-configuration.nix ];
         };
       };
     };
