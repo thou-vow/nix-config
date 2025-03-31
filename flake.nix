@@ -31,6 +31,9 @@
 
     # Theming
     stylix.url = "github:danth/stylix";
+
+    # Zellij configurable status bar
+    zjstatus.url = "github:dj95/zjstatus";
   };
 
   outputs =
@@ -55,6 +58,9 @@
           config.allowUnfree = true;
           overlays = [
             inputs.helix.overlays.default
+            (final: prev: {
+              zjstatus = inputs.zjstatus.packages.${prev.system}.default;
+            })
           ];
         }
       );

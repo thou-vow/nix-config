@@ -95,48 +95,24 @@ let
     "." = "goto_last_modified_file";
     "space" = "buffer_picker";
   };
-  bufferMinorModeSticky = [
-    "q"
-    "w"
-    "h"
-    "l"
-  ];
   longWordMinorMode = {
     "h" = "move_prev_long_word_start";
     "S-h" = "move_prev_long_word_end";
     "l" = "move_next_long_word_end";
     "S-l" = "move_next_long_word_start";
   };
-  longWordMinorModeSticky = [
-    "h"
-    "S-h"
-    "l"
-    "S-l"
-  ];
   wordMinorMode = {
     "h" = "move_prev_word_start";
     "S-h" = "move_prev_word_end";
     "l" = "move_next_word_end";
     "S-l" = "move_next_word_start";
   };
-  wordMinorModeSticky = [
-    "h"
-    "S-h"
-    "l"
-    "S-l"
-  ];
   subWordMinorMode = {
     "h" = "move_prev_sub_word_start";
     "S-h" = "move_prev_sub_word_end";
     "l" = "move_next_sub_word_end";
     "S-l" = "move_next_sub_word_start";
   };
-  subWordMinorModeSticky = [
-    "h"
-    "S-h"
-    "l"
-    "S-l"
-  ];
   replaceMinorMode = {
     "q" = "@sj<S-w>rr";
     "w" = "@sjwrr";
@@ -170,26 +146,12 @@ let
     "l" = "select_next_sibling";
     "S-l" = "move_parent_node_end";
   };
-  treeMinorModeSticky = [
-    "h"
-    "S-h"
-    "j"
-    "k"
-    "l"
-    "S-l"
-  ];
   undoMinorMode = {
     "h" = "undo";
     "S-h" = "earlier";
     "l" = "redo";
     "S-l" = "later";
   };
-  undoMinorModeSticky = [
-    "h"
-    "S-h"
-    "l"
-    "S-l"
-  ];
   insertMinorMode = {
     "s" = "surround_add";
     "h" = "insert_mode";
@@ -213,28 +175,34 @@ let
       "paste_after"
     ];
   };
-  pasteMinorModeSticky = [
-    "h"
-    "S-h"
-    "l"
-    "S-l"
-  ];
+  windowMinorMode = {
+    "q" = "wclose";
+    "t" = "transpose_view";
+    "y" = "vsplit";
+    "o" = "wonly";
+    "h" = "jump_view_left";
+    "S-h" = "swap_view_left";
+    "j" = "jump_view_down";
+    "S-j" = "swap_view_down";
+    "k" = "jump_view_up";
+    "S-k" = "swap_view_up";
+    "l" = "jump_view_right";
+    "S-l" = "swap_view_right";
+    "x" = "hsplit";
+  };
   selectionMinorMode = {
     "q" = "@sj<S-w>";
     "w" = "@sjw";
     "h" = "extend_to_first_nonwhitespace";
     "S-h" = "extend_to_line_start";
     "j" = "select_textobject_inner";
+    "S-j" = "join_selections";
     "k" = "select_textobject_around";
     "l" = "extend_to_line_end";
     "S-l" = "extend_to_line_end_newline";
     "x" = "extend_to_line_bounds";
     "S-x" = "shrink_to_line_bounds";
     "\\" = "ensure_selections_forward";
-  };
-  selectionMinorModeExpansion = {
-    "j" = "join_selections";
-    "S-j" = "join_selections_space";
   };
   deleteMinorMode = {
     "q" = "@sj<S-w>dd";
@@ -324,20 +292,17 @@ let
     "up" = "align_view_bottom";
     "down" = "align_view_top";
   };
-  viewMinorModeSticky = [
-    "j"
-    "S-j"
-    "k"
-    "S-k"
-  ];
   cursorMinorMode = {
     "(" = "rotate_selection_contents_backward";
     ")" = "rotate_selection_contents_forward";
     "y" = "yank_joined";
     "f" = "keep_selections";
     "S-f" = "remove_selections";
-    "j" = "copy_selection_on_next_line";
-    "k" = "copy_selection_on_prev_line";
+    "h" = "copy_selection_on_prev_line";
+    "j" = "select_all_children";
+    "S-j" = "join_selections_space";
+    "k" = "select_all_siblings";
+    "l" = "copy_selection_on_next_line";
     "\\" = "reverse_selection_contents";
     "|" = "align_selections";
     "x" = "split_selection_on_newline";
@@ -347,57 +312,11 @@ let
     "space" = "split_selection";
     "ret" = "select_regex";
   };
-  cursorMinorModeExpansion = {
-    "j" = "select_all_children";
-    "k" = "select_all_siblings";
-  };
-  cursorMinorModeSticky = [
-    "("
-    ")"
-    "j"
-    "k"
-  ];
-  windowMinorMode = {
-    "q" = "wclose";
-    "t" = "transpose_view";
-    "y" = "vsplit";
-    "o" = "wonly";
-    "h" = "jump_view_left";
-    "S-h" = "swap_view_left";
-    "j" = "jump_view_down";
-    "S-j" = "swap_view_down";
-    "k" = "jump_view_up";
-    "S-k" = "swap_view_up";
-    "l" = "jump_view_right";
-    "S-l" = "swap_view_right";
-    "x" = "hsplit";
-  };
-  windowMinorModeExpansion = {
-    "h" = "rotate_view_reverse";
-    "l" = "rotate_view";
-  };
-  windowMinorModeSticky = [
-    "q"
-    "y"
-    "h"
-    "S-h"
-    "j"
-    "S-j"
-    "k"
-    "S-k"
-    "l"
-    "S-l"
-    "x"
-  ];
   jumpMinorMode = {
     "w" = "save_selection";
     "h" = "jump_backward";
     "l" = "jump_forward";
   };
-  jumpMinorModeSticky = [
-    "h"
-    "l"
-  ];
   macroMinorMode = {
     "w" = "record_macro";
     "m" = "replay_macro";
@@ -410,13 +329,10 @@ let
     "k" = "rsearch";
     "l" = "search_next";
   };
-  searchMinorModeSticky = [
-    "h"
-    "l"
-  ];
   spaceMinorMode = {
     "'" = "last_picker";
     "tab" = "file_picker_in_current_buffer_directory";
+    "S-tab" = "file_explorer_in_current_buffer_directory";
     "q" = ":quit";
     "S-q" = ":quit!";
     "w" = ":write-all";
@@ -429,7 +345,9 @@ let
     "S-d" = "workspace_diagnostics_picker";
     "g" = "changed_file_picker";
     "," = "file_picker";
+    "<" = "file_explorer";
     "." = "file_picker_in_current_directory";
+    ">" = "file_explorer_in_current_directory";
     "/" = "global_search";
     "?" = "command_palette";
   };
@@ -443,31 +361,6 @@ let
     "m" = "@:mv <C-r>%";
     "S-m" = "@:sh mv <C-r>% <C-r>%";
   };
-  spaceMinorModeExpansion = {
-    "tab" = "file_explorer_in_current_buffer_directory";
-    "," = "file_explorer";
-    "." = "file_explorer_in_current_directory";
-  };
-  setStickyMinorModes =
-    let
-      buildStickyBindings =
-        stickyMinorModeKey: minorModeKey: bindings:
-        bindings
-        |> builtins.attrNames
-        |> map (name: {
-          inherit name;
-          value = "@<${minorModeKey}><${name}><${stickyMinorModeKey}>";
-        })
-        |> lib.listToAttrs;
-    in
-    stickyMinorModes: baseBindings:
-    stickyMinorModes
-    |> lib.mapAttrs (
-      stickyMinorModeKey:
-      { minorModeKey, setSticky }:
-      buildStickyBindings stickyMinorModeKey minorModeKey setSticky
-    )
-    |> lib.recursiveUpdate baseBindings;
   convertMovementToSelect =
     string:
     let
@@ -516,106 +409,35 @@ let
       lib.mapAttrs (_: convertBindingsToSelect) value
     else
       value;
-  normal =
-    normalMode
-    // {
-      "@" = caseMinorMode;
-      "=" = languageMinorMode;
-      "§" = configMinorMode;
-      "tab" = bufferMinorMode;
-      "q" = longWordMinorMode;
-      "w" = wordMinorMode;
-      "e" = subWordMinorMode;
-      "r" = replaceMinorMode;
-      "t" = treeMinorMode;
-      "u" = undoMinorMode;
-      "o" = insertMinorMode;
-      "p" = pasteMinorMode;
-      "s" = selectionMinorMode // {
-        "s" = selectionMinorModeExpansion;
-      };
-      "d" = deleteMinorMode;
-      "f" = findMinorMode;
-      "g" = gotoMinorMode;
-      "S-h" = prevImpairMinorMode;
-      "S-l" = nextImpairMinorMode;
-      "z" = viewMinorMode;
-      "c" = cursorMinorMode // {
-        "c" = cursorMinorModeExpansion;
-      };
-      "b" = windowMinorMode // {
-        "b" = windowMinorModeExpansion;
-      };
-      "n" = jumpMinorMode;
-      "m" = macroMinorMode;
-      "/" = searchMinorMode;
-      "space" = spaceMinorMode // {
-        ":" = spaceMinorModeCommand;
-        "space" = spaceMinorModeExpansion;
-      };
-    }
-    |> setStickyMinorModes (
-      let
-        listToNullAttrs =
-          list:
-          list
-          |> map (string: {
-            name = string;
-            value = null;
-          })
-          |> lib.listToAttrs;
-      in
-      {
-        "S-tab" = {
-          minorModeKey = "tab";
-          setSticky = listToNullAttrs bufferMinorModeSticky;
-        };
-        "S-q" = {
-          minorModeKey = "q";
-          setSticky = listToNullAttrs longWordMinorModeSticky;
-        };
-        "S-w" = {
-          minorModeKey = "w";
-          setSticky = listToNullAttrs wordMinorModeSticky;
-        };
-        "S-e" = {
-          minorModeKey = "e";
-          setSticky = listToNullAttrs subWordMinorModeSticky;
-        };
-        "S-t" = {
-          minorModeKey = "t";
-          setSticky = listToNullAttrs treeMinorModeSticky;
-        };
-        "S-u" = {
-          minorModeKey = "u";
-          setSticky = listToNullAttrs undoMinorModeSticky;
-        };
-        "S-p" = {
-          minorModeKey = "p";
-          setSticky = listToNullAttrs pasteMinorModeSticky;
-        };
-        "S-z" = {
-          minorModeKey = "z";
-          setSticky = listToNullAttrs viewMinorModeSticky;
-        };
-        "S-c" = {
-          minorModeKey = "c";
-          setSticky = listToNullAttrs cursorMinorModeSticky;
-        };
-        "S-b" = {
-          minorModeKey = "b";
-          setSticky = listToNullAttrs windowMinorModeSticky;
-        };
-        "S-n" = {
-          minorModeKey = "n";
-          setSticky = listToNullAttrs jumpMinorModeSticky;
-        };
-        "?" = {
-          minorModeKey = "/";
-          setSticky = listToNullAttrs searchMinorModeSticky;
-        };
-      }
-    );
+  normal = normalMode // {
+    "@" = caseMinorMode;
+    "=" = languageMinorMode;
+    "§" = configMinorMode;
+    "tab" = bufferMinorMode;
+    "q" = longWordMinorMode;
+    "w" = wordMinorMode;
+    "e" = subWordMinorMode;
+    "r" = replaceMinorMode;
+    "t" = treeMinorMode;
+    "u" = undoMinorMode;
+    "o" = insertMinorMode;
+    "p" = pasteMinorMode;
+    "a" = windowMinorMode;
+    "s" = selectionMinorMode;
+    "d" = deleteMinorMode;
+    "f" = findMinorMode;
+    "g" = gotoMinorMode;
+    "S-h" = prevImpairMinorMode;
+    "S-l" = nextImpairMinorMode;
+    "z" = viewMinorMode;
+    "c" = cursorMinorMode;
+    "n" = jumpMinorMode;
+    "m" = macroMinorMode;
+    "/" = searchMinorMode;
+    "space" = spaceMinorMode // {
+      ":" = spaceMinorModeCommand;
+    };
+  };
   insert = {
     "esc" = "normal_mode";
     "tab" = "smart_tab";
@@ -637,21 +459,18 @@ let
     "A-?" = "signature_help";
     "backspace" = "delete_char_backward";
     "S-backspace" = "delete_char_backward";
-    "A-backspace" = "delete_word_backward";
     "del" = "delete_char_forward";
     "S-del" = "delete_char_forward";
-    "A-del" = "delete_word_forward";
     "down" = "scroll_down";
     "up" = "scroll_up";
   };
   select = convertBindingsToSelect normal // {
     "v" = "exit_select_mode";
   };
-  cleared-default-bindings = import ./cleared-default-bindings.nix;
 in
 {
   config = lib.mkIf config.mods.home.terminal.helix.enable {
-    programs.helix.settings.keys = lib.recursiveUpdate cleared-default-bindings {
+    programs.helix.settings.keys = lib.recursiveUpdate (import ./cleared-default-bindings.nix) {
       inherit normal insert select;
     };
   };

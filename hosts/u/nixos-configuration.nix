@@ -105,6 +105,7 @@
   security.rtkit.enable = true;
 
   services = {
+    flatpak.enable = true;
     libinput = {
       enable = true;
       touchpad = {

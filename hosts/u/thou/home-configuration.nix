@@ -14,6 +14,7 @@
       helix.enable = true;
       nushell.enable = true;
       yazi.enable = true;
+      zellij.enable = true;
     };
   };
 
@@ -21,6 +22,7 @@
     username = "thou";
     homeDirectory = "/home/${config.home.username}";
     packages = with pkgs; [
+      discord
       libqalculate # Calculator
       unimatrix # Simulate display from matrix
     ];

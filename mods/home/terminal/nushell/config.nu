@@ -22,9 +22,15 @@ $env.config = {
     max_size: 5_000_000
   }
 
+  keybinds: [
+  ]
+
+
   recursion_limit: 50
 
-  rm.always_trash: true
+  rm: {
+    always_trash: true
+  }
 
   show_banner: true
 }

@@ -20,14 +20,15 @@
           [
             {
               name = "kdl";
-              indent = commonIndent;
               auto-format = true;
+              formatter.command = lib.getExe pkgs.kdlfmt;
+              indent = commonIndent;
             }
             {
               name = "nix";
-              indent = commonIndent;
               auto-format = true;
               formatter.command = lib.getExe pkgs.nixfmt-rfc-style;
+              indent = commonIndent;
               language-servers = [ "nixd" ];
             }
           ];

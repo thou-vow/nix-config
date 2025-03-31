@@ -16,11 +16,32 @@
       color-modes = true;
       popup-border = "all";
       scrolloff = 5;
+
       end-of-line-diagnostics = "hint";
+
+      file-picker.hidden = false;
+
+      indent-guides = {
+        render = false;
+        character = "▏";
+        skip-levels = 1;
+      };
+
       inline-diagnostics = {
         cursor-line = "disable";
         other-lines = "disable";
       };
+
+      lsp = {
+        enable = true;
+        auto-signature-help = false;
+        display-messages = true;
+        display-inlay-hints = true;
+      };
+
+      search.smart-case = true;
+
+      soft-wrap.enable = false;
 
       statusline = {
         left = [
@@ -52,17 +73,6 @@
         separator = "";
       };
 
-      lsp = {
-        enable = true;
-        auto-signature-help = false;
-        display-messages = true;
-        display-inlay-hints = true;
-      };
-
-      file-picker.hidden = false;
-
-      search.smart-case = true;
-
       whitespace = {
         render = {
           space = "none";
@@ -80,12 +90,6 @@
           tabpad = "·";
         };
       };
-      indent-guides = {
-        render = false;
-        character = "▏";
-        skip-levels = 1;
-      };
-      soft-wrap.enable = false;
     };
   };
 }
