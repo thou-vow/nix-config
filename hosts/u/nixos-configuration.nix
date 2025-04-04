@@ -20,7 +20,12 @@
       "vm.dirty_bytes" = 50331648;
     };
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
-    kernelParams = [ "mitigations=off" ];
+    kernelParams = [
+      "ath9k_core.nohwcrypt=1"
+      "mitigations=off"
+      "pcie_aspm=off"
+      "zswap.enabled=1"
+    ];
     loader = {
       efi.efiSysMountPoint = "/boot/efi";
       systemd-boot.enable = true;
@@ -36,7 +41,9 @@
     };
     systemPackages = with pkgs; [
       btop
+      duf
       git
+      pciutils
       sudo
       vim
       wget
@@ -76,15 +83,12 @@
     nameservers = [
       "1.0.0.1"
       "1.1.1.1"
-      "8.8.4.4"
-      "8.8.8.8"
     ];
     networkmanager = {
       enable = true;
       dns = "none";
-      wifi.scanRandMacAddress = false;
+      wifi.powersave = false;
     };
-    useDHCP = false;
   };
 
   nix = {

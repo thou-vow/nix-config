@@ -93,6 +93,7 @@ let
     "A-S-c"
     "C-c"
     "v"
+    "b"
     "S-b"
     "A-b"
     "C-b"

@@ -31,9 +31,6 @@
 
     # Theming
     stylix.url = "github:danth/stylix";
-
-    # Zellij configurable status bar
-    zjstatus.url = "github:dj95/zjstatus";
   };
 
   outputs =

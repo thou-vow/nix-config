@@ -16,12 +16,9 @@
   };
 
   config = lib.mkIf config.mods.home.terminal.helix.enable {
-    programs.helix = {
-      enable = true;
-      settings.theme = "theme";
-    };
+    programs.helix.enable = true;
 
-    xdg.configFile."helix/themes".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nix/mods/home/terminal/helix/themes";
+    # xdg.configFile."helix/themes".source =
+    #   config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nix/mods/home/terminal/helix/themes";
   };
 }

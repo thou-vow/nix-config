@@ -1,0 +1,177 @@
+default_mode "locked"
+show_startup_tips false
+
+keybinds clear-defaults=true {
+  shared {
+    bind "Alt e" { EditScrollback; }
+    bind "Alt s" { ToggleActiveSyncTab; }
+    bind "Alt f" { ToggleFocusFullscreen; } 
+    bind "Alt j" { ScrollDown; }
+    bind "Alt Shift j" { HalfPageScrollDown; }
+    bind "Alt k" { ScrollUp; }
+    bind "Alt Shift k" { HalfPageScrollUp; }
+    bind "Alt z" { TogglePaneFrames; }
+    bind "Alt Shift /" {
+      LaunchOrFocusPlugin "zellij-forgot" {
+        // "Edit focused pane scrollback" "A-e"
+        // "Sync input in focused tab" "A-s"
+        // "Toggle focused pane fullscreen" "A-f"
+        // "Scroll down" "A-j"
+        // "Half-page scroll down" "A-S-j"
+        // "Scroll up" "A-k"
+        // "Half-page scroll up" "A-S-k"
+        // "Toggle pane frame visibility" "A-z"
+        // "Show keybinds" "A-S-/"
+        // "Focus tab 1..10" "C-g 1..0"
+        // "Decrease pane size" "C-g -"
+        // "Increase pane size" "C-g +"
+        // "Close focus pane" "C-g q"
+        // "Close focus tab" "C-g S-q"          
+        // "Toggle pane embed/float state" "C-g e"
+        // "Rename pane" "C-g r"
+        // "Rename tab" "C-g S-r"
+        // "New pane on right" "C-g y"
+        // "New pane on left" "C-g S-y"
+        // "Pin floating pane" "C-g p"
+        // "Toggle floating pane visibility" "C-g f"
+        // "Focus on left" "C-g h"
+        // "Move pane to left" "C-g S-h"
+        // "Focus on down" "C-g j"
+        // "Move pane to down" "C-g S-j"
+        // "Focus on up" "C-g k"
+        // "Move pane to up" "C-g S-k"
+        // "Focus on right" "C-g l"
+        // "Move pane to right" "C-g S-l"
+        // "New pane below" "C-g x"
+        // "New pane above" "C-g S-x"
+        // "New tab" "C-g n"
+        // "Increase pane to left" "C-g left"
+        // "Decrease pane to left" "C-g S-left"
+        // "Increase pane to down" "C-g down"
+        // "Decrease pane to down" "C-g S-down"
+        // "Increase pane to up" "C-g up"
+        // "Decrease pane to up" "C-g S-up"
+        // "Increase pane to right" "C-g right"
+        // "Decrease pane to right" "C-g S-right"
+        // "Quit Zellij" "C-g s q"
+        // "Detach session" "C-g s d"
+        // "Toggle search whole word" "C-g / w"
+        // "Toggle search wrap around" "C-g / o"
+        // "Focus previous search occurence" "C-g / h"
+        // "Scroll to bottom" "C-g s j"
+        // "Scroll to top" "C-g s k"
+        // "Focus next search occurence" "C-g / l"
+        // "Toggle search case sensitivity" "C-g / c"
+        floating true
+      }
+    }
+  }
+  normal {
+    bind "1" { GoToTab 1; }
+    bind "2" { GoToTab 2; }
+    bind "3" { GoToTab 3; }
+    bind "4" { GoToTab 4; }
+    bind "5" { GoToTab 5; }
+    bind "6" { GoToTab 6; }
+    bind "7" { GoToTab 7; }
+    bind "8" { GoToTab 8; }
+    bind "9" { GoToTab 9; }
+    bind "0" { GoToTab 10; }
+    bind "-" { Resize "Decrease"; }
+    bind "+" { Resize "Increase"; }
+    bind "q" { CloseFocus; }
+    bind "Shift q" { CloseTab; }
+    bind "e" { TogglePaneEmbedOrFloating; }
+    bind "r" { SwitchToMode "RenamePane"; PaneNameInput 0; }
+    bind "Shift r" { SwitchToMode "RenameTab"; TabNameInput 0; }
+    bind "y" { NewPane "right"; }
+    bind "Shift y" { NewPane "right"; MovePane "left"; }
+    bind "p" { TogglePanePinned; }
+    bind "s" { SwitchToMode "session"; }
+    bind "f" { ToggleFloatingPanes; }
+    bind "h" { MoveFocusOrTab "left"; }
+    bind "Shift h" { MovePane "left"; }
+    bind "j" { MoveFocus "down"; }
+    bind "Shift j" { MovePane "down"; }
+    bind "k" { MoveFocus "up"; }
+    bind "Shift k" { MovePane "up"; }
+    bind "l" { MoveFocusOrTab "right"; }
+    bind "Shift l" { MovePane "right"; }
+    bind "n" { NewTab; }
+    bind "x" { NewPane "down"; }
+    bind "Shift x" { NewPane "down"; MovePane "up"; }
+    bind "/" { SwitchToMode "entersearch"; SearchInput 0; }
+    bind "left" { Resize "Increase left"; }
+    bind "Shift left" { Resize "Decrease left"; }
+    bind "down" { Resize "Increase down"; }
+    bind "Shift down" { Resize "Decrease down"; }
+    bind "up" { Resize "Increase up"; }
+    bind "Shift up" { Resize "Decrease up"; }
+    bind "right" { Resize "Increase right"; }
+    bind "Shift right" { Resize "Decrease right"; }
+  }
+  renamepane {
+    bind "esc" { UndoRenamePane; SwitchToMode "normal"; }
+  }
+  renametab {
+    bind "esc" { UndoRenameTab; SwitchToMode "normal"; }
+  }
+  shared_among "renamepane" "renametab" {
+    bind "enter" { SwitchToMode "Normal"; }
+  }
+  session {
+    bind "q" { Quit; }
+    bind "d" { Detach; }
+  }
+  entersearch {
+    bind "esc" { SwitchToMode "normal"; }
+    bind "enter" { SwitchToMode "search"; }
+  }
+  search {
+    bind "w" { SearchToggleOption "WholeWord"; }
+    bind "o" { SearchToggleOption "Wrap"; }
+    bind "h" { Search "up"; }
+    bind "j" { ScrollToTop; }
+    bind "k" { ScrollToBottom; }
+    bind "l" { Search "down"; }
+    bind "c" { SearchToggleOption "CaseSensitivity"; }
+  }
+  shared_except "locked" "entersearch" "renamepane" "renametab" {
+    bind "esc" { SwitchToMode "locked"; }
+  }
+  shared_except "normal" {
+    bind "Ctrl g" { SwitchToMode "normal"; }
+  }
+}
+
+plugins {
+  zellij-forgot location="https://github.com/karimould/zellij-forgot/releases/download/0.4.2/zellij_forgot.wasm" 
+  zjstatus location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
+    format_left               "{mode}"
+    format_right              "{tabs} #[bold]({session}) {datetime}"
+
+    mode_locked "#[reverse] #[bold] C-g #[reverse] #[bold,reverse]UNLOCK #[]"
+    mode_normal "#[fg=bright_green,reverse] #[] C-g #[fg=bright_green,reverse] #[fg=bright_green,bold,reverse]UNLOCK #[fg=bright_green]#[reverse] #[] #[bold]s #[reverse] #[bold,reverse]SESSION #[] #[bold]/ #[reverse] #[bold,reverse]SEARCH #[] "
+    mode_rename_pane "#[fg=bright_green,reverse] #[] C-g #[fg=bright_green,reverse] #[fg=bright_green,bold,reverse]UNLOCK #[fg=bright_green]#[reverse] #[] Rename pane..."
+    mode_rename_tab "#[fg=bright_green,reverse] #[] C-g #[fg=bright_green,reverse] #[fg=bright_green,bold,reverse]UNLOCK #[fg=bright_green]#[reverse] #[] Rename tab..."
+    mode_session "#[fg=bright_green,reverse] #[bold] C-g #[fg=bright_green,reverse] #[fg=bright_green,bold,reverse]UNLOCK #[fg=bright_green]#[fg=bright_red,reverse] #[fg=bright_red] #[]s #[fg=bright_red,reverse] #[fg=bright_red,bold,reverse]SESSION #[fg=bright_red] #[]/ #[reverse] #[bold,reverse]SEARCH #[]"
+    mode_enter_search "#[fg=bright_green,reverse] #[bold] C-g #[fg=bright_green,reverse] #[fg=bright_green,bold,reverse]UNLOCK #[fg=bright_green]#[fg=bright_magenta,reverse] #[fg=bright_magenta] #[]Enter search... "
+    mode_search "#[fg=bright_green,reverse] #[bold] C-g #[fg=bright_green,reverse] #[fg=bright_green,bold,reverse]UNLOCK #[fg=bright_green]#[fg=bright_magenta,reverse] #[fg=bright_magenta] #[]s #[reverse] #[bold,reverse]SESSION #[] #[bold]/ #[fg=bright_magenta,reverse] #[fg=bright_magenta,bold,reverse]SEARCH #[fg=bright_magenta]"
+
+    tab_active "#[fg=bright_white,bold]  {index} ➢ {name} {sync_indicator}{fullscreen_indicator}{floating_indicator} "
+    tab_normal "#[]  {index} ➢ {name} {sync_indicator}{fullscreen_indicator}{floating_indicator} "
+
+    tab_separator            "·"
+    tab_sync_indicator       " "
+    tab_fullscreen_indicator "󰊓 "
+    tab_floating_indicator   "󰹙 "
+
+    tab_display_count         "4"
+    tab_truncate_start_format "#[] < +{count} ..."
+    tab_truncate_end_format   "#[] ... +{count} >"
+
+    datetime          "#[reverse] #[bold,reverse]{format} #[] "
+    datetime_format   "%A, %d %b %Y  %H:%M:%S"
+    datetime_timezone "America/Sao_Paulo"
+  }
+}

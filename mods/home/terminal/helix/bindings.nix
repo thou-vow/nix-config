@@ -136,7 +136,6 @@ let
       "change_selection_noyank"
     ];
     "c" = "replace";
-    "b" = "@nws\\\\ohab<esc>vhhrpnwnhdynl";
   };
   treeMinorMode = {
     "h" = "select_prev_sibling";
@@ -174,21 +173,6 @@ let
       "goto_line_end"
       "paste_after"
     ];
-  };
-  windowMinorMode = {
-    "q" = "wclose";
-    "t" = "transpose_view";
-    "y" = "vsplit";
-    "o" = "wonly";
-    "h" = "jump_view_left";
-    "S-h" = "swap_view_left";
-    "j" = "jump_view_down";
-    "S-j" = "swap_view_down";
-    "k" = "jump_view_up";
-    "S-k" = "swap_view_up";
-    "l" = "jump_view_right";
-    "S-l" = "swap_view_right";
-    "x" = "hsplit";
   };
   selectionMinorMode = {
     "q" = "@sj<S-w>";
@@ -312,6 +296,21 @@ let
     "space" = "split_selection";
     "ret" = "select_regex";
   };
+  windowMinorMode = {
+    "q" = "wclose";
+    "t" = "transpose_view";
+    "y" = "vsplit";
+    "o" = "wonly";
+    "h" = "jump_view_left";
+    "S-h" = "swap_view_left";
+    "j" = "jump_view_down";
+    "S-j" = "swap_view_down";
+    "k" = "jump_view_up";
+    "S-k" = "swap_view_up";
+    "l" = "jump_view_right";
+    "S-l" = "swap_view_right";
+    "x" = "hsplit";
+  };
   jumpMinorMode = {
     "w" = "save_selection";
     "h" = "jump_backward";
@@ -422,7 +421,6 @@ let
     "u" = undoMinorMode;
     "o" = insertMinorMode;
     "p" = pasteMinorMode;
-    "a" = windowMinorMode;
     "s" = selectionMinorMode;
     "d" = deleteMinorMode;
     "f" = findMinorMode;
@@ -431,6 +429,7 @@ let
     "S-l" = nextImpairMinorMode;
     "z" = viewMinorMode;
     "c" = cursorMinorMode;
+    "b" = windowMinorMode;
     "n" = jumpMinorMode;
     "m" = macroMinorMode;
     "/" = searchMinorMode;
@@ -442,21 +441,19 @@ let
     "esc" = "normal_mode";
     "tab" = "smart_tab";
     "S-tab" = "insert_tab";
-    "A-u" = "commit_undo_checkpoint";
-    "A-o" = "normal_mode";
-    "A-p" = "insert_register";
-    "A-h" = "move_char_left";
-    "A-j" = "move_visual_line_down";
-    "A-k" = "move_visual_line_up";
-    "A-l" = "move_char_right";
-    "A-x" = "completion";
-    "A-m" = "record_macro";
-    "A-/" = [
-      "align_view_top"
+    "C-r" = "insert_register";
+    "C-u" = "commit_undo_checkpoint";
+    "C-o" = "normal_mode";
+    "C-h" = "move_char_left";
+    "C-j" = "move_visual_line_down";
+    "C-k" = "move_visual_line_up";
+    "C-l" = "move_char_right";
+    "C-x" = "completion";
+    "C-/" = [
+      "signature_help"
       "hover"
     ];
     "ret" = "insert_newline";
-    "A-?" = "signature_help";
     "backspace" = "delete_char_backward";
     "S-backspace" = "delete_char_backward";
     "del" = "delete_char_forward";
