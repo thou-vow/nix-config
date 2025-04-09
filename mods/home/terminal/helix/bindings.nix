@@ -174,6 +174,11 @@ let
       "paste_after"
     ];
   };
+  jumpMinorMode = {
+    "w" = "save_selection";
+    "h" = "jump_backward";
+    "l" = "jump_forward";
+  };
   selectionMinorMode = {
     "q" = "@sj<S-w>";
     "w" = "@sjw";
@@ -311,11 +316,6 @@ let
     "S-l" = "swap_view_right";
     "x" = "hsplit";
   };
-  jumpMinorMode = {
-    "w" = "save_selection";
-    "h" = "jump_backward";
-    "l" = "jump_forward";
-  };
   macroMinorMode = {
     "w" = "record_macro";
     "m" = "replay_macro";
@@ -419,8 +419,9 @@ let
     "r" = replaceMinorMode;
     "t" = treeMinorMode;
     "u" = undoMinorMode;
-    "o" = insertMinorMode;
+    "i" = insertMinorMode;
     "p" = pasteMinorMode;
+    "a" = jumpMinorMode;
     "s" = selectionMinorMode;
     "d" = deleteMinorMode;
     "f" = findMinorMode;
@@ -430,7 +431,6 @@ let
     "z" = viewMinorMode;
     "c" = cursorMinorMode;
     "b" = windowMinorMode;
-    "n" = jumpMinorMode;
     "m" = macroMinorMode;
     "/" = searchMinorMode;
     "space" = spaceMinorMode // {
@@ -443,11 +443,6 @@ let
     "S-tab" = "insert_tab";
     "C-r" = "insert_register";
     "C-u" = "commit_undo_checkpoint";
-    "C-o" = "normal_mode";
-    "C-h" = "move_char_left";
-    "C-j" = "move_visual_line_down";
-    "C-k" = "move_visual_line_up";
-    "C-l" = "move_char_right";
     "C-x" = "completion";
     "C-/" = [
       "signature_help"
@@ -458,8 +453,10 @@ let
     "S-backspace" = "delete_char_backward";
     "del" = "delete_char_forward";
     "S-del" = "delete_char_forward";
-    "down" = "scroll_down";
-    "up" = "scroll_up";
+    "left" = "move_char_left";
+    "down" = "move_visual_line_down";
+    "up" = "move_visual_line_up";
+    "right" = "move_char_right";
   };
   select = convertBindingsToSelect normal // {
     "v" = "exit_select_mode";

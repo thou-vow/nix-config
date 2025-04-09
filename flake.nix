@@ -13,8 +13,10 @@
   };
 
   inputs = {
-    # Nix system
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Nix packages and environment
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-edge.url = "github:nixos/nixpkgs/master";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,9 +30,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Theming
-    stylix.url = "github:danth/stylix";
   };
 
   outputs =
@@ -48,22 +47,34 @@
         "x86_64-darwin"
       ];
 
+      overlays = [
+        (final: prev: {
+          stable = import inputs.nixpkgs-stable {
+            system = final.system;
+            config.allowUnfree = true;
+          };
+          edge = import inputs.nixpkgs-edge {
+            system = final.system;
+            config.allowUnfree = true;
+          };
+
+          inputs = {
+            helix = inputs.helix.packages.${final.system}.default;
+          };
+
+          custom = import ./custom/custom.nix { inherit final inputs prev; };
+        })
+      ];
+
       eachPkgs = nixpkgs.lib.genAttrs systems (
         system:
         import nixpkgs {
-          inherit system;
+          inherit system overlays;
           config.allowUnfree = true;
-          overlays = [
-            inputs.helix.overlays.default
-            (final: prev: {
-              zjstatus = inputs.zjstatus.packages.${prev.system}.default;
-            })
-          ];
         }
       );
     in
     {
-
       # NixOS configuration entrypoint
       # Available through 'nixos-rebuild --flake "path:$HOME/nix#hostname"'
       nixosConfigurations = {

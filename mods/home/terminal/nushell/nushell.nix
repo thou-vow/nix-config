@@ -10,6 +10,7 @@
 
   config = lib.mkIf config.mods.home.terminal.nushell.enable {
     home.packages = with pkgs; [
+      nufmt
       pokeget-rs
     ];
 

@@ -44,6 +44,7 @@
       duf
       git
       pciutils
+      snake4
       sudo
       vim
       wget
