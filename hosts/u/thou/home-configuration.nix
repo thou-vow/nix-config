@@ -33,6 +33,15 @@
     stateVersion = "25.05";
   };
 
+  nix = {
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    package = pkgs.nixVersions.latest;
+    settings = {
+      auto-optimise-store = true;
+      experimental-features = "flakes nix-command pipe-operators";
+    };
+  };
+
   programs = {
     alacritty.enable = true;
     brave.enable = true;

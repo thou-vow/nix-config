@@ -28,7 +28,12 @@
     ];
     loader = {
       efi.efiSysMountPoint = "/boot/efi";
-      systemd-boot.enable = true;
+      grub = {
+        enable = true;
+        device = "nodev";
+        efiInstallAsRemovable = true;
+        efiSupport = true;
+      };
     };
   };
 
@@ -97,11 +102,8 @@
     package = pkgs.nixVersions.latest;
     settings = {
       auto-optimise-store = true;
-      cores = 1;
-      extra-experimental-features = "nix-command flakes pipe-operators";
-      extra-trusted-users = [ "@wheel" ];
-      max-jobs = 1;
-      max-substitution-jobs = 1;
+      experimental-features = "flakes nix-command pipe-operators";
+      trusted-users = [ "@wheel" ];
     };
   };
 

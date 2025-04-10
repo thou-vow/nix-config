@@ -419,7 +419,7 @@ let
     "r" = replaceMinorMode;
     "t" = treeMinorMode;
     "u" = undoMinorMode;
-    "i" = insertMinorMode;
+    "o" = insertMinorMode;
     "p" = pasteMinorMode;
     "a" = jumpMinorMode;
     "s" = selectionMinorMode;

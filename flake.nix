@@ -16,7 +16,7 @@
     # Nix packages and environment
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
-    nixpkgs-edge.url = "github:nixos/nixpkgs/master";
+    nixpkgs-edge.url = "github:nixos/nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -75,17 +75,18 @@
       );
     in
     {
-      # NixOS configuration entrypoint
-      # Available through 'nixos-rebuild --flake "path:$HOME/nix#hostname"'
+      # NixOS
       nixosConfigurations = {
         "u" = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [ ./hosts/u/nixos-configuration.nix ];
+          modules = [
+            ./hosts/u/nixos-configuration.nix
+            {
+              nixpkgs.pkgs = eachPkgs."x86_64-linux";
+            }
+          ];
         };
       };
-
-      # Standalone home-manager configuration entrypoint
-      # Available through 'home-manager --flake "path:$HOME/nix#username@hostname"'
       homeConfigurations = {
         "u@thou" = home-manager.lib.homeManagerConfiguration {
           pkgs = eachPkgs."x86_64-linux";
