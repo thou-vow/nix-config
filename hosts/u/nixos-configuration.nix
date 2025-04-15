@@ -1,11 +1,10 @@
 {
+  config,
   inputs,
   lib,
   pkgs,
   ...
-}:
-
-{
+}: {
   imports = [
     ./hardware-configuration.nix
     ../../mods/nixos/nixos.nix
@@ -40,10 +39,6 @@
   console.useXkbConfig = true;
 
   environment = {
-    sessionVariables = {
-      EDITOR = "hx";
-      VISUAL = "hx";
-    };
     systemPackages = with pkgs; [
       btop
       duf
@@ -55,9 +50,6 @@
       wget
       xclip
     ];
-    variables = {
-      CARGO_BUILD_JOBS = "1";
-    };
   };
 
   hardware.graphics = {
@@ -98,12 +90,19 @@
   };
 
   nix = {
-    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     package = pkgs.nixVersions.latest;
+
+    nixPath = lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
+    registry =
+      inputs
+      |> lib.filterAttrs (_: value: lib.isType "flake" value)
+      |> lib.mapAttrs (_: value: {flake = value;});
+
     settings = {
       auto-optimise-store = true;
-      experimental-features = "flakes nix-command pipe-operators";
-      trusted-users = [ "@wheel" ];
+      experimental-features = ["flakes" "nix-command" "pipe-operators"];
+      flake-registry = "";
+      trusted-users = ["root" "@wheel"];
     };
   };
 

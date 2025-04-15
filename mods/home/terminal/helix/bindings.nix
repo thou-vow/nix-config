@@ -1,6 +1,8 @@
-{ config, lib, ... }:
-
-let
+{
+  config,
+  lib,
+  ...
+}: let
   normalMode = {
     "'" = "repeat_last_motion";
     "\"" = "select_register";
@@ -285,6 +287,7 @@ let
     "(" = "rotate_selection_contents_backward";
     ")" = "rotate_selection_contents_forward";
     "y" = "yank_joined";
+    "s" = "select_references_to_symbol_under_cursor";
     "f" = "keep_selections";
     "S-f" = "remove_selections";
     "h" = "copy_selection_on_prev_line";
@@ -360,83 +363,86 @@ let
     "m" = "@:mv <C-r>%";
     "S-m" = "@:sh mv <C-r>% <C-r>%";
   };
-  convertMovementToSelect =
-    string:
-    let
-      commandMap = {
-        "move_char_left" = "extend_char_left";
-        "move_visual_line_down" = "extend_visual_line_down";
-        "move_visual_line_up" = "extend_visual_line_up";
-        "move_char_right" = "extend_char_right";
-        "move_line_down" = "extend_line_down";
-        "move_line_up" = "extend_line_up";
-        "move_prev_long_word_start" = "extend_prev_long_word_start";
-        "move_next_long_word_start" = "extend_next_long_word_start";
-        "move_prev_long_word_end" = "extend_prev_long_word_end";
-        "move_next_long_word_end" = "extend_next_long_word_end";
-        "move_prev_sub_word_start" = "extend_prev_sub_word_start";
-        "move_next_sub_word_start" = "extend_next_sub_word_start";
-        "move_prev_sub_word_end" = "extend_prev_sub_word_end";
-        "move_next_sub_word_end" = "extend_next_sub_word_end";
-        "move_prev_word_start" = "extend_prev_word_start";
-        "move_next_word_start" = "extend_next_word_start";
-        "move_prev_word_end" = "extend_prev_word_end";
-        "move_next_word_end" = "extend_next_word_end";
-        "move_parent_node_start" = "extend_parent_node_start";
-        "move_parent_node_end" = "extend_parent_node_end";
-        "goto_first_nonwhitespace" = "extend_to_first_nonwhitespace";
-        "goto_line_end" = "extend_to_line_end";
-        "find_next_char" = "extend_next_char";
-        "find_prev_char" = "extend_prev_char";
-        "find_till_char" = "extend_till_char";
-        "till_prev_char" = "extend_till_prev_char";
-        "goto_word" = "extend_to_word";
-        "goto_line_start" = "extend_to_line_start";
-        "goto_line_end_newline" = "extend_to_line_end_newline";
-        "search_next" = "extend_search_next";
-        "search_prev" = "extend_search_prev";
-      };
-    in
-    commandMap.${string} or string;
-  convertBindingsToSelect =
-    value:
-    if builtins.isString value then
-      convertMovementToSelect value
-    else if builtins.isList value then
-      map convertMovementToSelect value
-    else if builtins.isAttrs value then
-      lib.mapAttrs (_: convertBindingsToSelect) value
-    else
-      value;
-  normal = normalMode // {
-    "@" = caseMinorMode;
-    "=" = languageMinorMode;
-    "§" = configMinorMode;
-    "tab" = bufferMinorMode;
-    "q" = longWordMinorMode;
-    "w" = wordMinorMode;
-    "e" = subWordMinorMode;
-    "r" = replaceMinorMode;
-    "t" = treeMinorMode;
-    "u" = undoMinorMode;
-    "o" = insertMinorMode;
-    "p" = pasteMinorMode;
-    "a" = jumpMinorMode;
-    "s" = selectionMinorMode;
-    "d" = deleteMinorMode;
-    "f" = findMinorMode;
-    "g" = gotoMinorMode;
-    "S-h" = prevImpairMinorMode;
-    "S-l" = nextImpairMinorMode;
-    "z" = viewMinorMode;
-    "c" = cursorMinorMode;
-    "b" = windowMinorMode;
-    "m" = macroMinorMode;
-    "/" = searchMinorMode;
-    "space" = spaceMinorMode // {
-      ":" = spaceMinorModeCommand;
+  convertMovementToSelect = string: let
+    commandMap = {
+      "move_char_left" = "extend_char_left";
+      "move_visual_line_down" = "extend_visual_line_down";
+      "move_visual_line_up" = "extend_visual_line_up";
+      "move_char_right" = "extend_char_right";
+      "move_line_down" = "extend_line_down";
+      "move_line_up" = "extend_line_up";
+      "move_prev_long_word_start" = "extend_prev_long_word_start";
+      "move_next_long_word_start" = "extend_next_long_word_start";
+      "move_prev_long_word_end" = "extend_prev_long_word_end";
+      "move_next_long_word_end" = "extend_next_long_word_end";
+      "move_prev_sub_word_start" = "extend_prev_sub_word_start";
+      "move_next_sub_word_start" = "extend_next_sub_word_start";
+      "move_prev_sub_word_end" = "extend_prev_sub_word_end";
+      "move_next_sub_word_end" = "extend_next_sub_word_end";
+      "move_prev_word_start" = "extend_prev_word_start";
+      "move_next_word_start" = "extend_next_word_start";
+      "move_prev_word_end" = "extend_prev_word_end";
+      "move_next_word_end" = "extend_next_word_end";
+      "move_parent_node_start" = "extend_parent_node_start";
+      "move_parent_node_end" = "extend_parent_node_end";
+      "goto_first_nonwhitespace" = "extend_to_first_nonwhitespace";
+      "goto_file_start" = "extend_to_file_start";
+      "goto_file_end" = "extend_to_file_end";
+      "goto_line_end" = "extend_to_line_end";
+      "goto_last_line" = "extend_to_last_line";
+      "find_next_char" = "extend_next_char";
+      "find_prev_char" = "extend_prev_char";
+      "find_till_char" = "extend_till_char";
+      "till_prev_char" = "extend_till_prev_char";
+      "goto_word" = "extend_to_word";
+      "goto_line_start" = "extend_to_line_start";
+      "goto_line_end_newline" = "extend_to_line_end_newline";
+      "search_next" = "extend_search_next";
+      "search_prev" = "extend_search_prev";
     };
-  };
+  in
+    commandMap.${string} or string;
+  convertBindingsToSelect = value:
+    if builtins.isString value
+    then convertMovementToSelect value
+    else if builtins.isList value
+    then map convertMovementToSelect value
+    else if builtins.isAttrs value
+    then lib.mapAttrs (_: convertBindingsToSelect) value
+    else value;
+  normal =
+    normalMode
+    // {
+      "@" = caseMinorMode;
+      "=" = languageMinorMode;
+      "§" = configMinorMode;
+      "tab" = bufferMinorMode;
+      "q" = longWordMinorMode;
+      "w" = wordMinorMode;
+      "e" = subWordMinorMode;
+      "r" = replaceMinorMode;
+      "t" = treeMinorMode;
+      "u" = undoMinorMode;
+      "o" = insertMinorMode;
+      "p" = pasteMinorMode;
+      "a" = jumpMinorMode;
+      "s" = selectionMinorMode;
+      "d" = deleteMinorMode;
+      "f" = findMinorMode;
+      "g" = gotoMinorMode;
+      "S-h" = prevImpairMinorMode;
+      "S-l" = nextImpairMinorMode;
+      "z" = viewMinorMode;
+      "c" = cursorMinorMode;
+      "b" = windowMinorMode;
+      "m" = macroMinorMode;
+      "/" = searchMinorMode;
+      "space" =
+        spaceMinorMode
+        // {
+          ":" = spaceMinorModeCommand;
+        };
+    };
   insert = {
     "esc" = "normal_mode";
     "tab" = "smart_tab";
@@ -458,11 +464,12 @@ let
     "up" = "move_visual_line_up";
     "right" = "move_char_right";
   };
-  select = convertBindingsToSelect normal // {
-    "v" = "exit_select_mode";
-  };
-in
-{
+  select =
+    convertBindingsToSelect normal
+    // {
+      "v" = "exit_select_mode";
+    };
+in {
   config = lib.mkIf config.mods.home.terminal.helix.enable {
     programs.helix.settings.keys = lib.recursiveUpdate (import ./cleared-default-bindings.nix) {
       inherit normal insert select;

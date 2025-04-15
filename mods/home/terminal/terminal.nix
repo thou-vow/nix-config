@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   imports = [
     ./fastfetch/fastfetch.nix
     ./helix/helix.nix

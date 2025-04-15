@@ -3,9 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-
-{
+}: {
   options.mods.home.terminal.nushell.enable = lib.mkEnableOption "enable nushell";
 
   config = lib.mkIf config.mods.home.terminal.nushell.enable {
@@ -19,6 +17,7 @@
       configFile.text = ''
         source ${config.home.homeDirectory}/nix/mods/home/terminal/nushell/config.nu
       '';
+      environmentVariables = config.home.sessionVariables;
     };
   };
 }
