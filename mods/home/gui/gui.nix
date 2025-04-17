@@ -1,4 +1,5 @@
 {...}: {
   imports = [
+    ./st/st.nix
   ];
 }

@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    ./apps/apps.nix
-    ./terminal/terminal.nix
+    ./cli/cli.nix
+    ./gui/gui.nix
   ];
 }

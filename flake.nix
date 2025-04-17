@@ -1,5 +1,5 @@
 {
-  description = "Your Nix configuration";
+  description = "Nix environments for thou";
 
   nixConfig = {
     substituters = [
@@ -30,10 +30,12 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Terminal
+    suckless.url = "github:thou-vow/suckless";
   };
 
   outputs = {
-    self,
     nixpkgs,
     home-manager,
     ...
@@ -48,6 +50,7 @@
 
     overlays = import ./overlays/overlays.nix {inherit inputs;};
 
+    # Future plans: make overlays and nixpkgs config host specific
     eachPkgs = nixpkgs.lib.genAttrs systems (
       system:
         import nixpkgs {

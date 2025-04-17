@@ -35,3 +35,4 @@
 #   show_banner: true
 # }
 
+$env.config.show_banner = false

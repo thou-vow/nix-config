@@ -10,7 +10,10 @@
   ];
 
   mods.home = {
-    terminal = {
+    gui = {
+      st.enable = true;
+    };
+    cli = {
       fastfetch.enable = true;
       helix.enable = true;
       nushell.enable = true;
@@ -19,22 +22,25 @@
     };
   };
 
+  fonts.fontconfig.enable = true;
+
   home = {
     username = "thou";
     homeDirectory = "/home/${config.home.username}";
     packages = with pkgs; [
-      custom.st
-      discord
       gcc
       libqalculate # Calculator
+      nerd-fonts.victor-mono
       steam
+      typst
+      typstyle
       unimatrix # Simulate display from matrix
-      vencord
+      vesktop
     ];
     sessionVariables = {
-      BROWSER = "brave";
-      EDITOR = "hx";
-      VISUAL = "hx";
+      BROWSER = "${lib.getExe pkgs.brave}";
+      EDITOR = "${lib.getExe pkgs.inputs.helix}";
+      VISUAL = "${lib.getExe pkgs.inputs.helix}";
     };
     stateVersion = "25.05";
   };

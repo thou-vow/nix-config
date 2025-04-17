@@ -470,7 +470,7 @@
       "v" = "exit_select_mode";
     };
 in {
-  config = lib.mkIf config.mods.home.terminal.helix.enable {
+  config = lib.mkIf config.mods.home.cli.helix.enable {
     programs.helix.settings.keys = lib.recursiveUpdate (import ./cleared-default-bindings.nix) {
       inherit normal insert select;
     };

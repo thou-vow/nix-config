@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: {
-  config = lib.mkIf config.mods.home.terminal.helix.enable {
+  config = lib.mkIf config.mods.home.cli.helix.enable {
     programs.helix = {
       languages = {
         language = let
@@ -27,6 +27,12 @@
             indent = commonIndent;
             language-servers = ["nixd"];
           }
+          {
+            name = "typst";
+            indent = commonIndent;
+            formatter.command = "${lib.getExe pkgs.typst-fmt}";
+            language-servers = ["tinymist"];
+          }
         ];
 
         language-server = {
@@ -36,6 +42,13 @@
             config.nixd = {
               formatting.command = [(lib.getExe pkgs.alejandra)];
               nixpkgs.expr = ''import (builtins.getFlake "${inputs.self}").inputs.nixpkgs {}'';
+            };
+          };
+          tinymist = {
+            command = "${lib.getExe pkgs.tinymist}";
+            config = {
+              exportPdf = "onSave";
+              formatterMode = "typstyle";
             };
           };
         };
