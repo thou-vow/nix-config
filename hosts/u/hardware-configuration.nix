@@ -36,9 +36,9 @@
     };
   };
 
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
   swapDevices = [
     {device = "/dev/disk/by-label/U-SWAP";}
   ];
-
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

@@ -62,6 +62,7 @@
   languageMinorMode = {
     "r" = "rename_symbol";
     "f" = "format_selections";
+    "S-f" = ":format";
     "x" = "completion";
     "c" = "toggle_line_comments";
     "S-c" = "toggle_block_comments";

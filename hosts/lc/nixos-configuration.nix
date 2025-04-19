@@ -20,34 +20,24 @@
     };
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     kernelParams = [
-      "ath9k_core.nohwcrypt=1"
       "mitigations=off"
-      "pcie_aspm=off"
       "zswap.enabled=1"
     ];
     loader = {
-      efi.efiSysMountPoint = "/boot/efi";
-      grub = {
-        enable = true;
-        device = "nodev";
-        efiInstallAsRemovable = true;
-        efiSupport = true;
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot/efi";
       };
+      grub.enable = true;
     };
   };
-
-  console.useXkbConfig = true;
 
   environment = {
     systemPackages = with pkgs; [
       btop
       duf
-      git
       pciutils
-      snake4
       sudo
-      vim
-      wget
       xclip
     ];
   };
@@ -77,7 +67,7 @@
   };
 
   networking = {
-    hostName = "u";
+    hostName = "lc";
     nameservers = [
       "1.0.0.1"
       "1.1.1.1"
@@ -108,19 +98,15 @@
 
   programs = {
     appimage.enable = true;
+    git.enable = true;
     firefox.enable = true;
   };
-
-  security.rtkit.enable = true;
 
   services = {
     flatpak.enable = true;
     libinput = {
       enable = true;
-      touchpad = {
-        clickMethod = "clickfinger";
-        naturalScrolling = true;
-      };
+      touchpad.naturalScrolling = true;
     };
     openssh.enable = true;
     pipewire = {
@@ -139,10 +125,7 @@
       autoRepeatInterval = 20;
       desktopManager.cinnamon.enable = true;
       displayManager.lightdm.enable = true;
-      xkb = {
-        layout = "br,us";
-        options = "caps:escape_shifted_capslock,grp:win_space_toggle";
-      };
+      xkb.layout = "br";
     };
   };
 
@@ -150,13 +133,25 @@
 
   time.timeZone = "America/Sao_Paulo";
 
-  users.users.thou = {
-    isNormalUser = true;
-    description = "thou";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
-    shell = "${lib.getExe pkgs.nushell}";
+  users.users = {
+    lc = {
+      isNormalUser = true;
+      description = "lc";
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+      ];
+      packages = with pkgs; [
+        gimp
+        gnome-gnome-text-editor
+        libreoffice-bin
+        melonDS
+        mgba
+        steam
+        ppsspp
+        vesktop
+      ];
+      shell = "${lib.getExe pkgs.nushell}";
+    };
   };
 }

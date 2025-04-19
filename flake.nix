@@ -2,12 +2,10 @@
   description = "Nix environments for thou";
 
   nixConfig = {
-    substituters = [
-      "https://cache.nixos.org"
+    extra-substituters = [
       "https://helix.cachix.org"
     ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    extra-trusted-public-keys = [
       "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
     ];
   };
@@ -61,10 +59,10 @@
   in {
     formatter = nixpkgs.lib.genAttrs systems (system: eachPkgs.${system}.alejandra);
 
-    # NixOS
     nixosConfigurations = {
       "u" = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
+
         modules = [
           ./hosts/u/nixos-configuration.nix
           {
@@ -78,6 +76,19 @@
         pkgs = eachPkgs."x86_64-linux";
         extraSpecialArgs = {inherit inputs;};
         modules = [./hosts/u/thou/home-configuration.nix];
+      };
+    };
+
+    nixosConfigurations = {
+      "lc" = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
+
+        modules = [
+          ./hosts/lc/nixos-configuration.nix
+          {
+            nixpkgs.pkgs = eachPkgs."x86_64-linux";
+          }
+        ];
       };
     };
   };

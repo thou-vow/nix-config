@@ -22,16 +22,20 @@
     };
   };
 
-  fonts.fontconfig.enable = true;
-
   home = {
     username = "thou";
     homeDirectory = "/home/${config.home.username}";
     packages = with pkgs; [
+      azahar
       gcc
+      graalvmPackages.graalvm-oracle
       libqalculate # Calculator
+      melonDS
+      mgba
       nerd-fonts.victor-mono
       steam
+      ppsspp
+      prismlauncher
       typst
       typstyle
       unimatrix # Simulate display from matrix
@@ -63,6 +67,4 @@
     };
     home-manager.enable = true;
   };
-
-  systemd.user.startServices = "sd-switch";
 }
