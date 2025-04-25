@@ -11,6 +11,7 @@
 
   mods.home = {
     gui = {
+      prismlauncher.enable = true;
       st.enable = true;
     };
     cli = {
@@ -26,20 +27,16 @@
     username = "thou";
     homeDirectory = "/home/${config.home.username}";
     packages = with pkgs; [
-      azahar
       gcc
-      graalvmPackages.graalvm-oracle
       libqalculate # Calculator
-      melonDS
-      mgba
       nerd-fonts.victor-mono
       steam
-      ppsspp
       prismlauncher
       typst
       typstyle
       unimatrix # Simulate display from matrix
       vesktop
+      custom.graalvm-oracle_21
     ];
     sessionVariables = {
       BROWSER = "${lib.getExe pkgs.brave}";

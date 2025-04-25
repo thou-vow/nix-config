@@ -1,5 +1,6 @@
 {...}: {
   imports = [
-    ./st/st.nix
+    ./prismlauncher.nix
+    ./st.nix
   ];
 }

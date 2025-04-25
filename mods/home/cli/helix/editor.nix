@@ -7,6 +7,7 @@
     programs.helix.settings.editor = {
       mouse = false;
       bufferline = "always";
+      default-yank-register = "+";
       cursorcolumn = true;
       cursorline = true;
       line-number = "relative";

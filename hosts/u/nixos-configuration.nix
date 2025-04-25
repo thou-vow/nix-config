@@ -93,22 +93,20 @@
     package = pkgs.nixVersions.latest;
 
     nixPath = lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
-    registry =
-      inputs
-      |> lib.filterAttrs (_: value: lib.isType "flake" value)
-      |> lib.mapAttrs (_: value: {flake = value;});
+    registry = lib.mapAttrs (_: value: {flake = value;}) (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
 
     settings = {
       auto-optimise-store = true;
       experimental-features = ["flakes" "nix-command" "pipe-operators"];
       flake-registry = "";
-      trusted-users = ["root" "@wheel"];
+      trusted-users = ["@wheel"];
     };
   };
 
   programs = {
     appimage.enable = true;
     firefox.enable = true;
+    nh.enable = true;
   };
 
   security.rtkit.enable = true;

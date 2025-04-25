@@ -61,8 +61,6 @@
   };
   languageMinorMode = {
     "r" = "rename_symbol";
-    "f" = "format_selections";
-    "S-f" = ":format";
     "x" = "completion";
     "c" = "toggle_line_comments";
     "S-c" = "toggle_block_comments";
@@ -91,6 +89,7 @@
     "o" = ":buffer-close-others";
     "S-o" = ":buffer-close-others!";
     "s" = "goto_file";
+    "f" = ":format";
     "h" = "goto_previous_buffer";
     "l" = "goto_next_buffer";
     "z" = "suspend";
@@ -185,6 +184,7 @@
   selectionMinorMode = {
     "q" = "@sj<S-w>";
     "w" = "@sjw";
+    "f" = "format_selections";
     "h" = "extend_to_first_nonwhitespace";
     "S-h" = "extend_to_line_start";
     "j" = "select_textobject_inner";

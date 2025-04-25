@@ -29,7 +29,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Terminal
+    # Window manager, terminal emulator
     suckless.url = "github:thou-vow/suckless";
   };
 
@@ -76,19 +76,6 @@
         pkgs = eachPkgs."x86_64-linux";
         extraSpecialArgs = {inherit inputs;};
         modules = [./hosts/u/thou/home-configuration.nix];
-      };
-    };
-
-    nixosConfigurations = {
-      "lc" = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
-
-        modules = [
-          ./hosts/lc/nixos-configuration.nix
-          {
-            nixpkgs.pkgs = eachPkgs."x86_64-linux";
-          }
-        ];
       };
     };
   };
