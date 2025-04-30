@@ -10,7 +10,7 @@
     home.packages = [
       (pkgs.custom.st.overrideAttrs (oldAttrs: rec {
         configFile = pkgs.writeText "config.h" /* c */ ''
-          static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
+          static char *font = "VictorMono Nerd Font Mono:pixelsize=12:antialias=true:autohint=true";
           static int borderpx = 0;
           static int anysize_halign = 50;
           static int anysize_valign = 50;

@@ -52,8 +52,8 @@
     brave.enable = true;
     helix = {
       languages.language-server.nixd.config.nixd.options = {
-        "nixos".expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options'';
-        "home-manager".expr = ''(builtins.getFlake "${inputs.self}").homeConfigurations."thou@u".options'';
+        "nixos".expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."cendrillon".options'';
+        "home-manager".expr = ''(builtins.getFlake "${inputs.self}").homeConfigurations."thou@cendrillon".options'';
       };
       settings.editor.statusline = {
         mode = {

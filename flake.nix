@@ -19,6 +19,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-wsl.url = "github:nix-community/NixOS-WSL";
 
     # IDE
     helix.url = "github:helix-editor/helix";
@@ -33,6 +34,7 @@
   outputs = {
     nixpkgs,
     home-manager,
+    nixos-wsl,
     ...
   } @ inputs: let
     systems = [
@@ -75,6 +77,27 @@
         pkgs = eachPkgs."x86_64-linux";
         extraSpecialArgs = {inherit inputs;};
         modules = [./hosts/u/thou/home-configuration.nix];
+      };
+    };
+
+    nixosConfigurations = {
+      "cendrillon" = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
+
+        modules = [
+          ./hosts/cendrillon/nixos-wsl-configuration.nix
+          {
+            nixpkgs.pkgs = eachPkgs."x86_64-linux";
+          }
+          nixos-wsl.nixosModules.default
+        ];
+      };
+    };
+    homeConfigurations = {
+      "thou@cendrillon" = home-manager.lib.homeManagerConfiguration {
+        pkgs = eachPkgs."x86_64-linux";
+        extraSpecialArgs = {inherit inputs;};
+        modules = [./hosts/cendrillon/thou/home-configuration.nix];
       };
     };
   };

@@ -6,40 +6,10 @@
   ...
 }: {
   imports = [
-    ./hardware-configuration.nix
     ../../mods/nixos/nixos.nix
   ];
 
-  boot = {
-    tmp.cleanOnBoot = true;
-    kernel.sysctl = {
-      "vm.swappiness" = 5;
-      "vm.vfs_cache_pressure" = 50;
-      "vm.dirty_background_bytes" = 1677216;
-      "vm.dirty_bytes" = 50331648;
-    };
-    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod;
-    kernelParams = [
-      "ath9k_core.nohwcrypt=1"
-      "mitigations=off"
-      "pcie_aspm=off"
-      "zswap.enabled=1"
-      "zswap.compressor=zstd"
-      "zswap.max_pool_percent=25"
-      "zswap.zpool=zsmalloc"
-    ];
-    loader = {
-      efi.efiSysMountPoint = "/boot/efi";
-      grub = {
-        enable = true;
-        device = "nodev";
-        efiInstallAsRemovable = true;
-        efiSupport = true;
-      };
-    };
-  };
-
-  console.useXkbConfig = true;
+  boot.tmp.cleanOnBoot = true;
 
   environment = {
     systemPackages = with pkgs; [
@@ -79,18 +49,7 @@
     };
   };
 
-  networking = {
-    hostName = "u";
-    nameservers = [
-      "1.0.0.1"
-      "1.1.1.1"
-    ];
-    networkmanager = {
-      enable = true;
-      dns = "none";
-      wifi.powersave = false;
-    };
-  };
+  networking.hostName = "u";
 
   nix = {
     package = pkgs.nixVersions.git;
@@ -115,14 +74,6 @@
   security.rtkit.enable = true;
 
   services = {
-    flatpak.enable = true;
-    libinput = {
-      enable = true;
-      touchpad = {
-        clickMethod = "clickfinger";
-        naturalScrolling = true;
-      };
-    };
     openssh.enable = true;
     pipewire = {
       enable = true;
@@ -134,17 +85,7 @@
     };
     printing.enable = true;
     pulseaudio.enable = false;
-    xserver = {
-      enable = true;
-      autoRepeatDelay = 200;
-      autoRepeatInterval = 20;
-      desktopManager.cinnamon.enable = true;
-      displayManager.lightdm.enable = true;
-      xkb = {
-        layout = "br,us";
-        options = "caps:escape_shifted_capslock,grp:win_space_toggle";
-      };
-    };
+    xserver.enable = true;
   };
 
   system.stateVersion = "25.05";
@@ -159,4 +100,6 @@
       "wheel"
     ];
   };
+
+  wsl.enable = true;
 }
