@@ -8,7 +8,6 @@
 
   config = lib.mkIf config.mods.home.cli.tmux.enable {
     home = {
-      # Installing it just as a package because it's home-manager configuration is unnecessary
       packages = with pkgs; [tmux];
       sessionVariables = {
         TMUX_SCROLLBACK_PATH = "/tmp/tmux-scrollback.txt";

@@ -13,17 +13,20 @@
   boot = {
     tmp.cleanOnBoot = true;
     kernel.sysctl = {
-      "vm.swappiness" = 1;
+      "vm.swappiness" = 5;
       "vm.vfs_cache_pressure" = 50;
       "vm.dirty_background_bytes" = 1677216;
       "vm.dirty_bytes" = 50331648;
     };
-    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod;
     kernelParams = [
       "ath9k_core.nohwcrypt=1"
       "mitigations=off"
       "pcie_aspm=off"
       "zswap.enabled=1"
+      "zswap.compressor=zstd"
+      "zswap.max_pool_percent=25"
+      "zswap.zpool=zsmalloc"
     ];
     loader = {
       efi.efiSysMountPoint = "/boot/efi";
@@ -90,7 +93,7 @@
   };
 
   nix = {
-    package = pkgs.nixVersions.latest;
+    package = pkgs.nixVersions.git;
 
     nixPath = lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
     registry = lib.mapAttrs (_: value: {flake = value;}) (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
@@ -155,6 +158,5 @@
       "networkmanager"
       "wheel"
     ];
-    shell = "${lib.getExe pkgs.nushell}";
   };
 }

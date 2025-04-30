@@ -28,9 +28,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Window manager, terminal emulator
-    suckless.url = "github:thou-vow/suckless";
   };
 
   outputs = {
@@ -46,7 +43,7 @@
       "x86_64-linux"
     ];
 
-    overlays = import ./overlays/overlays.nix {inherit inputs;};
+    overlays = import ./overlays.nix {inherit inputs;};
 
     # Future plans: make overlays and nixpkgs config host specific
     eachPkgs = nixpkgs.lib.genAttrs systems (
@@ -58,6 +55,8 @@
     );
   in {
     formatter = nixpkgs.lib.genAttrs systems (system: eachPkgs.${system}.alejandra);
+
+    packages = nixpkgs.lib.genAttrs systems (system: import ./packages/packages.nix {pkgs = eachPkgs.${system};});
 
     nixosConfigurations = {
       "u" = nixpkgs.lib.nixosSystem {
@@ -72,7 +71,7 @@
       };
     };
     homeConfigurations = {
-      "u@thou" = home-manager.lib.homeManagerConfiguration {
+      "thou@u" = home-manager.lib.homeManagerConfiguration {
         pkgs = eachPkgs."x86_64-linux";
         extraSpecialArgs = {inherit inputs;};
         modules = [./hosts/u/thou/home-configuration.nix];

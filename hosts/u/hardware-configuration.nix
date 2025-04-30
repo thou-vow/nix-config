@@ -25,6 +25,12 @@
     "/" = {
       device = "/dev/disk/by-label/U";
       fsType = "ext4";
+      options = [
+        "commit=60"
+        "data=journal"
+        "journal_async_commit"
+        "noatime"
+      ];
     };
     "/boot/efi" = {
       device = "/dev/disk/by-label/U-EFI";

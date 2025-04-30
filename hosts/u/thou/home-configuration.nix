@@ -27,14 +27,14 @@
     username = "thou";
     homeDirectory = "/home/${config.home.username}";
     packages = with pkgs; [
+      bc # Calculator
       gcc
-      libqalculate # Calculator
       nerd-fonts.victor-mono
       steam
       prismlauncher
       typst
       typstyle
-      unimatrix # Simulate display from matrix
+      unimatrix
       vesktop
       custom.graalvm-oracle_21
     ];
@@ -48,6 +48,7 @@
 
   programs = {
     alacritty.enable = true;
+    bash.enable = true;
     brave.enable = true;
     helix = {
       languages.language-server.nixd.config.nixd.options = {
