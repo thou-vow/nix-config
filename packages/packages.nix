@@ -19,12 +19,23 @@
     src = pkgs.fetchFromGitHub {
       owner = "sergei-grechanik";
       repo = "st-graphics";
-      rev = "e5b4ef7160cd2810786d86afbacc857e9363ab6b";
-      hash = "sha256-bSaKvWBCiUAwTBq4ZUMRv/eYB+JSsVqJ7tpUPI9pcvQ=";
+      rev = "2d7148e56e9920efc98aef1e714dbf0572486b99";
+      hash = "sha256-oHU2LSc3qg502IBcsqbhHgplVLW/KT04ZVKdhDB5moM=";
     };
 
     patches = [
       (pkgs.fetchpatch {
+        # Alpha
+        url = "https://github.com/sergei-grechanik/st-graphics/commit/5cfb80edcf8b15449cab08106f1ff14d03b02c48.diff";
+        hash = "sha256-E/Kn81gsaBE7jCsru3hr5PwG/WiU+jtBe0Q3Q1o3uFE=";
+      })
+      (pkgs.fetchpatch {
+        # Boxdraw
+        url = "https://github.com/sergei-grechanik/st-graphics/commit/1d7c0db479e4c2173e0082060b671068a68cf9cb.diff";
+        hash = "sha256-UThsGaJwZKXUAjjvctvji1cQDGq/dPhUCwfLL5TNUAQ=";
+      })
+      (pkgs.fetchpatch {
+        # Xresources with reload signal
         url = "https://st.suckless.org/patches/xresources-with-reload-signal/st-xresources-signal-reloading-20220407-ef05519.diff";
         hash = "sha256-og6cJaMfn7zHfQ0xt6NKhuDNY5VK2CjzqJDJYsT5lrk=";
       })
@@ -33,7 +44,6 @@
     buildInputs =
       oldAttrs.buildInputs
       ++ (with pkgs; [
-        harfbuzz
         imlib2
         zlib
       ]);

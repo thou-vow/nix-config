@@ -41,11 +41,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1745933300,
-        "narHash": "sha256-BJpxqZar6vrmv1MtZIjmBa7x+0HEP8kmYeFejz7m2uc=",
+        "lastModified": 1746132885,
+        "narHash": "sha256-naxkk3EcVXP8gPeG/mQq2i37ITvAZs1AKw7K7u5DXuE=",
         "owner": "helix-editor",
         "repo": "helix",
-        "rev": "1c32fb2d4df3f06f96ca33db7d9f9b15297c7f8d",
+        "rev": "aa3fad84ef136b482eb5f84abbf109f25af9700a",
         "type": "github"
       },
       "original": {
@@ -61,11 +61,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1745977079,
-        "narHash": "sha256-eEOmrgpenIs+JwuCdqgEYly6sdz8vbCQVgvo8dk3DZM=",
+        "lastModified": 1746134275,
+        "narHash": "sha256-sxfY7TIP59o2hcueanoRAtg833PiNroZkQDwlKJxGvs=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "84d262115e10ad321ef01cd85903d0f5c3ec113f",
+        "rev": "015f1913109d44c36e683b55f0e47e283b383caa",
         "type": "github"
       },
       "original": {
@@ -111,31 +111,15 @@
     },
     "nixpkgs-edge": {
       "locked": {
-        "lastModified": 1745980825,
-        "narHash": "sha256-/7JkWD30j07Gzjz7GbpQwFQPTbaxaNAfSeB8spZe2Yc=",
+        "lastModified": 1746135973,
+        "narHash": "sha256-MIC0EwAHJx/+1bskDliQxiITizTHfd+vDcVPNKy0+II=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c00afdff9de50375474f1012824904b2344d49b1",
+        "rev": "b257202028223aff9e1f65a7b04c787916cb4a8d",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-stable": {
-      "locked": {
-        "lastModified": 1745868005,
-        "narHash": "sha256-hZScOyQphT4RUmSEJX+2OxjIlGgLwSd8iW1LNtAWIOs=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "330d0a4167924b43f31cc9406df363f71b768a02",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-24.11",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -179,7 +163,6 @@
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-edge": "nixpkgs-edge",
-        "nixpkgs-stable": "nixpkgs-stable",
         "sops-nix": "sops-nix"
       }
     },
