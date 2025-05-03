@@ -18,7 +18,7 @@
       "vm.dirty_background_bytes" = 1677216;
       "vm.dirty_bytes" = 50331648;
     };
-    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod;
+    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_latest;
     kernelParams = [
       "ath9k_core.nohwcrypt=1"
       "mitigations=off"

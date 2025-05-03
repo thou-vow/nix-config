@@ -31,12 +31,8 @@
       gcc
       nerd-fonts.victor-mono
       steam
-      prismlauncher
-      typst
-      typstyle
       unimatrix
       vesktop
-      custom.graalvm-oracle_21
     ];
     sessionVariables = {
       BROWSER = lib.getExe pkgs.brave;
@@ -47,7 +43,6 @@
   };
 
   programs = {
-    alacritty.enable = true;
     bash.enable = true;
     brave.enable = true;
     helix = {

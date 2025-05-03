@@ -27,16 +27,17 @@
     username = "thou";
     homeDirectory = "/home/${config.home.username}";
     packages = with pkgs; [
+      alacritty
       bc
       gcc
       nerd-fonts.victor-mono
       steam
-      prismlauncher
       typst
       typstyle
       unimatrix
       vesktop
       custom.graalvm-oracle_21
+      nix-gaming.wine-ge
     ];
     sessionVariables = {
       BROWSER = lib.getExe pkgs.brave;
@@ -47,7 +48,6 @@
   };
 
   programs = {
-    alacritty.enable = true;
     bash.enable = true;
     brave.enable = true;
     helix = {
