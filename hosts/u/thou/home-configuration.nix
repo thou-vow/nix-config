@@ -28,21 +28,25 @@
     homeDirectory = "/home/${config.home.username}";
     packages = with pkgs; [
       alacritty
+      azahar
       bc
       gcc
+      gimp
+      graalvm-oracle_21
+      krita
+      lutris
       nerd-fonts.victor-mono
       steam
       typst
       typstyle
       unimatrix
       vesktop
-      custom.graalvm-oracle_21
-      nix-gaming.wine-ge
+      inputs.nix-gaming.packages.${pkgs.system}.wine-ge
     ];
     sessionVariables = {
       BROWSER = lib.getExe pkgs.brave;
-      EDITOR = lib.getExe pkgs.inputs.helix;
-      VISUAL = lib.getExe pkgs.inputs.helix;
+      EDITOR = lib.getExe pkgs.helix;
+      VISUAL = lib.getExe pkgs.helix;
     };
     stateVersion = "25.05";
   };

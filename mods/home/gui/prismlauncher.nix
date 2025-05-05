@@ -11,6 +11,6 @@
       prismlauncher
     ];
 
-    # home.file.".store-aliases/graalvm-oracle_21".source = config.lib.file.mkOutOfStoreSymlink "${pkgs.custom.graalvm-oracle_21}";
+    # home.file.".store-aliases/graalvm-oracle_21".source = config.lib.file.mkOutOfStoreSymlink "${pkgs.graalvm-oracle_21}";
   };
 }

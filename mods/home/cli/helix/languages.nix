@@ -11,13 +11,12 @@
         language = let
           commonIndent = {
             tab-width = 2;
-            unit = "	";
+            unit = " ";
           };
         in
           [
             {
               name = "json";
-              formatter.command = lib.getExe pkgs.jsonfmt;
               indent = commonIndent;
             }
             {

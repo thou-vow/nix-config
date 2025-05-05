@@ -16,6 +16,11 @@
         "uas"
         "sd_mod"
         "rtsx_usb_sdmmc"
+        "ehci_pci"
+        "usb_storage"
+        "usbhid"
+        "sr_mod"
+        "sdhci_pci"
       ];
     };
     kernelModules = ["kvm-intel"];
@@ -23,7 +28,7 @@
 
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-label/U";
+      device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part2";
       fsType = "ext4";
       options = [
         "commit=60"
@@ -33,7 +38,7 @@
       ];
     };
     "/boot/efi" = {
-      device = "/dev/disk/by-label/U-EFI";
+      device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part1";
       fsType = "vfat";
       options = [
         "fmask=0077"
@@ -45,6 +50,6 @@
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   swapDevices = [
-    {device = "/dev/disk/by-label/U-SWAP";}
+    {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}
   ];
 }

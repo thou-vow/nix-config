@@ -36,8 +36,8 @@
     ];
     sessionVariables = {
       BROWSER = lib.getExe pkgs.brave;
-      EDITOR = lib.getExe pkgs.inputs.helix;
-      VISUAL = lib.getExe pkgs.inputs.helix;
+      EDITOR = lib.getExe pkgs.helix;
+      VISUAL = lib.getExe pkgs.helix;
     };
     stateVersion = "25.05";
   };

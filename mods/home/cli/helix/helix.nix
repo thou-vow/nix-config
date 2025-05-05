@@ -1,7 +1,7 @@
 {
   config,
+  inputs,
   lib,
-  pkgs,
   ...
 }: {
   imports = [
@@ -15,9 +15,14 @@
   };
 
   config = lib.mkIf config.mods.home.cli.helix.enable {
+    nixpkgs.overlays = [
+      (final: prev: {
+        helix = inputs.helix.packages.${final.system}.default;
+      })
+    ];
+
     programs.helix = {
       enable = true;
-      package = pkgs.inputs.helix;
       settings.theme = "theme";
     };
 

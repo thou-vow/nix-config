@@ -32,7 +32,7 @@
       efi.efiSysMountPoint = "/boot/efi";
       grub = {
         enable = true;
-        device = "nodev";
+        device = "/dev/disk/by-id/wwn-0x500003988168a3bd";
         efiInstallAsRemovable = true;
         efiSupport = true;
       };
@@ -46,6 +46,7 @@
       btop
       duf
       git
+      parted
       pciutils
       snake4
       sudo
