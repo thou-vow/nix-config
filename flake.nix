@@ -2,24 +2,20 @@
   description = "Nix environments for thou";
 
   inputs = {
-    # Nix packages and environment
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-edge.url = "github:nixos/nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-wsl.url = "github:nix-community/NixOS-WSL";
 
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # IDE
     helix.url = "github:helix-editor/helix";
 
-    # Secrets
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -40,7 +36,6 @@
   outputs = {
     nixpkgs,
     home-manager,
-    nixos-wsl,
     ...
   } @ inputs: let
     systems = [
@@ -62,13 +57,14 @@
           config.allowUnfree = true;
         }
     );
-  in rec {
+  in {
+    packages = nixpkgs.lib.genAttrs systems (system: import ./packages/packages.nix {pkgs = eachPkgs.${system};});
+
     formatter = nixpkgs.lib.genAttrs systems (system: eachPkgs.${system}.alejandra);
 
     nixosConfigurations = {
       "u" = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
-
         modules = [
           ./hosts/u/nixos-configuration.nix
           {
@@ -79,30 +75,9 @@
     };
     homeConfigurations = {
       "thou@u" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixosConfigurations."u".pkgs; 
+        pkgs = eachPkgs."x86_64-linux";
         extraSpecialArgs = {inherit inputs;};
         modules = [./hosts/u/thou/home-configuration.nix];
-      };
-    };
-
-    nixosConfigurations = {
-      "cendrillon" = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
-
-        modules = [
-          ./hosts/cendrillon/nixos-wsl-configuration.nix
-          {
-            nixpkgs.pkgs = eachPkgs."x86_64-linux";
-          }
-          nixos-wsl.nixosModules.default
-        ];
-      };
-    };
-    homeConfigurations = {
-      "thou@cendrillon" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixosConfigurations."cendrillon".pkgs; 
-        extraSpecialArgs = {inherit inputs;};
-        modules = [./hosts/cendrillon/thou/home-configuration.nix];
       };
     };
   };

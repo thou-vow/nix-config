@@ -31,6 +31,11 @@
               language-servers = ["nixd"];
             }
             {
+              name = "typescript";
+              indent = commonIndent;
+              language-servers = ["typescript-language-server"];
+            }
+            {
               name = "typst";
               indent = commonIndent;
               formatter.command = lib.getExe pkgs.typst-fmt;
@@ -60,6 +65,9 @@
               exportPdf = "onSave";
               formatterMode = "typstyle";
             };
+          };
+          typescript-language-server = {
+            command = lib.getExe pkgs.typescript-language-server;
           };
         };
       };

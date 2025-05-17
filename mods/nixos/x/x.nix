@@ -1,0 +1,5 @@
+{...}: {
+  imports = [
+    ./dwm/dwm.nix
+  ];
+}

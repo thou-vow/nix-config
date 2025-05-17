@@ -1,4 +1,22 @@
 {pkgs, ...}: {
+  fhs = let
+    base = pkgs.appimageTools.defaultFhsEnvArgs;
+  in
+    pkgs.buildFHSEnv (base
+      // {
+        name = "fhs";
+        targetPkgs = pkgs:
+          (base.targetPkgs pkgs)
+          ++ (
+            with pkgs; [
+              pkg-config
+              ncurses
+            ]
+          );
+        profile = "export FHS=1";
+        runScript = "bash";
+        extraOutputsToInstall = ["dev"];
+      });
   graalvm-oracle_21 = let
     src = {
       "x86_64-linux" = pkgs.fetchurl {
@@ -9,7 +27,7 @@
       };
     };
   in
-    pkgs.graalvmPackages.graalvm-oracle.overrideAttrs (oldAttrs: {
+    pkgs.graalvmPackages.graalvm-oracle.overrideAttrs (prevAttrs: {
       version = "21";
       src = src.${pkgs.system};
     });

@@ -6,9 +6,16 @@
   ...
 }: {
   imports = [
-    ./hardware-configuration.nix
     ../../mods/nixos/nixos.nix
+    ./hardware-configuration.nix
+    ./attuned-specialisation.nix
   ];
+
+  mods.nixos = {
+    x = {
+      dwm.enable = true;
+    };
+  };
 
   boot = {
     tmp.cleanOnBoot = true;
@@ -24,8 +31,9 @@
       "mitigations=off"
       "pcie_aspm=off"
       "zswap.enabled=1"
+      "zswap.accept_threshold_percent=70"
       "zswap.compressor=zstd"
-      "zswap.max_pool_percent=25"
+      "zswap.max_pool_percent=50"
       "zswap.zpool=zsmalloc"
     ];
     loader = {
@@ -43,11 +51,14 @@
 
   environment = {
     systemPackages = with pkgs; [
+      brightnessctl
       btop
       duf
+      fhs
       git
       parted
       pciutils
+      playerctl
       snake4
       sudo
       vim
@@ -103,6 +114,7 @@
       auto-optimise-store = true;
       experimental-features = ["flakes" "nix-command" "pipe-operators"];
       flake-registry = "";
+      system-features = ["gccarch-skylake"];
       trusted-users = ["@wheel"];
     };
   };
@@ -116,7 +128,6 @@
   security.rtkit.enable = true;
 
   services = {
-    flatpak.enable = true;
     libinput = {
       enable = true;
       touchpad = {
@@ -133,14 +144,11 @@
       };
       pulse.enable = true;
     };
-    printing.enable = true;
     pulseaudio.enable = false;
     xserver = {
       enable = true;
       autoRepeatDelay = 200;
       autoRepeatInterval = 20;
-      desktopManager.cinnamon.enable = true;
-      displayManager.lightdm.enable = true;
       xkb = {
         layout = "br,us";
         options = "caps:escape_shifted_capslock,grp:win_space_toggle";
@@ -152,12 +160,14 @@
 
   time.timeZone = "America/Sao_Paulo";
 
-  users.users.thou = {
-    isNormalUser = true;
-    description = "thou";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
+  users.users = {
+    "thou" = {
+      isNormalUser = true;
+      description = "thou";
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+      ];
+    };
   };
 }

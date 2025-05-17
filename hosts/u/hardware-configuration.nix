@@ -37,7 +37,7 @@
         "noatime"
       ];
     };
-    "/boot/efi" = {
+    ${config.boot.loader.efi.efiSysMountPoint} = {
       device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part1";
       fsType = "vfat";
       options = [

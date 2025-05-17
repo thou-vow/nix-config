@@ -30,22 +30,28 @@
       alacritty
       azahar
       bc
+      flatpak
       gcc
       gimp
       graalvm-oracle_21
       krita
       lutris
       nerd-fonts.victor-mono
+      qbittorrent
       steam
       typst
       typstyle
       unimatrix
       vesktop
-      inputs.nix-gaming.packages.${pkgs.system}.wine-ge
+      # inputs.nix-gaming.packages.${pkgs.system}.wine-ge
     ];
     sessionVariables = {
       BROWSER = lib.getExe pkgs.brave;
       EDITOR = lib.getExe pkgs.helix;
+      EXPLORER = "";
+      QUICKAPPS = "";
+      PRINTSCREEN = "${lib.getExe pkgs.flameshot} gui";
+      TERMINAL = lib.getExe pkgs.st;
       VISUAL = lib.getExe pkgs.helix;
     };
     stateVersion = "25.05";
@@ -59,14 +65,14 @@
         "nixos".expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options'';
         "home-manager".expr = ''(builtins.getFlake "${inputs.self}").homeConfigurations."thou@u".options'';
       };
-      settings.editor.statusline = {
-        mode = {
-          normal = "NORMAL";
-          insert = "INSERT";
-          select = "SELECT";
-        };
+      settings.editor.statusline.mode = {
+        normal = "NORMAL";
+        insert = "INSERT";
+        select = "SELECT";
       };
     };
     home-manager.enable = true;
   };
+
+  services.flameshot.enable = true;
 }

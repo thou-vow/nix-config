@@ -41,7 +41,7 @@
             #define MODKEY Mod1Mask
             #define TERMMOD (ControlMask|ShiftMask)
 
-            static char *font = "VictorMono Nerd Font Mono:pixelsize=9:antialias=true:autohint=true";
+            static char *font = "VictorMono Nerd Font Mono:size=9:antialias=true:autohint=true:weight=demibold";
             static int borderpx = 0;
             static int anysize_halign = 50;
             static int anysize_valign = 50;

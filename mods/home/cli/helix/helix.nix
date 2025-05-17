@@ -23,7 +23,7 @@
 
     programs.helix = {
       enable = true;
-      settings.theme = "theme";
+      settings.theme = "catppuccin_frappe";
     };
 
     xdg.configFile."helix/themes".source =

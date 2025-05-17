@@ -1,0 +1,126 @@
+diff -ruN a/config.def.h b/config.def.h
+--- a/config.def.h	2025-05-09 11:05:14.073072988 -0300
++++ b/config.def.h	2025-05-09 11:12:02.172616883 -0300
+@@ -102,6 +102,10 @@
+ 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+ 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+ 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
++	{ MODKEY,                       XK_Right,  viewnext,       {0} },
++	{ MODKEY,                       XK_Left,   viewprev,       {0} },
++	{ MODKEY|ShiftMask,             XK_Right,  tagtonext,      {0} },
++	{ MODKEY|ShiftMask,             XK_Left,   tagtoprev,      {0} },
+ 	{ MODKEY,                       XK_F5,     xrdb,           {.v = NULL } },
+ 	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
+ 	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
+diff -ruN a/dwm.c b/dwm.c
+--- a/dwm.c	2025-05-09 11:05:14.073505616 -0300
++++ b/dwm.c	2025-05-09 11:14:58.331609870 -0300
+@@ -205,8 +205,10 @@
+ static void monocle(Monitor *m);
+ static void motionnotify(XEvent *e);
+ static void movemouse(const Arg *arg);
++static unsigned int nexttag(void);
+ static Client *nexttiled(Client *c);
+ static void pop(Client *c);
++static unsigned int prevtag(void);
+ static void propertynotify(XEvent *e);
+ static void quit(const Arg *arg);
+ static Monitor *recttomon(int x, int y, int w, int h);
+@@ -231,6 +233,8 @@
+ static void spawn(const Arg *arg);
+ static void tag(const Arg *arg);
+ static void tagmon(const Arg *arg);
++static void tagtonext(const Arg *arg);
++static void tagtoprev(const Arg *arg);
+ static void tile(Monitor *m);
+ static void togglebar(const Arg *arg);
+ static void togglefloating(const Arg *arg);
+@@ -251,6 +255,8 @@
+ static void updatewindowtype(Client *c);
+ static void updatewmhints(Client *c);
+ static void view(const Arg *arg);
++static void viewnext(const Arg *arg);
++static void viewprev(const Arg *arg);
+ static void warp(const Client *c);
+ static Client *wintoclient(Window w);
+ static Monitor *wintomon(Window w);
+@@ -1288,6 +1294,13 @@
+ 	}
+ }
+ 
++unsigned int
++nexttag(void)
++{
++	unsigned int seltag = selmon->tagset[selmon->seltags];
++	return seltag == (1 << (LENGTH(tags) - 1)) ? 1 : seltag << 1;
++}
++
+ Client *
+ nexttiled(Client *c)
+ {
+@@ -1304,6 +1317,13 @@
+ 	arrange(c->mon);
+ }
+ 
++unsigned int
++prevtag(void)
++{
++	unsigned int seltag = selmon->tagset[selmon->seltags];
++	return seltag == 1 ? (1 << (LENGTH(tags) - 1)) : seltag >> 1;
++}
++
+ void
+ propertynotify(XEvent *e)
+ {
+@@ -1833,6 +1853,32 @@
+ }
+ 
+ void
++tagtonext(const Arg *arg)
++{
++	unsigned int tmp;
++
++	if (selmon->sel == NULL)
++		return;
++
++	tmp = nexttag();
++	tag(&(const Arg){.ui = tmp });
++	view(&(const Arg){.ui = tmp });
++}
++
++void
++tagtoprev(const Arg *arg)
++{
++	unsigned int tmp;
++
++	if (selmon->sel == NULL)
++		return;
++
++	tmp = prevtag();
++	tag(&(const Arg){.ui = tmp });
++	view(&(const Arg){.ui = tmp });
++}
++
++void
+ tile(Monitor *m)
+ {
+ 	unsigned int i, n, h, mw, my, ty;
+@@ -2221,6 +2267,18 @@
+ }
+ 
+ void
++viewnext(const Arg *arg)
++{
++	view(&(const Arg){.ui = nexttag()});
++}
++
++void
++viewprev(const Arg *arg)
++{
++	view(&(const Arg){.ui = prevtag()});
++}
++
++void
+ warp(const Client *c)
+ {
+ 	int x, y;
