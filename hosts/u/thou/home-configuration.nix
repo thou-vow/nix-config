@@ -27,23 +27,23 @@
     username = "thou";
     homeDirectory = "/home/${config.home.username}";
     packages = with pkgs; [
-      alacritty
       azahar
+      clock-rs
       bc
-      flatpak
+      discord
       gcc
       gimp
       graalvm-oracle_21
+      kitty
       krita
-      lutris
       nerd-fonts.victor-mono
+      lutris
       qbittorrent
       steam
+      python3
       typst
       typstyle
       unimatrix
-      vesktop
-      # inputs.nix-gaming.packages.${pkgs.system}.wine-ge
     ];
     sessionVariables = {
       BROWSER = lib.getExe pkgs.brave;
@@ -63,7 +63,7 @@
     helix = {
       languages.language-server.nixd.config.nixd.options = {
         "nixos".expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options'';
-        "home-manager".expr = ''(builtins.getFlake "${inputs.self}").homeConfigurations."thou@u".options'';
+        "home-manager".expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options.home-manager.users.type.getSubOptions []'';
       };
       settings.editor.statusline.mode = {
         normal = "NORMAL";
@@ -71,7 +71,6 @@
         select = "SELECT";
       };
     };
-    home-manager.enable = true;
   };
 
   services.flameshot.enable = true;

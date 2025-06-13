@@ -9,17 +9,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-gaming = {
-      url = "github:fufexan/nix-gaming";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    helix.url = "github:helix-editor/helix";
-
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    impermanence.url = "github:nix-community/impermanence";
+
+    helix.url = "github:helix-editor/helix";
   };
 
   nixConfig = {
@@ -38,23 +35,19 @@
     home-manager,
     ...
   } @ inputs: let
-    systems = [
-      "aarch64-darwin"
-      "aarch64-linux"
-      "i686-linux"
-      "x86_64-darwin"
-      "x86_64-linux"
-    ];
-
-    overlays = [
-      (final: prev: import ./packages/packages.nix {pkgs = final;})
-    ];
+    systems = ["x86_64-linux"];
 
     eachPkgs = nixpkgs.lib.genAttrs systems (
       system:
         import nixpkgs {
-          inherit overlays system;
+          inherit system;
           config.allowUnfree = true;
+          overlays = [
+            (final: prev: import ./packages/packages.nix {pkgs = final;})
+            (final: prev: {
+              helix = inputs.helix.packages.${final.system}.helix;
+            })
+          ];
         }
     );
   in {
@@ -64,20 +57,17 @@
 
     nixosConfigurations = {
       "u" = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
+        specialArgs = {
+          flakePath = "/home/thou/nix-in-a-vat";
+          inherit inputs;
+        };
         modules = [
           ./hosts/u/nixos-configuration.nix
           {
             nixpkgs.pkgs = eachPkgs."x86_64-linux";
           }
+          home-manager.nixosModules.home-manager
         ];
-      };
-    };
-    homeConfigurations = {
-      "thou@u" = home-manager.lib.homeManagerConfiguration {
-        pkgs = eachPkgs."x86_64-linux";
-        extraSpecialArgs = {inherit inputs;};
-        modules = [./hosts/u/thou/home-configuration.nix];
       };
     };
   };

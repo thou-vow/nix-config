@@ -1,5 +1,6 @@
 {
   config,
+  flakePath,
   lib,
   pkgs,
   ...
@@ -15,6 +16,6 @@
     };
 
     xdg.configFile."tmux/tmux.conf".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nix/mods/home/cli/tmux/tmux.conf";
+      config.lib.file.mkOutOfStoreSymlink "${flakePath}/mods/home/cli/tmux/tmux.conf";
   };
 }

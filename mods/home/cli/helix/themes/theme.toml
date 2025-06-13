@@ -6,24 +6,24 @@
 "ui.text.focus" = { fg = "magenta0", bg = "surface0" }
 
 [palette]
-cursor = "#f2cddc"
-base0 = ""
-base1 = ""
-base2 = ""
-surface0 = ""
-surface1 = ""
-text0 = ""
-text1 = ""
-text2 = ""
-red0 = ""
-red1 = ""
-yellow0 = ""
-yellow1 = ""
-green0 = ""
-green1 = ""
-cyan0 = ""
-cyan1 = ""
-blue0 = ""
-blue1 = ""
-magenta0 = ""
-magenta1 = ""
+cursor = "#f3dbe5" # 350 50 90
+base0 = "#2e2c3a" # 290 20 20
+base1 = "#393848" # 290 20 25
+base2 = "#454356" # 290 20 30
+surface0 = "#6a6780" # 290 20 45
+surface1 = "#83809b"
+text0 = "#aba8c0" # 290 20 70
+text1 = "#b8b6cb" # 290 20 75
+text2 = "#c6c4d6" # 290 20 80
+red0 = "#f49e9e" # 20 75 75
+red1 = "#dfa9a8" # 20 45 75
+yellow0 = "#e3af53" # 80 75 75
+yellow1 = "#d1b485" # 80 45 75
+green0 = "#80d06e" # 140 75 75
+green1 = "#9ec695" # 140 45 75
+cyan0 = "#51cdd4" # 200 75 75
+cyan1 = "#86c7ca" # 200 45 75
+blue0 = "#96b9f3" # 260 75 75
+blue1 = "#a4bbe0" # 260 45 75
+magenta0 = "#db9de9" # 320 75 75
+magenta1 = "#ceabd6" # 320 45 75

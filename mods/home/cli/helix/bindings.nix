@@ -1,5 +1,6 @@
 {
   config,
+  flakePath,
   lib,
   ...
 }: let
@@ -77,7 +78,7 @@
     "d" = ":toggle-option inline-diagnostics.cursor-line disable hint";
     "x" = ":toggle-option soft-wrap.enable";
     "/" = ":toggle-option search.smart-case";
-    "ret" = ":open ~/nix/";
+    "ret" = ":open ${flakePath}";
   };
   bufferMinorMode = {
     "'" = "goto_last_accessed_file";

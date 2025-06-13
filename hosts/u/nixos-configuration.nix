@@ -1,5 +1,6 @@
 {
   config,
+  flakePath,
   inputs,
   lib,
   pkgs,
@@ -7,8 +8,9 @@
 }: {
   imports = [
     ../../mods/nixos/nixos.nix
-    ./hardware-configuration.nix
-    ./attuned-specialisation.nix
+    ./attuned-profile.nix
+    ./default-profile.nix
+    ./system-layout.nix
   ];
 
   mods.nixos = {
@@ -18,62 +20,58 @@
   };
 
   boot = {
-    tmp.cleanOnBoot = true;
     kernel.sysctl = {
       "vm.swappiness" = 5;
       "vm.vfs_cache_pressure" = 50;
       "vm.dirty_background_bytes" = 1677216;
       "vm.dirty_bytes" = 50331648;
     };
-    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_latest;
     kernelParams = [
-      "ath9k_core.nohwcrypt=1"
       "mitigations=off"
-      "pcie_aspm=off"
       "zswap.enabled=1"
-      "zswap.accept_threshold_percent=70"
-      "zswap.compressor=zstd"
-      "zswap.max_pool_percent=50"
-      "zswap.zpool=zsmalloc"
+      "zswap.accept_threshold_percent=0"
+      "zswap.max_pool_percent=80"
     ];
-    loader = {
-      efi.efiSysMountPoint = "/boot/efi";
-      grub = {
-        enable = true;
-        device = "/dev/disk/by-id/wwn-0x500003988168a3bd";
-        efiInstallAsRemovable = true;
-        efiSupport = true;
-      };
-    };
+    tmp.cleanOnBoot = false;
   };
 
   console.useXkbConfig = true;
 
-  environment = {
-    systemPackages = with pkgs; [
-      brightnessctl
+  environment.systemPackages =
+    (with pkgs; [
       btop
-      duf
       fhs
       git
+      nh
+      nix-output-monitor
+      sudo
+      wget
+      xclip
+    ])
+    ++ (with inputs.nixpkgs.legacyPackages.${pkgs.system}; [
+      brightnessctl
+      duf
       parted
       pciutils
       playerctl
       snake4
-      sudo
       vim
-      wget
-      xclip
-    ];
+    ]);
+
+  hardware = {
+    cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware || config.hardware.enableAllFirmware;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
   };
 
-  hardware.graphics = {
-    enable = true;
-    extraPackages = with pkgs; [
-      intel-compute-runtime
-      intel-media-driver
-      intel-vaapi-driver
-    ];
+  home-manager = {
+    backupFileExtension = "backup";
+    extraSpecialArgs = {inherit flakePath inputs;};
+    useGlobalPkgs = true;
+    users.thou = import ./thou/home-configuration.nix;
+    useUserPackages = true;
   };
 
   i18n = {
@@ -100,19 +98,17 @@
     networkmanager = {
       enable = true;
       dns = "none";
-      wifi.powersave = false;
     };
   };
 
   nix = {
-    package = pkgs.nixVersions.git;
+    package = pkgs.lixPackageSets.latest.lix;
 
     nixPath = lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
     registry = lib.mapAttrs (_: value: {flake = value;}) (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
 
     settings = {
-      auto-optimise-store = true;
-      experimental-features = ["flakes" "nix-command" "pipe-operators"];
+      experimental-features = ["flakes" "nix-command" "pipe-operator"];
       flake-registry = "";
       system-features = ["gccarch-skylake"];
       trusted-users = ["@wheel"];
@@ -122,12 +118,12 @@
   programs = {
     appimage.enable = true;
     firefox.enable = true;
-    nh.enable = true;
   };
 
   security.rtkit.enable = true;
 
   services = {
+    flatpak.enable = true;
     libinput = {
       enable = true;
       touchpad = {
@@ -149,6 +145,8 @@
       enable = true;
       autoRepeatDelay = 200;
       autoRepeatInterval = 20;
+      displayManager.lightdm.enable = true;
+      desktopManager.cinnamon.enable = true;
       xkb = {
         layout = "br,us";
         options = "caps:escape_shifted_capslock,grp:win_space_toggle";
@@ -161,13 +159,14 @@
   time.timeZone = "America/Sao_Paulo";
 
   users.users = {
-    "thou" = {
+    thou = {
       isNormalUser = true;
       description = "thou";
       extraGroups = [
         "networkmanager"
         "wheel"
       ];
+      shell = lib.getExe pkgs.bash;
     };
   };
 }

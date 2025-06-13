@@ -1,5 +1,6 @@
 {
   config,
+  flakePath,
   inputs,
   lib,
   ...
@@ -15,18 +16,12 @@
   };
 
   config = lib.mkIf config.mods.home.cli.helix.enable {
-    nixpkgs.overlays = [
-      (final: prev: {
-        helix = inputs.helix.packages.${final.system}.default;
-      })
-    ];
-
     programs.helix = {
       enable = true;
       settings.theme = "catppuccin_frappe";
     };
 
     xdg.configFile."helix/themes".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nix/mods/home/cli/helix/themes";
+      config.lib.file.mkOutOfStoreSymlink "${flakePath}/mods/home/cli/helix/themes";
   };
 }
