@@ -15,7 +15,7 @@
       "usbhid"
     ];
     loader = {
-      efi.efiSysMountPoint = "/boot/efi";
+      efi.efiSysMountPoint = "/boot";
       grub = {
         enable = true;
         device = "/dev/disk/by-id/wwn-0x500003988168a3bd";
@@ -32,13 +32,18 @@
       directories = [
         "/var/log"
       ];
+      users.thou = {
+        directories = [
+          "nix-in-a-vat"
+        ];
+      };
     };
     "/nix/persist/plain" = {
       enable = true;
       hideMounts = true;
       directories = [
-        "/etc/ssh/ssh_host_ed25519_key"
         "/etc/NetworkManager/system-connections"
+        "/etc/ssh/ssh_host_ed25519_key"
         "/tmp"
         "/var/cache"
         "/var/lib"
@@ -46,7 +51,7 @@
       users.thou = {
         directories = [
           ".cache"
-          ".cargo"
+          ".config/BraveSoftware"
           ".local/share"
           ".local/state"
           ".steam"
@@ -55,6 +60,7 @@
           "Downloads"
           "Music"
           "Pictures"
+          "Projects"
           "Public"
           "Templates"
           "Videos"

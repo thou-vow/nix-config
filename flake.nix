@@ -31,44 +31,88 @@
   };
 
   outputs = {
+    self,
     nixpkgs,
     home-manager,
     ...
   } @ inputs: let
     systems = ["x86_64-linux"];
 
-    eachPkgs = nixpkgs.lib.genAttrs systems (
-      system:
-        import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-          overlays = [
-            (final: prev: import ./packages/packages.nix {pkgs = final;})
-            (final: prev: {
-              helix = inputs.helix.packages.${final.system}.helix;
-            })
-          ];
-        }
-    );
+    overlays = [
+      (final: prev: import ./packages/packages.nix {pkgs = final;})
+    ];
   in {
-    packages = nixpkgs.lib.genAttrs systems (system: import ./packages/packages.nix {pkgs = eachPkgs.${system};});
+    packages = nixpkgs.lib.genAttrs systems (system: import ./packages/packages.nix {pkgs = nixpkgs.legacyPackages.${system};});
 
-    formatter = nixpkgs.lib.genAttrs systems (system: eachPkgs.${system}.alejandra);
+    formatter = nixpkgs.lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
     nixosConfigurations = {
-      "u" = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          flakePath = "/home/thou/nix-in-a-vat";
-          inherit inputs;
+      "u" = let
+        flakePath = "/home/thou/nix-in-a-vat";
+        system = "x86_64-linux";
+      in
+        nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit flakePath inputs;
+          };
+          modules = [
+            home-manager.nixosModules.home-manager
+            ./hosts/u/nixos-configuration.nix
+            (nixosParameters: {
+              config = nixosParameters.lib.mkIf (nixosParameters.config.specialisation != {}) {
+                nixpkgs = {
+                  pkgs = import nixpkgs {
+                    config.allowUnfree = true;
+                    inherit overlays system;
+                  };
+                };
+                home-manager = {
+                  extraSpecialArgs = {inherit flakePath inputs;};
+                  users."thou" = homeParameters: {
+                    _module.args.pkgs = homeParameters.lib.mkForce (import nixpkgs {
+                      config.allowUnfree = true;
+                      overlays = overlays ++ nixosParameters.config.nixpkgs.overlays ++ homeParameters.config.nixpkgs.overlays;
+                      inherit system;
+                    });
+
+                    imports = [./hosts/u/thou/home-configuration.nix];
+                  };
+                };
+              };
+            })
+            (nixosParameters: {
+              specialisation.attuned.configuration = {
+                nixpkgs = {
+                  pkgs = import nixpkgs {
+                    config.allowUnfree = true;
+                    localSystem = {
+                      # gcc.arch = "skylake";
+                      # gcc.tune = "skylake";
+                      inherit system;
+                    };
+                    inherit overlays;
+                  };
+                };
+                home-manager = {
+                  extraSpecialArgs = {inherit flakePath inputs;};
+                  users."thou" = homeParameters: {
+                    _module.args.pkgs = homeParameters.lib.mkForce (import nixpkgs {
+                      config.allowUnfree = true;
+                      localSystem = {
+                        # gcc.arch = "skylake";
+                        # gcc.tune = "skylake";
+                        inherit system;
+                      };
+                      overlays = overlays ++ nixosParameters.config.nixpkgs.overlays ++ homeParameters.config.nixpkgs.overlays;
+                    });
+
+                    imports = [./hosts/u/thou/home-configuration.nix];
+                  };
+                };
+              };
+            })
+          ];
         };
-        modules = [
-          ./hosts/u/nixos-configuration.nix
-          {
-            nixpkgs.pkgs = eachPkgs."x86_64-linux";
-          }
-          home-manager.nixosModules.home-manager
-        ];
-      };
     };
   };
 }

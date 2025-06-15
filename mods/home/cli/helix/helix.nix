@@ -16,6 +16,12 @@
   };
 
   config = lib.mkIf config.mods.home.cli.helix.enable {
+    nixpkgs.overlays = [
+      (final: prev: {
+        helix = inputs.helix.packages.${final.system}.helix;
+      })
+    ];
+
     programs.helix = {
       enable = true;
       settings.theme = "catppuccin_frappe";

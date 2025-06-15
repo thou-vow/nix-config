@@ -19,9 +19,13 @@
       };
       nushell = {
         enable = true;
-        configFile.text = /* nu */ ''
-          source ${flakePath}/mods/home/cli/nushell/config.nu
-        '';
+        configFile.text =
+          /*
+          nu
+          */
+          ''
+            source ${flakePath}/mods/home/cli/nushell/config.nu
+          '';
         environmentVariables = config.home.sessionVariables;
         shellAliases = config.home.shellAliases;
       };

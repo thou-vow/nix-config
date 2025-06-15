@@ -63,7 +63,7 @@
     helix = {
       languages.language-server.nixd.config.nixd.options = {
         "nixos".expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options'';
-        "home-manager".expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options.home-manager.users.type.getSubOptions []'';
+        "home-manager".expr = ''(builtins.getFlake "${inputs.self}").homeConfigurations."u".options'';
       };
       settings.editor.statusline.mode = {
         normal = "NORMAL";

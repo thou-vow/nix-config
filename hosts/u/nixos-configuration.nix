@@ -1,6 +1,5 @@
 {
   config,
-  flakePath,
   inputs,
   lib,
   pkgs,
@@ -26,6 +25,7 @@
       "vm.dirty_background_bytes" = 1677216;
       "vm.dirty_bytes" = 50331648;
     };
+    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_latest;
     kernelParams = [
       "mitigations=off"
       "zswap.enabled=1"
@@ -37,26 +37,17 @@
 
   console.useXkbConfig = true;
 
-  environment.systemPackages =
-    (with pkgs; [
-      btop
-      fhs
-      git
-      nh
-      nix-output-monitor
-      sudo
-      wget
-      xclip
-    ])
-    ++ (with inputs.nixpkgs.legacyPackages.${pkgs.system}; [
-      brightnessctl
-      duf
-      parted
-      pciutils
-      playerctl
-      snake4
-      vim
-    ]);
+  environment.systemPackages = with pkgs; [
+    btop
+    brightnessctl
+    fhs
+    nh
+    nix-output-monitor
+    playerctl
+    sudo
+    xclip
+    util-linux
+  ];
 
   hardware = {
     cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware || config.hardware.enableAllFirmware;
@@ -67,10 +58,7 @@
   };
 
   home-manager = {
-    backupFileExtension = "backup";
-    extraSpecialArgs = {inherit flakePath inputs;};
-    useGlobalPkgs = true;
-    users.thou = import ./thou/home-configuration.nix;
+    backupFileExtension = "hm.backup";
     useUserPackages = true;
   };
 
@@ -118,6 +106,7 @@
   programs = {
     appimage.enable = true;
     firefox.enable = true;
+    git.enable = true;
   };
 
   security.rtkit.enable = true;
@@ -159,6 +148,7 @@
   time.timeZone = "America/Sao_Paulo";
 
   users.users = {
+    root.password = "123";
     thou = {
       isNormalUser = true;
       description = "thou";
@@ -166,6 +156,7 @@
         "networkmanager"
         "wheel"
       ];
+      password = "123";
       shell = lib.getExe pkgs.bash;
     };
   };
