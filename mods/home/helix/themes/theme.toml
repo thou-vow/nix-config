@@ -1,0 +1,127 @@
+"attribute"="variable"
+"type"="class"
+"type.enum.variant"="variable"
+"constructor"="function"
+"constant"="constant"
+"constant.builtin.boolean"="boolean"
+"constant.character"="string"
+"constant.character.escape"="escape"
+"constant.numeric"="number" 
+"string"="string"
+"string.regexp"="escape"
+"string.special"="escape"
+"string.special.path"="path"
+"string.special.url"={underline={color="escape",style="line"}}
+"comment"="comment"
+"variable"="variable"
+"variable.builtin"="keyword"
+"variable.parameter"="parameter"
+"label"="namespace"
+"punctuation"="dark_foreground"
+"keyword"="keyword"
+"operator"="operator"
+"function"="function"
+"tag"="keyword"
+"namespace"="namespace"
+"special"="escape"
+"markup.heading"="function"
+"markup.list"="namespace"
+"markup.bold"={fg="number",modifiers=["bold"]}
+"markup.italic"={fg="operator",modifiers=["italic"]}
+"markup.strikethrough"={fg="boolean",modifiers=["crossed_out"]}
+"markup.link"={fg="path",underline={color="path",style="line"}}
+"markup.quote"="string"
+"markup.raw"="constant"
+"diff.plus"="green"
+"diff.minus"="red"
+"diff.delta"="yellow"
+
+"ui.background"={bg="background"}
+"ui.cursor.normal"={fg="background",bg="other_cursor"}
+"ui.cursor.insert"={fg="background",bg="green"}
+"ui.cursor.select"={fg="background",bg="blue"}
+"ui.cursor.primary.normal"={fg="dark_background",bg="main_cursor",modifiers=["bold"]}
+"ui.cursor.primary.insert"={fg="dark_background",bg="bright_green",modifiers=["bold"]}
+"ui.cursor.primary.select"={fg="dark_background",bg="bright_blue",modifiers=["bold"]}
+"ui.linenr"="invisible"
+"ui.linenr.selected"="foreground"
+"ui.statusline"={fg="foreground",bg="dark_background"}
+"ui.statusline.inactive"="invisible"
+"ui.statusline.normal"={fg="main_cursor",modifiers=["bold"]}
+"ui.statusline.insert"={fg="dark_background",bg="bright_green",modifiers=["bold"]}
+"ui.statusline.select"={fg="dark_background",bg="bright_blue",modifiers=["bold"]}
+"ui.bufferline"={fg="dark_foreground",bg="dark_background"}
+"ui.bufferline.active"={fg="main_cursor",bg="background",underline={color="main_cursor",style="line"}}
+"ui.popup"={fg="foreground",bg="other_highlight"}
+"ui.window"={fg="dark_background"}
+"ui.help"={fg="foreground",bg="other_highlight"}
+"ui.text"="foreground"
+"ui.text.focus"={fg="main_cursor",bg="other_highlight",modifiers=["bold"]}
+"ui.text.inactive"={fg="dark_foreground"}
+"ui.text.directory"={fg="blue"}
+"ui.virtual"={fg="invisible"}
+"ui.virtual.ruler"={bg="other_highlight"}
+"ui.virtual.jump-label"={fg="main_cursor",modifiers=["bold"]}
+"ui.menu"={fg="foreground",bg="other_highlight"}
+"ui.menu.selected"={fg="main_cursor",bg="main_highlight",modifiers=["bold"]}
+"ui.menu.scroll"={fg="foreground",bg="dark_background"}
+"ui.selection"={bg="other_selection"}
+"ui.selection.primary"={bg="main_selection"}
+"ui.highlight"={bg="main_highlight"}
+"ui.cursorline.primary"={bg="main_highlight"}
+"ui.cursorline.secondary"={bg="other_highlight"}
+"ui.cursorcolumn.primary"={bg="main_highlight"}
+"ui.cursorcolumn.secondary"={bg="other_highlight"}
+"warning"="bright_yellow"
+"error"="bright_red"
+"info"="bright_cyan"
+"hint"="foreground"
+"diagnostic.error"={underline={color="bright_red",style="curl"}}
+"diagnostic.warning"={underline={color="bright_yellow",style="curl"}}
+"diagnostic.info"={underline={color="bright_cyan",style="curl"}}
+"diagnostic.hint"={underline={color="foreground",style="curl"}}
+"diagnostic.unnecessary"={underline={color="dark_foreground",style="curl"}}
+"diagnostic.deprecated"={modifiers=["crossed_out"]}
+# "tabstop"
+
+[palette]
+main_cursor="#f4dbe2" # 0 50 90 
+other_cursor="#e8b7c5" # 0 50 80
+
+dark_background="#060810" # 270 30 5
+background="#121622" # 270 30 10
+other_highlight="#1c2232" # 270 30 15
+main_highlight="#272d41" # 270 30 20
+other_selection="#313950" # 270 30 25
+main_selection="#46516f" # 270 30 35
+invisible="#7683a8" # 270 30 55
+comment="#919dbf" # 270 30 65
+dark_foreground="#aeb8d4" # 270 30 75
+foreground="#ced4e6" # 270 30 85
+
+red="#efa295" # 30 70 75
+yellow="#d6b559" # 90 70 75
+green="#75d18b" # 150 70 75
+cyan="#60cbdd" # 210 70 75
+blue="#a4b7f0" # 270 70 75
+magenta="#e39edc" # 330 70 75
+bright_red="#f6c8c0" # 30 70 85
+bright_yellow="#efd286" # 90 70 85
+bright_green="#97ecaa" # 150 70 85
+bright_cyan="#95e4f2" # 210 70 85
+bright_blue="#c8d4f6" # 270 70 85
+bright_magenta="#eec6e9" # 330 70 85
+
+escape="#efa295"
+parameter="#d6b559"
+class="#75d18b"
+constant="#60cbdd"
+function="#a4b7f0"
+keyword="#e39edc"
+boolean="#f6c8c0"
+string="#efd286"
+number="#97ecaa"
+variable="#95e4f2"
+namespace="#c8d4f6"
+operator="#c8d4f6"
+path="#eec6e9"

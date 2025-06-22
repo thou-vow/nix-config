@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.mods.home.gui.st.enable = lib.mkEnableOption "st";
+  options.mods.home.st.enable = lib.mkEnableOption "st";
 
-  config = lib.mkIf config.mods.home.gui.st.enable {
+  config = lib.mkIf config.mods.home.st.enable {
     nixpkgs.overlays = [
       (final: prev: {
         st = prev.st.overrideAttrs (finalAttrs: prevAttrs: {
@@ -41,7 +41,7 @@
             #define MODKEY Mod1Mask
             #define TERMMOD (ControlMask|ShiftMask)
 
-            static char *font = "VictorMono Nerd Font Mono:size=9:antialias=true:autohint=true:weight=demibold";
+            static char *font = "monospace:size=9";
             static int borderpx = 0;
             static int anysize_halign = 50;
             static int anysize_valign = 50;

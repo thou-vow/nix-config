@@ -10,19 +10,23 @@
   ];
 
   mods.home = {
-    gui = {
-      prismlauncher.enable = true;
-      st.enable = true;
-    };
-    cli = {
-      fastfetch.enable = true;
-      helix.enable = true;
-      nushell.enable = true;
-      tmux.enable = true;
-      yazi.enable = true;
-    };
+    brave.enable = true;
+    dwm.enable = true;
+    fastfetch.enable = true;
+    helix.enable = true;
+    nushell.enable = true;
+    picom.enable = true;
+    prismlauncher.enable = true;
+    st.enable = true;
+    tmux.enable = true;
+    yazi.enable = true;
   };
 
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts.monospace = ["VictorMono Nerd Font Mono:antialias=true:autohint=true:weight=demibold"];
+  };
+  
   home = {
     username = "thou";
     homeDirectory = "/home/${config.home.username}";
@@ -62,8 +66,8 @@
     brave.enable = true;
     helix = {
       languages.language-server.nixd.config.nixd.options = {
-        "nixos".expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options'';
-        "home-manager".expr = ''(builtins.getFlake "${inputs.self}").homeConfigurations."u".options'';
+        nixos.expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options'';
+        home-manager.expr = ''(builtins.getFlake "${inputs.self}").homeConfigurations."thou@u".options'';
       };
       settings.editor.statusline.mode = {
         normal = "NORMAL";
@@ -71,6 +75,7 @@
         select = "SELECT";
       };
     };
+    home-manager.enable = true;
   };
 
   services.flameshot.enable = true;

@@ -16,18 +16,17 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
+    suckless = {
+      url = "github:thou-vow/suckless";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     helix.url = "github:helix-editor/helix";
   };
 
   nixConfig = {
-    extra-substituters = [
-      "https://helix.cachix.org"
-      "https://nix-gaming.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
-      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-    ];
+    extra-substituters = ["https://helix.cachix.org" "https://nix-gaming.cachix.org"];
+    extra-trusted-public-keys = ["helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs=" "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="];
   };
 
   outputs = {
@@ -37,82 +36,56 @@
     ...
   } @ inputs: let
     systems = ["x86_64-linux"];
-
-    overlays = [
-      (final: prev: import ./packages/packages.nix {pkgs = final;})
-    ];
   in {
     packages = nixpkgs.lib.genAttrs systems (system: import ./packages/packages.nix {pkgs = nixpkgs.legacyPackages.${system};});
+
+    overlays = [(final: prev: import ./packages/packages.nix {pkgs = final;})];
 
     formatter = nixpkgs.lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
     nixosConfigurations = {
-      "u" = let
-        flakePath = "/home/thou/nix-in-a-vat";
-        system = "x86_64-linux";
-      in
-        nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit flakePath inputs;
-          };
-          modules = [
-            home-manager.nixosModules.home-manager
-            ./hosts/u/nixos-configuration.nix
-            (nixosParameters: {
-              config = nixosParameters.lib.mkIf (nixosParameters.config.specialisation != {}) {
-                nixpkgs = {
-                  pkgs = import nixpkgs {
-                    config.allowUnfree = true;
-                    inherit overlays system;
-                  };
-                };
-                home-manager = {
-                  extraSpecialArgs = {inherit flakePath inputs;};
-                  users."thou" = homeParameters: {
-                    _module.args.pkgs = homeParameters.lib.mkForce (import nixpkgs {
-                      config.allowUnfree = true;
-                      overlays = overlays ++ nixosParameters.config.nixpkgs.overlays ++ homeParameters.config.nixpkgs.overlays;
-                      inherit system;
-                    });
-
-                    imports = [./hosts/u/thou/home-configuration.nix];
-                  };
-                };
-              };
-            })
-            (nixosParameters: {
-              specialisation.attuned.configuration = {
-                nixpkgs = {
-                  pkgs = import nixpkgs {
-                    config.allowUnfree = true;
-                    localSystem = {
-                      # gcc.arch = "skylake";
-                      # gcc.tune = "skylake";
-                      inherit system;
-                    };
-                    inherit overlays;
-                  };
-                };
-                home-manager = {
-                  extraSpecialArgs = {inherit flakePath inputs;};
-                  users."thou" = homeParameters: {
-                    _module.args.pkgs = homeParameters.lib.mkForce (import nixpkgs {
-                      config.allowUnfree = true;
-                      localSystem = {
-                        # gcc.arch = "skylake";
-                        # gcc.tune = "skylake";
-                        inherit system;
-                      };
-                      overlays = overlays ++ nixosParameters.config.nixpkgs.overlays ++ homeParameters.config.nixpkgs.overlays;
-                    });
-
-                    imports = [./hosts/u/thou/home-configuration.nix];
-                  };
-                };
-              };
-            })
-          ];
+      "u" = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          flakePath = "/home/thou/nix-in-a-vat";
+          inherit inputs;
         };
+        modules = [
+          ./hosts/u/nixos-configuration.nix
+          ({config, ...}: {
+            config = nixpkgs.lib.mkIf (config.specialisation != {}) {
+              nixpkgs.pkgs = import nixpkgs {
+                config.allowUnfree = true;
+                localSystem.system = "x86_64-linux";
+                inherit (self) overlays;
+              };
+            };
+          })
+          {
+            specialisation.attuned.configuration = {
+              nixpkgs.pkgs = import nixpkgs {
+                config.allowUnfree = true;
+                localSystem.system = "x86_64-linux";
+                inherit (self) overlays;
+              };
+            };
+          }
+        ];
+      };
+    };
+
+    homeConfigurations = {
+      "thou@u" = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          config.allowUnfree = true;
+          localSystem.system = "x86_64-linux";
+          inherit (self) overlays;
+        };
+        extraSpecialArgs = {
+          flakePath = "/home/thou/nix-in-a-vat";
+          inherit inputs;
+        };
+        modules = [./hosts/u/thou/home-configuration.nix];
+      };
     };
   };
 }

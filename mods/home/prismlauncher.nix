@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.mods.home.gui.prismlauncher.enable = lib.mkEnableOption "prismlauncher";
+  options.mods.home.prismlauncher.enable = lib.mkEnableOption "prismlauncher";
 
-  config = lib.mkIf config.mods.home.gui.prismlauncher.enable {
+  config = lib.mkIf config.mods.home.prismlauncher.enable {
     home.packages = with pkgs; [
       prismlauncher
     ];

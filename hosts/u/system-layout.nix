@@ -35,6 +35,7 @@
       users.thou = {
         directories = [
           "nix-in-a-vat"
+          "Projects"
         ];
       };
     };
@@ -54,13 +55,13 @@
           ".config/BraveSoftware"
           ".local/share"
           ".local/state"
+          ".ssh"
           ".steam"
           ".var"
           "Documents"
           "Downloads"
           "Music"
           "Pictures"
-          "Projects"
           "Public"
           "Templates"
           "Videos"

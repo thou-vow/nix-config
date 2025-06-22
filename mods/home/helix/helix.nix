@@ -11,11 +11,11 @@
     ./languages.nix
   ];
 
-  options.mods.home.cli.helix = {
+  options.mods.home.helix = {
     enable = lib.mkEnableOption "helix";
   };
 
-  config = lib.mkIf config.mods.home.cli.helix.enable {
+  config = lib.mkIf config.mods.home.helix.enable {
     nixpkgs.overlays = [
       (final: prev: {
         helix = inputs.helix.packages.${final.system}.helix;
@@ -24,10 +24,10 @@
 
     programs.helix = {
       enable = true;
-      settings.theme = "catppuccin_frappe";
+      settings.theme = "theme";
     };
 
     xdg.configFile."helix/themes".source =
-      config.lib.file.mkOutOfStoreSymlink "${flakePath}/mods/home/cli/helix/themes";
+      config.lib.file.mkOutOfStoreSymlink "${flakePath}/mods/home/helix/themes";
   };
 }

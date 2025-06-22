@@ -6,17 +6,16 @@
   ...
 }: {
   imports = [
-    ../../mods/nixos/nixos.nix
     ./attuned-profile.nix
     ./default-profile.nix
     ./system-layout.nix
   ];
 
-  mods.nixos = {
-    x = {
-      dwm.enable = true;
-    };
-  };
+  nixpkgs.overlays = [
+    (_: prev: {
+      sudo = prev.sudo.override {withInsults = true;};
+    })
+  ];
 
   boot = {
     kernel.sysctl = {
@@ -25,14 +24,14 @@
       "vm.dirty_background_bytes" = 1677216;
       "vm.dirty_bytes" = 50331648;
     };
-    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_latest;
+    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     kernelParams = [
       "mitigations=off"
       "zswap.enabled=1"
       "zswap.accept_threshold_percent=0"
       "zswap.max_pool_percent=80"
     ];
-    tmp.cleanOnBoot = false;
+    tmp.cleanOnBoot = true;
   };
 
   console.useXkbConfig = true;
@@ -41,11 +40,11 @@
     btop
     brightnessctl
     fhs
+    home-manager
     nh
     nix-output-monitor
     playerctl
     sudo
-    xclip
     util-linux
   ];
 
@@ -55,11 +54,6 @@
       enable = true;
       enable32Bit = true;
     };
-  };
-
-  home-manager = {
-    backupFileExtension = "hm.backup";
-    useUserPackages = true;
   };
 
   i18n = {
@@ -112,7 +106,6 @@
   security.rtkit.enable = true;
 
   services = {
-    flatpak.enable = true;
     libinput = {
       enable = true;
       touchpad = {
@@ -120,6 +113,7 @@
         naturalScrolling = true;
       };
     };
+    logind.powerKey = "suspend";
     openssh.enable = true;
     pipewire = {
       enable = true;
@@ -135,7 +129,7 @@
       autoRepeatDelay = 200;
       autoRepeatInterval = 20;
       displayManager.lightdm.enable = true;
-      desktopManager.cinnamon.enable = true;
+      windowManager.dwm.enable = true;
       xkb = {
         layout = "br,us";
         options = "caps:escape_shifted_capslock,grp:win_space_toggle";
@@ -145,6 +139,29 @@
 
   system.stateVersion = "25.05";
 
+  systemd.user.services."hm-activate" = {
+    enable = true;
+    description = "Activate home-manager at login";
+
+    wantedBy = ["default.target"];
+    before = ["graphical-session.target"];
+
+    path = [config.nix.package];
+
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = "yes";
+      TimeoutStartSec = "5m";
+      SyslogIdentifier = "hm-activate";
+      ExecStart = "${pkgs.writeShellScript "hm-activate" ''
+        #!${lib.getExe pkgs.dash}
+        $(${lib.getExe pkgs.home-manager} generations | ${pkgs.toybox}/bin/head -1 | ${pkgs.toybox}/bin/cut -d ' ' -f7)/activate
+      ''}";
+    };
+
+    unitConfig.ConditionUser = "thou";
+  };
+
   time.timeZone = "America/Sao_Paulo";
 
   users.users = {
@@ -152,10 +169,7 @@
     thou = {
       isNormalUser = true;
       description = "thou";
-      extraGroups = [
-        "networkmanager"
-        "wheel"
-      ];
+      extraGroups = ["networkmanager" "wheel"];
       password = "123";
       shell = lib.getExe pkgs.bash;
     };
