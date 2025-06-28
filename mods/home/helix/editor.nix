@@ -3,7 +3,7 @@
   lib,
   ...
 }: {
-  config = lib.mkIf config.mods.home.helix.enable {
+  config = lib.mkIf config.mods.helix.enable {
     programs.helix.settings.editor = {
       mouse = false;
       bufferline = "always";

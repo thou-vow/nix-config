@@ -46,7 +46,7 @@
 "ui.linenr"="invisible"
 "ui.linenr.selected"="foreground"
 "ui.statusline"={fg="foreground",bg="dark_background"}
-"ui.statusline.inactive"="invisible"
+"ui.statusline.inactive"={fg="invisible",bg="dark_background"}
 "ui.statusline.normal"={fg="main_cursor",modifiers=["bold"]}
 "ui.statusline.insert"={fg="dark_background",bg="bright_green",modifiers=["bold"]}
 "ui.statusline.select"={fg="dark_background",bg="bright_blue",modifiers=["bold"]}

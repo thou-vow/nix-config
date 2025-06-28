@@ -5,9 +5,9 @@
   pkgs,
   ...
 }: {
-  options.mods.home.dwm.enable = lib.mkEnableOption "dwm";
+  options.mods.dwm.enable = lib.mkEnableOption "dwm";
 
-  config = lib.mkIf config.mods.home.dwm.enable {
+  config = lib.mkIf config.mods.dwm.enable {
     nixpkgs.overlays = [
       (final: prev: {
         dwm = inputs.suckless.packages.${final.system}.dwm.overrideAttrs (finalAttrs: prevAttrs: {
@@ -20,9 +20,7 @@
 
             static const int showbar            = 1;    /* 0 means no bar */
             static const int topbar             = 1;    /* 0 means bottom bar */
-            static const int vertpad            = 0;    /* vertical padding of bar */
-            static const int sidepad            = 216;  /* horizontal padding of bar */
-            static const char *fonts[]           = { "monospace:size=10" };
+            static const char *fonts[]           = { "monospace:antialias=true:autohint=true:weight=demibold:size=10" };
 
             static const char main_cursor[]      = "#f4dbe2";
             static const char dark_background[]  = "#060810";
@@ -55,20 +53,25 @@
             	{  NULL,   NULL },   /* null should always be the last (for cyclelayouts) */
             };
 
-            static const char *brightnessdown[] = {"${lib.getExe pkgs.brightnessctl}", "set", "1%-", NULL};
-            static const char *brightnessup[] = {"${lib.getExe pkgs.brightnessctl}", "set", "1%+", NULL};
-            static const char *printscreen[] = {"${lib.getExe pkgs.flameshot}", "gui", NULL};
-            static const char *termcmd[] = {"${lib.getExe pkgs.st}", NULL};
-            static const char *browsercmd[] = {"${lib.getExe pkgs.brave}", NULL};
+            /* since dwm only updates after restarting the session, I don't want to hardcode these */
+            static const char *audiotoggle[] = {"amixer", "set", "Master", "toggle", NULL};
+            static const char *audiodown[] = {"amixer", "set", "Master", "1%-", NULL};
+            static const char *audioup[] = {"amixer", "set", "Master", "1%+", NULL};
+            static const char *brightnessdown[] = {"brightnessctl", "set", "1%-", NULL};
+            static const char *brightnessup[] = {"brightnessctl", "set", "1%+", NULL};
+            static const char *print[] = {"flameshot", "gui", NULL};
+            static const char *termcmd[] = {"st", NULL};
+            static const char *browsercmd[] = {"brave", NULL};
 
             static const Key keys[] = {
             	/* modifier             key                        function        argument */
+              {  0,                   XF86XK_AudioMute,          spawn,          { .v = audiotoggle }  },
+              {  0,                   XF86XK_AudioLowerVolume,   spawn,          { .v = audiodown }  },
+              {  0,                   XF86XK_AudioRaiseVolume,   spawn,          { .v = audioup }  },
               {  0,                   XF86XK_MonBrightnessDown,  spawn,          { .v = brightnessdown }  },
               {  0,                   XF86XK_MonBrightnessUp,    spawn,          { .v = brightnessup }  },
-            	{  0,                   XK_Print,                  spawn,          { .v = printscreen }  },
+            	{  0,                   XK_Print,                  spawn,          { .v = print }  },
               {  Mod4Mask,            XK_t,                      spawn,          { .v = termcmd }  },
-              {  Mod4Mask,            XK_minus,                  incnmaster,     { .i = -1 }  },
-              {  Mod4Mask,            XK_equal,                  incnmaster,     { .i = +1 }  },
               {  Mod4Mask,            XK_q,                      killclient,     {0}  },
               {  Mod4Mask,            XK_f,                      togglefloating, {0}  },
               {  Mod4Mask,            XK_h,                      viewprev,       {0}  },
@@ -98,6 +101,11 @@
     ];
 
     home.packages = with pkgs; [
+      alsa-utils
+      brave
+      brightnessctl
+      flameshot
+      st
       xclip
     ];
 

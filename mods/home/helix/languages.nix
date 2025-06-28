@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: {
-  config = lib.mkIf config.mods.home.helix.enable {
+  config = lib.mkIf config.mods.helix.enable {
     programs.helix = {
       languages = {
         language = let
@@ -42,7 +42,7 @@
               language-servers = ["tinymist"];
             }
           ]
-          ++ lib.optionals config.mods.home.nushell.enable [
+          ++ lib.optionals config.mods.nushell.enable [
             {
               name = "nu";
               indent = commonIndent;

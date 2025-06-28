@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.mods.home.brave.enable = lib.mkEnableOption "brave";
+  options.mods.brave.enable = lib.mkEnableOption "brave";
 
-  config = lib.mkIf config.mods.home.brave.enable {
+  config = lib.mkIf config.mods.brave.enable {
     home.packages = with pkgs; [
       brave
     ];

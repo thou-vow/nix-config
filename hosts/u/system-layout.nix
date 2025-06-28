@@ -32,12 +32,6 @@
       directories = [
         "/var/log"
       ];
-      users.thou = {
-        directories = [
-          "nix-in-a-vat"
-          "Projects"
-        ];
-      };
     };
     "/nix/persist/plain" = {
       enable = true;
@@ -45,28 +39,10 @@
       directories = [
         "/etc/NetworkManager/system-connections"
         "/etc/ssh/ssh_host_ed25519_key"
-        "/tmp"
+        "/home/thou/.local/state/nix"
         "/var/cache"
         "/var/lib"
       ];
-      users.thou = {
-        directories = [
-          ".cache"
-          ".config/BraveSoftware"
-          ".local/share"
-          ".local/state"
-          ".ssh"
-          ".steam"
-          ".var"
-          "Documents"
-          "Downloads"
-          "Music"
-          "Pictures"
-          "Public"
-          "Templates"
-          "Videos"
-        ];
-      };
     };
   };
 
@@ -74,7 +50,7 @@
     "/" = {
       device = "none";
       fsType = "tmpfs";
-      options = ["mode=755" "noatime" "size=25%"];
+      options = ["mode=755" "noatime" "size=50%"];
     };
     ${config.boot.loader.efi.efiSysMountPoint} = {
       device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part2";
@@ -95,7 +71,7 @@
     "/nix/var" = {
       device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part4";
       fsType = "btrfs";
-      options = ["subvol=nix_var" "compress=zstd:5" "noatime" "nodatasum"];
+      options = ["subvol=nix_var" "compress=zstd:8" "noatime" "nodatasum"];
     };
     "/nix/persist/plain" = {
       device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part5";

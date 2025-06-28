@@ -1,13 +1,12 @@
 {
   config,
-  flakePath,
   lib,
   pkgs,
   ...
 }: {
-  options.mods.home.tmux.enable = lib.mkEnableOption "tmux";
+  options.mods.tmux.enable = lib.mkEnableOption "tmux";
 
-  config = lib.mkIf config.mods.home.tmux.enable {
+  config = lib.mkIf config.mods.tmux.enable {
     home = {
       packages = with pkgs; [tmux];
       sessionVariables = {
@@ -16,6 +15,6 @@
     };
 
     xdg.configFile."tmux/tmux.conf".source =
-      config.lib.file.mkOutOfStoreSymlink "${flakePath}/mods/home/tmux/tmux.conf";
+      config.lib.file.mkOutOfStoreSymlink "${config.mods.flakePath}/mods/home/tmux/tmux.conf";
   };
 }

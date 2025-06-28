@@ -3,11 +3,11 @@
   lib,
   ...
 }: {
-  options.mods.home.picom = {
+  options.mods.picom = {
     enable = lib.mkEnableOption "picom";
   };
 
-  config = lib.mkIf config.mods.home.picom.enable {
+  config = lib.mkIf config.mods.picom.enable {
     services.picom = {
       enable = true;
       backend = "glx";

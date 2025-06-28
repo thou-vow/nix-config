@@ -1,6 +1,5 @@
 {
   config,
-  flakePath,
   inputs,
   lib,
   ...
@@ -11,11 +10,11 @@
     ./languages.nix
   ];
 
-  options.mods.home.helix = {
+  options.mods.helix = {
     enable = lib.mkEnableOption "helix";
   };
 
-  config = lib.mkIf config.mods.home.helix.enable {
+  config = lib.mkIf config.mods.helix.enable {
     nixpkgs.overlays = [
       (final: prev: {
         helix = inputs.helix.packages.${final.system}.helix;
@@ -28,6 +27,6 @@
     };
 
     xdg.configFile."helix/themes".source =
-      config.lib.file.mkOutOfStoreSymlink "${flakePath}/mods/home/helix/themes";
+      config.lib.file.mkOutOfStoreSymlink "${config.mods.flakePath}/mods/home/helix/themes";
   };
 }

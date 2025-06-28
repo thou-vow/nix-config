@@ -25,8 +25,14 @@
   };
 
   nixConfig = {
-    extra-substituters = ["https://helix.cachix.org" "https://nix-gaming.cachix.org"];
-    extra-trusted-public-keys = ["helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs=" "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="];
+    extra-substituters = [
+      "https://helix.cachix.org"
+      "https://nix-gaming.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
+      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+    ];
   };
 
   outputs = {
@@ -37,18 +43,23 @@
   } @ inputs: let
     systems = ["x86_64-linux"];
   in {
-    packages = nixpkgs.lib.genAttrs systems (system: import ./packages/packages.nix {pkgs = nixpkgs.legacyPackages.${system};});
+    packages = nixpkgs.lib.genAttrs systems (system: import ./pkgs/pkgs.nix {pkgs = nixpkgs.legacyPackages.${system};});
 
-    overlays = [(final: prev: import ./packages/packages.nix {pkgs = final;})];
+    overlays = [
+      (final: prev: let
+        recursivelyUpdatePkgsWithMyOwn = name: value:
+          if nixpkgs.lib.attrsets.isDerivation value
+          then value
+          else prev.${name} // builtins.mapAttrs recursivelyUpdatePkgsWithMyOwn value;
+      in
+        builtins.mapAttrs recursivelyUpdatePkgsWithMyOwn (import ./pkgs/pkgs.nix {pkgs = final;}))
+    ];
 
     formatter = nixpkgs.lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
     nixosConfigurations = {
       "u" = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          flakePath = "/home/thou/nix-in-a-vat";
-          inherit inputs;
-        };
+        specialArgs = {inherit inputs;};
         modules = [
           ./hosts/u/nixos-configuration.nix
           ({config, ...}: {
@@ -80,10 +91,7 @@
           localSystem.system = "x86_64-linux";
           inherit (self) overlays;
         };
-        extraSpecialArgs = {
-          flakePath = "/home/thou/nix-in-a-vat";
-          inherit inputs;
-        };
+        extraSpecialArgs = {inherit inputs;};
         modules = [./hosts/u/thou/home-configuration.nix];
       };
     };

@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.mods.home.yazi.enable = lib.mkEnableOption "yazi";
+  options.mods.yazi.enable = lib.mkEnableOption "yazi";
 
-  config = lib.mkIf config.mods.home.yazi.enable {
+  config = lib.mkIf config.mods.yazi.enable {
     home.packages = with pkgs; [
       yazi
     ];

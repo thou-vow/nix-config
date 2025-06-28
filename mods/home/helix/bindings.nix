@@ -1,6 +1,5 @@
 {
   config,
-  flakePath,
   lib,
   ...
 }: let
@@ -78,7 +77,7 @@
     "d" = ":toggle-option inline-diagnostics.cursor-line disable hint";
     "x" = ":toggle-option soft-wrap.enable";
     "/" = ":toggle-option search.smart-case";
-    "ret" = ":open ${flakePath}";
+    "ret" = ":open ${config.mods.flakePath}";
   };
   bufferMinorMode = {
     "'" = "goto_last_accessed_file";
@@ -472,7 +471,7 @@
       "v" = "exit_select_mode";
     };
 in {
-  config = lib.mkIf config.mods.home.helix.enable {
+  config = lib.mkIf config.mods.helix.enable {
     programs.helix.settings.keys = lib.recursiveUpdate (import ./cleared-default-bindings.nix) {
       inherit normal insert select;
     };

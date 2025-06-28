@@ -9,7 +9,12 @@
     ./attuned-profile.nix
     ./default-profile.nix
     ./system-layout.nix
+    ../../mods/nixos/nixos.nix
   ];
+
+  mods = {
+    flakePath = "/home/thou/nix-in-a-vat";
+  };
 
   nixpkgs.overlays = [
     (_: prev: {
@@ -24,14 +29,12 @@
       "vm.dirty_background_bytes" = 1677216;
       "vm.dirty_bytes" = 50331648;
     };
-    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     kernelParams = [
       "mitigations=off"
       "zswap.enabled=1"
       "zswap.accept_threshold_percent=0"
       "zswap.max_pool_percent=80"
     ];
-    tmp.cleanOnBoot = true;
   };
 
   console.useXkbConfig = true;
@@ -39,17 +42,22 @@
   environment.systemPackages = with pkgs; [
     btop
     brightnessctl
+    cachix
     fhs
     home-manager
+    ncdu
     nh
     nix-output-monitor
     playerctl
+    ripgrep
     sudo
     util-linux
   ];
 
   hardware = {
-    cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware || config.hardware.enableAllFirmware;
+    cpu.intel.updateMicrocode =
+      config.hardware.enableRedistributableFirmware
+      || config.hardware.enableAllFirmware;
     graphics = {
       enable = true;
       enable32Bit = true;
@@ -86,8 +94,11 @@
   nix = {
     package = pkgs.lixPackageSets.latest.lix;
 
-    nixPath = lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
-    registry = lib.mapAttrs (_: value: {flake = value;}) (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
+    nixPath =
+      lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
+    registry =
+      lib.mapAttrs (_: value: {flake = value;})
+      (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
 
     settings = {
       experimental-features = ["flakes" "nix-command" "pipe-operator"];
@@ -146,7 +157,7 @@
     wantedBy = ["default.target"];
     before = ["graphical-session.target"];
 
-    path = [config.nix.package];
+    path = [config.nix.package pkgs.home-manager pkgs.toybox];
 
     serviceConfig = {
       Type = "oneshot";
@@ -155,7 +166,7 @@
       SyslogIdentifier = "hm-activate";
       ExecStart = "${pkgs.writeShellScript "hm-activate" ''
         #!${lib.getExe pkgs.dash}
-        $(${lib.getExe pkgs.home-manager} generations | ${pkgs.toybox}/bin/head -1 | ${pkgs.toybox}/bin/cut -d ' ' -f7)/activate
+        $(home-manager generations | head -1 | cut -d ' ' -f7)/activate
       ''}";
     };
 

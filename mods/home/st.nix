@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  options.mods.home.st.enable = lib.mkEnableOption "st";
+  options.mods.st.enable = lib.mkEnableOption "st";
 
-  config = lib.mkIf config.mods.home.st.enable {
+  config = lib.mkIf config.mods.st.enable {
     nixpkgs.overlays = [
       (final: prev: {
         st = prev.st.overrideAttrs (finalAttrs: prevAttrs: {
@@ -41,7 +41,7 @@
             #define MODKEY Mod1Mask
             #define TERMMOD (ControlMask|ShiftMask)
 
-            static char *font = "monospace:size=9";
+            static char *font = "monospace:antialias=true:autohint=true:weight=demibold:size=9";
             static int borderpx = 0;
             static int anysize_halign = 50;
             static int anysize_valign = 50;
@@ -70,7 +70,7 @@
             static uint forcemousemod = ShiftMask;
             static MouseShortcut mshortcuts[] = {
             	/* mask                 button   function        argument       release */
-            	{ TERMMOD,              Button3, previewimage,   {.s = "${lib.getExe prev.feh}"} },
+            	{ TERMMOD,              Button3, previewimage,   {.s = "feh"} },
             	{ TERMMOD,              Button2, showimageinfo,  {},            1 },
             	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
             	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
@@ -365,15 +365,17 @@
 
           buildInputs =
             prevAttrs.buildInputs
-            ++ (with prev; [
+            ++ (with final; [
+              feh
               imlib2
-              nerd-fonts.victor-mono
               zlib
             ]);
         });
       })
     ];
 
-    home.packages = [pkgs.st];
+    home.packages = [
+      pkgs.st
+    ];
   };
 }

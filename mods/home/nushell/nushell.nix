@@ -1,13 +1,12 @@
 {
   config,
-  flakePath,
   lib,
   pkgs,
   ...
 }: {
-  options.mods.home.nushell.enable = lib.mkEnableOption "enable nushell";
+  options.mods.nushell.enable = lib.mkEnableOption "enable nushell";
 
-  config = lib.mkIf config.mods.home.nushell.enable {
+  config = lib.mkIf config.mods.nushell.enable {
     home.packages = with pkgs; [
       pokeget-rs
     ];
@@ -19,9 +18,11 @@
       };
       nushell = {
         enable = true;
-        configFile.text = ''
-          source ${flakePath}/mods/home/nushell/config.nu
-        '';
+        configFile.text =
+          # nu
+          ''
+            source ${config.mods.flakePath}/mods/home/nushell/config.nu
+          '';
         environmentVariables = config.home.sessionVariables;
         shellAliases = config.home.shellAliases;
       };

@@ -6,13 +6,15 @@
   ...
 }: {
   imports = [
+    inputs.impermanence.homeManagerModules.impermanence
     ../../../mods/home/home.nix
   ];
 
-  mods.home = {
+  mods = {
     brave.enable = true;
     dwm.enable = true;
     fastfetch.enable = true;
+    flakePath = "/home/thou/nix-in-a-vat";
     helix.enable = true;
     nushell.enable = true;
     picom.enable = true;
@@ -24,9 +26,9 @@
 
   fonts.fontconfig = {
     enable = true;
-    defaultFonts.monospace = ["VictorMono Nerd Font Mono:antialias=true:autohint=true:weight=demibold"];
+    defaultFonts.monospace = ["VictorMono Nerd Font Mono"];
   };
-  
+
   home = {
     username = "thou";
     homeDirectory = "/home/${config.home.username}";
@@ -40,8 +42,8 @@
       graalvm-oracle_21
       kitty
       krita
-      nerd-fonts.victor-mono
       lutris
+      nerd-fonts.victor-mono
       qbittorrent
       steam
       python3
@@ -49,6 +51,34 @@
       typstyle
       unimatrix
     ];
+    persistence = {
+      "/nix/persist/plain/home/${config.home.username}" = {
+        defaultDirectoryMethod = "symlink";
+        directories = [
+          ".config/BraveSoftware"
+          ".ssh"
+          ".steam"
+          ".var"
+          "Documents"
+          "Downloads"
+          "Games"
+          "Music"
+          "Pictures"
+          "Public"
+          "Templates"
+          "Videos"
+        ];
+        allowOther = true;
+      };
+      "/nix/persist/zstd3/home/${config.home.username}" = {
+        defaultDirectoryMethod = "symlink";
+        directories = [
+          "nix-in-a-vat"
+          "Projects"
+        ];
+        allowOther = true;
+      };
+    };
     sessionVariables = {
       BROWSER = lib.getExe pkgs.brave;
       EDITOR = lib.getExe pkgs.helix;

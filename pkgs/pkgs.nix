@@ -14,9 +14,10 @@
             ]
           );
         profile = "export FHS=1";
-        runScript = "bash";
+        runScript = pkgs.lib.getExe pkgs.bash;
         extraOutputsToInstall = ["dev"];
       });
+
   graalvm-oracle_21 = let
     src = {
       "x86_64-linux" = pkgs.fetchurl {
