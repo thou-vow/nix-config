@@ -11,16 +11,13 @@
   ];
 
   mods = {
-    brave.enable = true;
-    dwm.enable = true;
-    fastfetch.enable = true;
     flakePath = "/home/thou/nix-in-a-vat";
+    brave.enable = true;
+    fastfetch.enable = true;
     helix.enable = true;
+    hyprland.enable = true;
+    kitty.enable = true;
     nushell.enable = true;
-    picom.enable = true;
-    prismlauncher.enable = true;
-    st.enable = true;
-    tmux.enable = true;
     yazi.enable = true;
   };
 
@@ -79,15 +76,6 @@
         allowOther = true;
       };
     };
-    sessionVariables = {
-      BROWSER = lib.getExe pkgs.brave;
-      EDITOR = lib.getExe pkgs.helix;
-      EXPLORER = "";
-      QUICKAPPS = "";
-      PRINTSCREEN = "${lib.getExe pkgs.flameshot} gui";
-      TERMINAL = lib.getExe pkgs.st;
-      VISUAL = lib.getExe pkgs.helix;
-    };
     stateVersion = "25.05";
   };
 
@@ -106,7 +94,8 @@
       };
     };
     home-manager.enable = true;
+    kitty.keybindings = {
+      "alt+e" = "launch --stdin-source=@screen_scrollback ${lib.getExe pkgs.helix}";
+    };
   };
-
-  services.flameshot.enable = true;
 }

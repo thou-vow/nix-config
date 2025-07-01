@@ -28,15 +28,6 @@
     "\\" = "flip_selections";
     "x" = "extend_line_below";
     "S-x" = "extend_line_above";
-    "A-x" = [
-      "ensure_selections_forward"
-      "select_line_above"
-    ];
-    "A-S-x" = [
-      "ensure_selections_forward"
-      "flip_selections"
-      "select_line_below"
-    ];
     "v" = "select_mode";
     "," = "keep_primary_selection";
     "<" = "unindent";
@@ -45,10 +36,6 @@
     ":" = "command_mode";
     "ret" = [
       "move_line_down"
-      "goto_first_nonwhitespace"
-    ];
-    "A-ret" = [
-      "move_line_up"
       "goto_first_nonwhitespace"
     ];
     "down" = "scroll_down";

@@ -11,7 +11,7 @@
   ];
 
   options.mods.helix = {
-    enable = lib.mkEnableOption "helix";
+    enable = lib.mkEnableOption "Enable Helix.";
   };
 
   config = lib.mkIf config.mods.helix.enable {

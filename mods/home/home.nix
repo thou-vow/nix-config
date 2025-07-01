@@ -1,14 +1,11 @@
 {lib, ...}: {
   imports = [
     ./brave.nix
-    ./dwm.nix
     ./fastfetch/fastfetch.nix
     ./helix/helix.nix
+    ./hyprland/hyprland.nix
+    ./kitty/kitty.nix
     ./nushell/nushell.nix
-    ./picom.nix
-    ./prismlauncher.nix
-    ./st.nix
-    ./tmux/tmux.nix
     ./yazi/yazi.nix
   ];
 

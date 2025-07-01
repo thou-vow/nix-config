@@ -11,7 +11,7 @@
 "string.regexp"="escape"
 "string.special"="escape"
 "string.special.path"="path"
-"string.special.url"={underline={color="escape",style="line"}}
+"string.special.url"={underline={color="escape",style="dotted"}}
 "comment"="comment"
 "variable"="variable"
 "variable.builtin"="keyword"
@@ -29,7 +29,7 @@
 "markup.bold"={fg="number",modifiers=["bold"]}
 "markup.italic"={fg="operator",modifiers=["italic"]}
 "markup.strikethrough"={fg="boolean",modifiers=["crossed_out"]}
-"markup.link"={fg="path",underline={color="path",style="line"}}
+"markup.link"={fg="path",underline={color="path",style="dotted"}}
 "markup.quote"="string"
 "markup.raw"="constant"
 "diff.plus"="green"

@@ -6,9 +6,9 @@
   ...
 }: {
   imports = [
-    ./attuned-profile.nix
-    ./default-profile.nix
-    ./system-layout.nix
+    ./attuned-mode.nix
+    ./core.nix
+    ./default-mode.nix
     ../../mods/nixos/nixos.nix
   ];
 
@@ -24,7 +24,7 @@
 
   boot = {
     kernel.sysctl = {
-      "vm.swappiness" = 5;
+      "vm.swappiness" = 80;
       "vm.vfs_cache_pressure" = 50;
       "vm.dirty_background_bytes" = 1677216;
       "vm.dirty_bytes" = 50331648;
@@ -32,7 +32,7 @@
     kernelParams = [
       "mitigations=off"
       "zswap.enabled=1"
-      "zswap.accept_threshold_percent=0"
+      "zswap.accept_threshold_percent=90"
       "zswap.max_pool_percent=80"
     ];
   };
@@ -43,7 +43,6 @@
     btop
     brightnessctl
     cachix
-    fhs
     home-manager
     ncdu
     nh
@@ -92,7 +91,7 @@
   };
 
   nix = {
-    package = pkgs.lixPackageSets.latest.lix;
+    package = pkgs.lixPackageSets.git.lix;
 
     nixPath =
       lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
@@ -135,17 +134,6 @@
       pulse.enable = true;
     };
     pulseaudio.enable = false;
-    xserver = {
-      enable = true;
-      autoRepeatDelay = 200;
-      autoRepeatInterval = 20;
-      displayManager.lightdm.enable = true;
-      windowManager.dwm.enable = true;
-      xkb = {
-        layout = "br,us";
-        options = "caps:escape_shifted_capslock,grp:win_space_toggle";
-      };
-    };
   };
 
   system.stateVersion = "25.05";

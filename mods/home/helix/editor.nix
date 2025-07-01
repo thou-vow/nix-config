@@ -20,6 +20,12 @@
       popup-border = "all";
       scrolloff = 5;
 
+      cursor-shape = {
+        normal = "bar";
+        insert = "bar";
+        select = "bar";
+      };
+
       end-of-line-diagnostics = "hint";
 
       file-picker.hidden = false;

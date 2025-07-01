@@ -16,11 +16,6 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
-    suckless = {
-      url = "github:thou-vow/suckless";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     helix.url = "github:helix-editor/helix";
   };
 

@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: {
-  options.mods.nushell.enable = lib.mkEnableOption "enable nushell";
+  options.mods.nushell.enable = lib.mkEnableOption "Enable Nushell.";
 
   config = lib.mkIf config.mods.nushell.enable {
     home.packages = with pkgs; [
