@@ -7,11 +7,13 @@
 }: {
   imports = [
     inputs.impermanence.homeManagerModules.impermanence
+    ./attuned-home.nix
+    ./default-home.nix
     ../../../mods/home/home.nix
   ];
 
   mods = {
-    flakePath = "/home/thou/nix-in-a-vat";
+    flakePath = "/flake";
     brave.enable = true;
     fastfetch.enable = true;
     helix.enable = true;
@@ -23,7 +25,12 @@
 
   fonts.fontconfig = {
     enable = true;
-    defaultFonts.monospace = ["VictorMono Nerd Font Mono"];
+    defaultFonts = {
+      monospace = ["VictorMono Nerd Font Mono"];
+      sansSerif = ["Noto Sans"];
+      serif = ["Noto Serif"];
+      emoji = ["Noto Color Emoji"];
+    };
   };
 
   home = {
@@ -37,10 +44,11 @@
       gcc
       gimp
       graalvm-oracle_21
-      kitty
       krita
       lutris
       nerd-fonts.victor-mono
+      noto-fonts
+      noto-fonts-emoji
       qbittorrent
       steam
       python3
@@ -79,9 +87,10 @@
     stateVersion = "25.05";
   };
 
+  news.display = "silent";
+
   programs = {
     bash.enable = true;
-    brave.enable = true;
     helix = {
       languages.language-server.nixd.config.nixd.options = {
         nixos.expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options'';

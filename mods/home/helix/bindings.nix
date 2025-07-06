@@ -351,6 +351,7 @@
     "m" = "@:mv <C-r>%";
     "S-m" = "@:sh mv <C-r>% <C-r>%";
   };
+
   convertMovementToSelect = string: let
     commandMap = {
       "move_char_left" = "extend_char_left";
@@ -390,6 +391,7 @@
     };
   in
     commandMap.${string} or string;
+
   convertBindingsToSelect = value:
     if builtins.isString value
     then convertMovementToSelect value
@@ -398,6 +400,7 @@
     else if builtins.isAttrs value
     then lib.mapAttrs (_: convertBindingsToSelect) value
     else value;
+
   normal =
     normalMode
     // {

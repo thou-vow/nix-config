@@ -21,6 +21,10 @@
       })
     ];
 
+    home.shellAliases = {
+      "shx" = "sudo -E hx";
+    };
+    
     programs.helix = {
       enable = true;
       settings.theme = "theme";

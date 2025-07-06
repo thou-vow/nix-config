@@ -6,18 +6,18 @@
   ...
 }: {
   imports = [
-    ./attuned-mode.nix
+    ./attuned-nixos.nix
     ./core.nix
-    ./default-mode.nix
+    ./default-nixos.nix
     ../../mods/nixos/nixos.nix
   ];
 
   mods = {
-    flakePath = "/home/thou/nix-in-a-vat";
+    flakePath = "/flake";
   };
 
   nixpkgs.overlays = [
-    (_: prev: {
+    (final: prev: {
       sudo = prev.sudo.override {withInsults = true;};
     })
   ];
@@ -43,6 +43,7 @@
     btop
     brightnessctl
     cachix
+    fhs
     home-manager
     ncdu
     nh
@@ -91,10 +92,14 @@
   };
 
   nix = {
-    package = pkgs.lixPackageSets.git.lix;
+    package = pkgs.lixPackageSets.latest.lix;
 
     nixPath =
-      lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
+      lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry
+      ++ [
+        "nixos-config=${config.mods.flakePath}"
+      ];
+
     registry =
       lib.mapAttrs (_: value: {flake = value;})
       (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
@@ -111,6 +116,7 @@
     appimage.enable = true;
     firefox.enable = true;
     git.enable = true;
+    nix-ld.enable = true;
   };
 
   security.rtkit.enable = true;

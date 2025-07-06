@@ -8,7 +8,6 @@
   boot = {
     initrd.availableKernelModules = [
       "xhci_pci"
-      "ehci_pci"
       "usb_storage"
       "uas"
       "sd_mod"
@@ -30,6 +29,7 @@
       enable = true;
       hideMounts = true;
       directories = [
+        "/flake"
         "/var/log"
       ];
     };
@@ -40,6 +40,7 @@
         "/etc/NetworkManager/system-connections"
         "/etc/ssh/ssh_host_ed25519_key"
         "/home/thou/.local/state/nix"
+        "/tmp"
         "/var/cache"
         "/var/lib"
       ];
@@ -50,7 +51,7 @@
     "/" = {
       device = "none";
       fsType = "tmpfs";
-      options = ["mode=755" "noatime" "size=50%"];
+      options = ["mode=755" "noatime" "size=100%"];
     };
     ${config.boot.loader.efi.efiSysMountPoint} = {
       device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part2";
@@ -71,7 +72,7 @@
     "/nix/var" = {
       device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part4";
       fsType = "btrfs";
-      options = ["subvol=nix_var" "compress=zstd:8" "noatime" "nodatasum"];
+      options = ["subvol=nix_var" "compress=zstd:5" "noatime" "nodatasum"];
     };
     "/nix/persist/plain" = {
       device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part5";
