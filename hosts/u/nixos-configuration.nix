@@ -16,42 +16,63 @@
     flakePath = "/flake";
   };
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      sudo = prev.sudo.override {withInsults = true;};
-    })
-  ];
+  nixpkgs.overlays =
+    inputs.self.overlays
+    ++ [
+      (final: prev: {
+        sudo = prev.sudo.override {withInsults = true;};
+      })
+    ];
 
   boot = {
     kernel.sysctl = {
-      "vm.swappiness" = 80;
-      "vm.vfs_cache_pressure" = 50;
-      "vm.dirty_background_bytes" = 1677216;
-      "vm.dirty_bytes" = 50331648;
+      "vm.swappiness" = 20;
+      "vm.dirty_background_ratio" = 2;
+      "vm.dirty_ratio" = 5;
+      "vm.vfs_cache_pressure" = 25;
     };
     kernelParams = [
       "mitigations=off"
       "zswap.enabled=1"
-      "zswap.accept_threshold_percent=90"
-      "zswap.max_pool_percent=80"
+      "zswap.max_pool_percent=60"
+      "zswap.shrinker_enabled=N"
     ];
   };
 
-  console.useXkbConfig = true;
+  console = {
+    colors = [
+      "060810"
+      "efa295"
+      "75d18b"
+      "d6b559"
+      "a4b7f0"
+      "e39edc"
+      "60cbdd"
+      "aeb8d4"
+      "121622"
+      "f6c8c0"
+      "97ecaa"
+      "efd286"
+      "c8d4f6"
+      "eec6e9"
+      "95e4f2"
+      "ced4e6"
+    ];
+    font = "Lat2-Terminus16";
+    useXkbConfig = true;
+  };
 
   environment.systemPackages = with pkgs; [
     btop
-    brightnessctl
     cachix
-    fhs
     home-manager
     ncdu
     nh
-    nix-output-monitor
-    playerctl
-    ripgrep
-    sudo
+    pciutils
+    unzip
+    usbutils
     util-linux
+    zip
   ];
 
   hardware = {
@@ -92,8 +113,6 @@
   };
 
   nix = {
-    package = pkgs.lixPackageSets.latest.lix;
-
     nixPath =
       lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry
       ++ [
@@ -116,19 +135,11 @@
     appimage.enable = true;
     firefox.enable = true;
     git.enable = true;
-    nix-ld.enable = true;
   };
 
   security.rtkit.enable = true;
 
   services = {
-    libinput = {
-      enable = true;
-      touchpad = {
-        clickMethod = "clickfinger";
-        naturalScrolling = true;
-      };
-    };
     logind.powerKey = "suspend";
     openssh.enable = true;
     pipewire = {
@@ -140,6 +151,10 @@
       pulse.enable = true;
     };
     pulseaudio.enable = false;
+    xserver.xkb = {
+      layout = "br,us";
+      options = "caps:escape_shifted_capslock,grp:win_space_toggle";
+    };
   };
 
   system.stateVersion = "25.05";

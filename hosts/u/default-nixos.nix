@@ -6,13 +6,25 @@
   ...
 }: {
   config = lib.mkIf (config.specialisation != {}) {
-    _module.args.pkgs = inputs.nixpkgs.lib.mkForce (import inputs.nixpkgs {
-      config.allowUnfree = true;
-      localSystem.system = "x86_64-linux";
-      overlays = inputs.self.overlays ++ config.nixpkgs.overlays;
-    });
+    nixpkgs.overlays = [
+      (final: prev: {
+        nix = final.lixPackageSets.latest.lix;
+      })
+    ];
 
-    boot.initrd.availableKernelModules = ["ehci_pci"];
+    boot = {
+      initrd.availableKernelModules = [
+        "ehci_pci"
+        "xhci_pci"
+        "ahci"
+        "usb_storage"
+        "uas"
+        "sd_mod"
+        "usbhid"
+        "rtsx_usb_sdmmc"
+      ];
+      kernelPackages = inputs.chaotic.legacyPackages.${pkgs.system}.linuxPackages_cachyos-lto;
+    };
 
     hardware = {
       enableAllFirmware = true;

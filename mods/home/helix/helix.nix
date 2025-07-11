@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  pkgs,
   ...
 }: {
   imports = [
@@ -15,18 +16,13 @@
   };
 
   config = lib.mkIf config.mods.helix.enable {
-    nixpkgs.overlays = [
-      (final: prev: {
-        helix = inputs.helix.packages.${final.system}.helix;
-      })
-    ];
-
     home.shellAliases = {
       "shx" = "sudo -E hx";
     };
     
     programs.helix = {
       enable = true;
+      package = inputs.helix.packages.${pkgs.system}.helix;
       settings.theme = "theme";
     };
 

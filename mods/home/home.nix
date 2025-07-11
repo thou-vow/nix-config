@@ -6,6 +6,7 @@
     ./hyprland/hyprland.nix
     ./kitty/kitty.nix
     ./nushell/nushell.nix
+    ./prismlauncher.nix
     ./yazi/yazi.nix
   ];
 

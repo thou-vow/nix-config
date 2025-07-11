@@ -5,22 +5,13 @@
 }: {
   imports = [inputs.impermanence.nixosModules.impermanence];
 
-  boot = {
-    initrd.availableKernelModules = [
-      "xhci_pci"
-      "usb_storage"
-      "uas"
-      "sd_mod"
-      "usbhid"
-    ];
-    loader = {
-      efi.efiSysMountPoint = "/boot";
-      grub = {
-        enable = true;
-        device = "/dev/disk/by-id/wwn-0x500003988168a3bd";
-        efiInstallAsRemovable = true;
-        efiSupport = true;
-      };
+  boot.loader = {
+    efi.efiSysMountPoint = "/boot";
+    grub = {
+      enable = true;
+      device = "/dev/disk/by-id/wwn-0x500003988168a3bd";
+      efiInstallAsRemovable = true;
+      efiSupport = true;
     };
   };
 

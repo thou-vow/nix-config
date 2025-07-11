@@ -20,6 +20,7 @@
     hyprland.enable = true;
     kitty.enable = true;
     nushell.enable = true;
+    prismlauncher.enable = true;
     yazi.enable = true;
   };
 
@@ -27,9 +28,9 @@
     enable = true;
     defaultFonts = {
       monospace = ["VictorMono Nerd Font Mono"];
-      sansSerif = ["Noto Sans"];
-      serif = ["Noto Serif"];
-      emoji = ["Noto Color Emoji"];
+      # sansSerif = ["Noto Sans"];
+      # serif = ["Noto Serif"];
+      # emoji = ["Noto Color Emoji"];
     };
   };
 
@@ -47,8 +48,6 @@
       krita
       lutris
       nerd-fonts.victor-mono
-      noto-fonts
-      noto-fonts-emoji
       qbittorrent
       steam
       python3
@@ -78,7 +77,7 @@
       "/nix/persist/zstd3/home/${config.home.username}" = {
         defaultDirectoryMethod = "symlink";
         directories = [
-          "nix-in-a-vat"
+          "Desktop"
           "Projects"
         ];
         allowOther = true;

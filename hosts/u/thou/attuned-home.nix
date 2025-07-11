@@ -4,17 +4,15 @@
   ...
 }: {
   specialisation.attuned.configuration = {
-    _module.args.pkgs = inputs.nixpkgs.lib.mkForce (import inputs.nixpkgs {
-      config.allowUnfree = true;
-      localSystem = {
-        # gcc.arch = "skylake";
-        # gcc.tune = "skylake";
-        system = "x86_64-linux";
-      };
-      overlays =
-        inputs.self.overlays
-        ++ inputs.self.nixosConfigurations."u".config.specialisation.attuned.configuration.nixpkgs.overlays
-        ++ config.nixpkgs.overlays;
-    });
+    nixpkgs.overlays =
+      inputs.self.nixosConfigurations."u".config.specialisation.attuned.configuration.nixpkgs.overlays
+      ++ [
+        (final: prev: {
+          # graalvm-oracle = attunedPkgs.graalvm-oracle;
+          # graalvm-oracle_21 = attunedPkgs.graalvm-oracle_21;
+          # hyprland = attunedPkgs.hyprland;
+          # kitty = attunedPkgs.kitty;
+        })
+      ];
   };
 }
