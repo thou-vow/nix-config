@@ -37,9 +37,9 @@
 "diff.delta"="yellow"
 
 "ui.background"={bg="background"}
-"ui.cursor.normal"={fg="background",bg="other_cursor"}
-"ui.cursor.insert"={fg="background",bg="green"}
-"ui.cursor.select"={fg="background",bg="blue"}
+"ui.cursor.normal"={bg="main_selection"}
+"ui.cursor.insert"={bg="main_selection"}
+"ui.cursor.select"={bg="main_selection"}
 "ui.cursor.primary.normal"={fg="dark_background",bg="main_cursor",modifiers=["bold"]}
 "ui.cursor.primary.insert"={fg="dark_background",bg="bright_green",modifiers=["bold"]}
 "ui.cursor.primary.select"={fg="dark_background",bg="bright_blue",modifiers=["bold"]}
@@ -99,18 +99,18 @@ comment="#919dbf" # 270 30 65
 dark_foreground="#aeb8d4" # 270 30 75
 foreground="#ced4e6" # 270 30 85
 
-red="#efa295" # 30 70 75
-yellow="#d6b559" # 90 70 75
-green="#75d18b" # 150 70 75
-cyan="#60cbdd" # 210 70 75
-blue="#a4b7f0" # 270 70 75
-magenta="#e39edc" # 330 70 75
-bright_red="#f6c8c0" # 30 70 85
-bright_yellow="#efd286" # 90 70 85
-bright_green="#97ecaa" # 150 70 85
-bright_cyan="#95e4f2" # 210 70 85
-bright_blue="#c8d4f6" # 270 70 85
-bright_magenta="#eec6e9" # 330 70 85
+red="#ea8f80" # 30 70 70
+yellow="#c7a84d" # 90 70 70
+green="#6ac27f" # 150 70 70
+cyan="#52bcce" # 210 70 70
+blue="#92a8eb" # 270 70 70
+magenta="#db8ad4" # 330 70 70
+bright_red="#f5b3a7" # 30 75 80
+bright_yellow="#e5c25f" # 90 75 80
+bright_green="#7ae092" # 150 75 80
+bright_cyan="#6bd8ea" # 210 75 80
+bright_blue="#b3c4f5" # 270 75 80
+bright_magenta="#eaafe4" # 330 75 80
 
 escape="#efa295"
 parameter="#d6b559"

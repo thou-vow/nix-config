@@ -16,17 +16,16 @@
     flakePath = "/flake";
   };
 
-  nixpkgs.overlays =
-    inputs.self.overlays
+  nixpkgs.overlays = lib.mkBefore (inputs.self.overlays
     ++ [
       (final: prev: {
-        sudo = prev.sudo.override {withInsults = true;};
+        # sudo = prev.sudo.override {withInsults = true;};
       })
-    ];
+    ]);
 
   boot = {
     kernel.sysctl = {
-      "vm.swappiness" = 20;
+      "vm.swappiness" = 10;
       "vm.dirty_background_ratio" = 2;
       "vm.dirty_ratio" = 5;
       "vm.vfs_cache_pressure" = 25;
@@ -35,27 +34,27 @@
       "mitigations=off"
       "zswap.enabled=1"
       "zswap.max_pool_percent=60"
-      "zswap.shrinker_enabled=N"
+      "zswap.shrinker_enabled=0"
     ];
   };
 
   console = {
     colors = [
-      "060810"
-      "efa295"
-      "75d18b"
-      "d6b559"
-      "a4b7f0"
-      "e39edc"
-      "60cbdd"
-      "aeb8d4"
       "121622"
-      "f6c8c0"
-      "97ecaa"
-      "efd286"
-      "c8d4f6"
-      "eec6e9"
-      "95e4f2"
+      "ea8f80"
+      "6ac27f"
+      "c7a84d"
+      "92a8eb"
+      "db8ad4"
+      "52bcce"
+      "aeb8d4"
+      "7683a8"
+      "f5b3a7"
+      "7ae092"
+      "e5c25f"
+      "b3c4f5"
+      "eaafe4"
+      "6bd8ea"
       "ced4e6"
     ];
     font = "Lat2-Terminus16";
@@ -102,14 +101,7 @@
 
   networking = {
     hostName = "u";
-    nameservers = [
-      "1.0.0.1"
-      "1.1.1.1"
-    ];
-    networkmanager = {
-      enable = true;
-      dns = "none";
-    };
+    networkmanager.enable = true;
   };
 
   nix = {
@@ -137,7 +129,10 @@
     git.enable = true;
   };
 
-  security.rtkit.enable = true;
+  security = {
+    rtkit.enable = true;
+    polkit.enable = true;
+  };
 
   services = {
     logind.powerKey = "suspend";
@@ -157,29 +152,32 @@
     };
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 
-  systemd.user.services."hm-activate" = {
-    enable = true;
-    description = "Activate home-manager at login";
+  systemd = {
+    oomd.enable = false;
+    user.services."hm-activate" = {
+      enable = true;
+      description = "Activate home-manager at login";
 
-    wantedBy = ["default.target"];
-    before = ["graphical-session.target"];
+      wantedBy = ["default.target"];
+      before = ["graphical-session.target"];
 
-    path = [config.nix.package pkgs.home-manager pkgs.toybox];
+      path = [config.nix.package pkgs.home-manager pkgs.toybox];
 
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = "yes";
-      TimeoutStartSec = "5m";
-      SyslogIdentifier = "hm-activate";
-      ExecStart = "${pkgs.writeShellScript "hm-activate" ''
-        #!${lib.getExe pkgs.dash}
-        $(home-manager generations | head -1 | cut -d ' ' -f7)/activate
-      ''}";
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = "yes";
+        TimeoutStartSec = "5m";
+        SyslogIdentifier = "hm-activate";
+        ExecStart = "${pkgs.writeShellScript "hm-activate" ''
+          #!${lib.getExe pkgs.dash}
+          $(home-manager generations | head -1 | cut -d ' ' -f7)/activate
+        ''}";
+      };
+
+      unitConfig.ConditionUser = "thou";
     };
-
-    unitConfig.ConditionUser = "thou";
   };
 
   time.timeZone = "America/Sao_Paulo";

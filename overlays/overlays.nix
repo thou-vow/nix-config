@@ -1,24 +1,5 @@
 [
   (final: prev: {
-    fhs = let
-      base = final.appimageTools.defaultFhsEnvArgs;
-    in
-      final.buildFHSEnv (base
-        // {
-          name = "fhs";
-          targetPkgs = final:
-            (base.targetPkgs final)
-            ++ (
-              with final; [
-                pkg-config
-                ncurses
-              ]
-            );
-          profile = "export FHS=1";
-          runScript = final.lib.getExe final.bash;
-          extraOutputsToInstall = ["dev"];
-        });
-
     graalvm-oracle_21 = let
       src = {
         "x86_64-linux" = final.fetchurl {

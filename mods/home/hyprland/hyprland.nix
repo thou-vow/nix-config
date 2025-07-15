@@ -18,7 +18,7 @@
         bind = , XF86AudioRaiseVolume, exec, amixer set Master 1%+
         bind = , XF86MonBrightnessDown, exec, brightnessctl set 1%-
         bind = , XF86MonBrightnessUp, exec, brightnessctl set 1%+
-        bind = , Print, exec, grim -g "$(slurp)" - | swappy -f -
+        bind = , Print, exec, grim -g "$(slurp)" - | satty --copy-command wl-copy --early-exit --fullscreen -f -
         bind = Super, T, exec, kitty -1
         bind = Super, B, exec, brave
 
@@ -30,8 +30,8 @@
       alsa-utils
       brightnessctl
       grim
+      satty
       slurp
-      swappy
       wl-clipboard
     ];
   };

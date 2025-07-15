@@ -1,0 +1,13 @@
+--- a/arch/x86/Makefile	2025-07-13 23:57:56.067805641 -0300
++++ b/arch/x86/Makefile	2025-07-14 00:19:43.466931063 -0300
+@@ -174,8 +174,8 @@
+ 	KBUILD_CFLAGS += $(call cc-option,-mskip-rax-setup)
+ 
+ ifdef CONFIG_X86_NATIVE_CPU
+-        KBUILD_CFLAGS += -march=native
+-        KBUILD_RUSTFLAGS += -Ctarget-cpu=native
++        KBUILD_CFLAGS += -march=skylake
++        KBUILD_RUSTFLAGS += -Ctarget-cpu=skylake
+ endif
+ 
+ ifdef CONFIG_MZEN4

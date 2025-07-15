@@ -15,9 +15,6 @@
       packages = with pkgs; [
         prismlauncher
       ];
-      persistence."/nix/persist/zstd3/home/${config.home.username}".directories = [
-        ".local/share/PrismLauncher"
-      ];
     };
   };
 }

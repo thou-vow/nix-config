@@ -16,10 +16,6 @@
   };
 
   config = lib.mkIf config.mods.helix.enable {
-    home.shellAliases = {
-      "shx" = "sudo -E hx";
-    };
-    
     programs.helix = {
       enable = true;
       package = inputs.helix.packages.${pkgs.system}.helix;

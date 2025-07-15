@@ -31,7 +31,6 @@
         "/etc/NetworkManager/system-connections"
         "/etc/ssh/ssh_host_ed25519_key"
         "/home/thou/.local/state/nix"
-        "/tmp"
         "/var/cache"
         "/var/lib"
       ];
@@ -72,8 +71,4 @@
       options = ["commit=60" "data=writeback" "journal_async_commit" "noatime"];
     };
   };
-
-  swapDevices = [
-    {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}
-  ];
 }

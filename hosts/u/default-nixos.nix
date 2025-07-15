@@ -8,7 +8,7 @@
   config = lib.mkIf (config.specialisation != {}) {
     nixpkgs.overlays = [
       (final: prev: {
-        nix = final.lixPackageSets.latest.lix;
+        # nix = final.lixPackageSets.latest.lix;
       })
     ];
 
@@ -21,7 +21,6 @@
         "uas"
         "sd_mod"
         "usbhid"
-        "rtsx_usb_sdmmc"
       ];
       kernelPackages = inputs.chaotic.legacyPackages.${pkgs.system}.linuxPackages_cachyos-lto;
     };
@@ -30,5 +29,11 @@
       enableAllFirmware = true;
       enableAllHardware = true;
     };
+
+    nix.package = pkgs.lixPackageSets.latest.lix;
+
+    swapDevices = [
+      {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}
+    ];
   };
 }
