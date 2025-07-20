@@ -8,7 +8,23 @@
   config = lib.mkIf (config.specialisation != {}) {
     nixpkgs.overlays = [
       (final: prev: {
-        # nix = final.lixPackageSets.latest.lix;
+        hm-activate = final.writeShellScript "hm-activate" ''
+          #!${lib.getExe final.dash}
+
+          for gen in $(
+            ${final.nix}/bin/nix-store -q --referrers \
+              $(
+                ${lib.getExe final.home-manager} generations | \
+                ${final.toybox}/bin/head -1 | \
+                ${final.toybox}/bin/cut -d ' ' -f7
+              )
+          ); do if [ -d "$gen/specialisation" ]; then
+              "$gen/activate"
+            fi
+          done
+        '';
+
+        nix = final.lixPackageSets.latest.lix;
       })
     ];
 
@@ -29,8 +45,6 @@
       enableAllFirmware = true;
       enableAllHardware = true;
     };
-
-    nix.package = pkgs.lixPackageSets.latest.lix;
 
     swapDevices = [
       {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}

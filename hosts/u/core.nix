@@ -21,6 +21,7 @@
       hideMounts = true;
       directories = [
         "/flake"
+        "/root/.local/share/nix"
         "/var/log"
       ];
     };
@@ -30,10 +31,15 @@
       directories = [
         "/etc/NetworkManager/system-connections"
         "/etc/ssh/ssh_host_ed25519_key"
-        "/home/thou/.local/state/nix"
         "/var/cache"
         "/var/lib"
       ];
+      users.thou = {
+        directories = [
+          ".cache"
+          ".local/state/nix"
+        ];
+      };
     };
   };
 

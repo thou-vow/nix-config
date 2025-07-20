@@ -6,9 +6,8 @@
   ...
 }: {
   imports = [
-    ./attuned-nixos.nix
     ./core.nix
-    ./default-nixos.nix
+    ./modes/modes.nix
     ../../mods/nixos/nixos.nix
   ];
 
@@ -116,6 +115,7 @@
       (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
 
     settings = {
+      auto-optimise-store = true;
       experimental-features = ["flakes" "nix-command" "pipe-operator"];
       flake-registry = "";
       system-features = ["gccarch-skylake"];
@@ -135,7 +135,6 @@
   };
 
   services = {
-    logind.powerKey = "suspend";
     openssh.enable = true;
     pipewire = {
       enable = true;
@@ -152,32 +151,30 @@
     };
   };
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "25.05";
 
   systemd = {
     oomd.enable = false;
-    user.services."hm-activate" = {
-      enable = true;
-      description = "Activate home-manager at login";
+    services =
+      lib.mapAttrs' (name: value:
+        lib.nameValuePair "hm-activation-${name}" {
+          description = "Run ${name} Home Manager activation";
 
-      wantedBy = ["default.target"];
-      before = ["graphical-session.target"];
+          wantedBy = ["user-runtime-dir@${builtins.toString value.uid}.service"];
+          before = ["user@${builtins.toString value.uid}.service"];
 
-      path = [config.nix.package pkgs.home-manager pkgs.toybox];
+          serviceConfig = {
+            # Defined in the modes
+            ExecStart = "${pkgs.hm-activate}"; 
 
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = "yes";
-        TimeoutStartSec = "5m";
-        SyslogIdentifier = "hm-activate";
-        ExecStart = "${pkgs.writeShellScript "hm-activate" ''
-          #!${lib.getExe pkgs.dash}
-          $(home-manager generations | head -1 | cut -d ' ' -f7)/activate
-        ''}";
-      };
-
-      unitConfig.ConditionUser = "thou";
-    };
+            RemainAfterExit = "yes";
+            Type = "oneshot";
+            User = name;
+          };
+        })
+      # Only make hm-activation services for users within home-manager group
+      (lib.filterAttrs (_: value: lib.lists.any (group: group == "home-manager") value.extraGroups)
+        config.users.users);
   };
 
   time.timeZone = "America/Sao_Paulo";
@@ -185,11 +182,12 @@
   users.users = {
     root.password = "123";
     thou = {
+      uid = 1000;
       isNormalUser = true;
       description = "thou";
-      extraGroups = ["networkmanager" "wheel"];
+      extraGroups = ["home-manager" "networkmanager" "wheel"];
       password = "123";
-      shell = lib.getExe pkgs.bash;
+      shell = lib.getExe pkgs.fish;
     };
   };
 }

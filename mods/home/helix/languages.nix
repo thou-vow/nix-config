@@ -13,42 +13,34 @@
             tab-width = 2;
             unit = " ";
           };
-        in
-          [
-            {
-              name = "json";
-              indent = commonIndent;
-            }
-            {
-              name = "kdl";
-              formatter.command = lib.getExe pkgs.kdlfmt;
-              indent = commonIndent;
-            }
-            {
-              name = "nix";
-              formatter.command = lib.getExe pkgs.alejandra;
-              indent = commonIndent;
-              language-servers = ["nixd"];
-            }
-            {
-              name = "typescript";
-              indent = commonIndent;
-              language-servers = ["typescript-language-server"];
-            }
-            {
-              name = "typst";
-              indent = commonIndent;
-              formatter.command = lib.getExe pkgs.typst-fmt;
-              language-servers = ["tinymist"];
-            }
-          ]
-          ++ lib.optionals config.mods.nushell.enable [
-            {
-              name = "nu";
-              indent = commonIndent;
-              language-servers = ["nu"];
-            }
-          ];
+        in [
+          {
+            name = "json";
+            indent = commonIndent;
+          }
+          {
+            name = "kdl";
+            formatter.command = lib.getExe pkgs.kdlfmt;
+            indent = commonIndent;
+          }
+          {
+            name = "nix";
+            formatter.command = lib.getExe pkgs.alejandra;
+            indent = commonIndent;
+            language-servers = ["nixd"];
+          }
+          {
+            name = "typescript";
+            indent = commonIndent;
+            language-servers = ["typescript-language-server"];
+          }
+          {
+            name = "typst";
+            indent = commonIndent;
+            formatter.command = lib.getExe pkgs.typst-fmt;
+            language-servers = ["tinymist"];
+          }
+        ];
 
         language-server = {
           nixd = {

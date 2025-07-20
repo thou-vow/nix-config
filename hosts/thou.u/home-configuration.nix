@@ -7,20 +7,19 @@
 }: {
   imports = [
     inputs.impermanence.homeManagerModules.impermanence
-    ./attuned-home.nix
-    ./default-home.nix
-    ../../../mods/home/home.nix
+    ./modes/modes.nix
+    ../../mods/home/home.nix
   ];
 
   mods = {
     flakePath = "/flake";
     brave.enable = true;
     fastfetch.enable = true;
+    fish.enable = true;
     flatpak.enable = true;
     helix.enable = true;
     hyprland.enable = true;
     kitty.enable = true;
-    nushell.enable = true;
     prismlauncher.enable = true;
     yazi.enable = true;
   };
@@ -54,7 +53,6 @@
       typst
       typstyle
       unimatrix
-      warp-terminal
     ];
     persistence = {
       "/nix/persist/plain/home/${config.home.username}" = {
@@ -79,6 +77,7 @@
       "/nix/persist/zstd3/home/${config.home.username}" = {
         defaultDirectoryMethod = "symlink";
         directories = [
+          ".local/share/nix"
           ".local/share/PrismLauncher"
           "Desktop"
           "Projects"
@@ -86,11 +85,16 @@
         allowOther = true;
       };
     };
-    stateVersion = "25.11";
+    sessionVariables = {
+      BROWSER = lib.getExe pkgs.brave;
+      EDITOR = lib.getExe pkgs.helix;
+      SHELL = lib.getExe pkgs.fish;
+      VISUAL = lib.getExe pkgs.helix;
+    };
+    stateVersion = "25.05";
   };
 
   programs = {
-    bash.enable = true;
     helix = {
       languages.language-server.nixd.config.nixd.options = {
         nixos.expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options'';

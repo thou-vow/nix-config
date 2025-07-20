@@ -2,11 +2,11 @@
   description = "Nix environments for thou";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-master.url = "github:nixos/nixpkgs";
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -75,7 +75,7 @@
       "thou@u" = home-manager.lib.homeManagerConfiguration {
         pkgs = eachPkgs."x86_64-linux";
         extraSpecialArgs = {inherit inputs;};
-        modules = [./hosts/u/thou/home-configuration.nix];
+        modules = [./hosts/thou.u/home-configuration.nix];
       };
     };
   };

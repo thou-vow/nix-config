@@ -9,7 +9,6 @@
   config = lib.mkIf config.mods.prismlauncher.enable {
     home = {
       extraDependencies = with pkgs; [
-        graalvm-oracle
         graalvm-oracle_21
       ];
       packages = with pkgs; [

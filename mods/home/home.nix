@@ -2,11 +2,11 @@
   imports = [
     ./brave.nix
     ./fastfetch/fastfetch.nix
+    ./fish/fish.nix
     ./flatpak.nix
     ./helix/helix.nix
     ./hyprland/hyprland.nix
     ./kitty/kitty.nix
-    ./nushell/nushell.nix
     ./prismlauncher.nix
     ./yazi/yazi.nix
   ];
