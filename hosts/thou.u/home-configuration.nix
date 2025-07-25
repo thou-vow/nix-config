@@ -20,6 +20,7 @@
     helix.enable = true;
     hyprland.enable = true;
     kitty.enable = true;
+    nh.enable = true;
     prismlauncher.enable = true;
     yazi.enable = true;
   };
@@ -28,9 +29,9 @@
     enable = true;
     defaultFonts = {
       monospace = ["VictorMono Nerd Font Mono"];
-      # sansSerif = ["Noto Sans"];
-      # serif = ["Noto Serif"];
-      # emoji = ["Noto Color Emoji"];
+      sansSerif = ["Noto Sans"];
+      serif = ["Noto Serif"];
+      emoji = ["Noto Color Emoji"];
     };
   };
 
@@ -47,6 +48,8 @@
       krita
       lutris
       nerd-fonts.victor-mono
+      noto-fonts
+      noto-fonts-emoji
       qbittorrent
       steam
       python3
@@ -88,7 +91,6 @@
     sessionVariables = {
       BROWSER = lib.getExe pkgs.brave;
       EDITOR = lib.getExe pkgs.helix;
-      SHELL = lib.getExe pkgs.fish;
       VISUAL = lib.getExe pkgs.helix;
     };
     stateVersion = "25.05";

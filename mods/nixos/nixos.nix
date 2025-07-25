@@ -1,5 +1,12 @@
-{lib, ...}: {
+{
+  config,
+  inputs,
+  lib,
+  options,
+  ...
+}: {
   imports = [
+    ./nh.nix
   ];
 
   options.mods = {
@@ -7,7 +14,6 @@
       type = lib.types.str;
       default = lib.mkError "Option 'mods.flakePath' must be explicitly set.";
       description = "The absolute path of this flake. Must be explicitly set.";
-      example = "/home/thou/nix-in-a-vat";
     };
   };
 }

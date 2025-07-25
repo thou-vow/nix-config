@@ -36,7 +36,7 @@
       ];
       users.thou = {
         directories = [
-          ".cache"
+          ".local/share/waydroid"
           ".local/state/nix"
         ];
       };

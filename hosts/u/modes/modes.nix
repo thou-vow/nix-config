@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    ./attuned/attuned.nix
-    ./default.nix
+    ./attuned/attuned-nixos.nix
+    ./default-nixos.nix
   ];
 }

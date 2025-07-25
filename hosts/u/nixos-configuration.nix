@@ -13,14 +13,10 @@
 
   mods = {
     flakePath = "/flake";
+    nh.enable = true;
   };
 
-  nixpkgs.overlays = lib.mkBefore (inputs.self.overlays
-    ++ [
-      (final: prev: {
-        # sudo = prev.sudo.override {withInsults = true;};
-      })
-    ]);
+  nixpkgs.overlays = inputs.self.overlays;
 
   boot = {
     kernel.sysctl = {
@@ -32,7 +28,7 @@
     kernelParams = [
       "mitigations=off"
       "zswap.enabled=1"
-      "zswap.max_pool_percent=60"
+      "zswap.max_pool_percent=65"
       "zswap.shrinker_enabled=0"
     ];
   };
@@ -60,18 +56,20 @@
     useXkbConfig = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    btop
-    cachix
-    home-manager
-    ncdu
-    nh
-    pciutils
-    unzip
-    usbutils
-    util-linux
-    zip
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      btop
+      cachix
+      home-manager
+      ncdu
+      nh
+      pciutils
+      unzip
+      usbutils
+      util-linux
+      zip
+    ];
+  };
 
   hardware = {
     cpu.intel.updateMicrocode =
@@ -105,17 +103,14 @@
 
   nix = {
     nixPath =
-      lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry
-      ++ [
-        "nixos-config=${config.mods.flakePath}"
-      ];
+      lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
 
     registry =
       lib.mapAttrs (_: value: {flake = value;})
       (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
 
     settings = {
-      auto-optimise-store = true;
+      # auto-optimise-store = true;
       experimental-features = ["flakes" "nix-command" "pipe-operator"];
       flake-registry = "";
       system-features = ["gccarch-skylake"];
@@ -126,12 +121,14 @@
   programs = {
     appimage.enable = true;
     firefox.enable = true;
+    fish.enable = true;
     git.enable = true;
   };
 
   security = {
     rtkit.enable = true;
     polkit.enable = true;
+    sudo.package = pkgs.sudo.override {withInsults = true;};
   };
 
   services = {
@@ -164,16 +161,14 @@
           before = ["user@${builtins.toString value.uid}.service"];
 
           serviceConfig = {
-            # Defined in the modes
-            ExecStart = "${pkgs.hm-activate}"; 
-
+            # ExecStart is defined in the modes
             RemainAfterExit = "yes";
             Type = "oneshot";
             User = name;
           };
         })
-      # Only make hm-activation services for users within home-manager group
-      (lib.filterAttrs (_: value: lib.lists.any (group: group == "home-manager") value.extraGroups)
+      # Only for users within home-manager group
+      (lib.filterAttrs (_: value: builtins.any (group: group == "home-manager") value.extraGroups)
         config.users.users);
   };
 
@@ -187,7 +182,9 @@
       description = "thou";
       extraGroups = ["home-manager" "networkmanager" "wheel"];
       password = "123";
-      shell = lib.getExe pkgs.fish;
+      shell = pkgs.fish;
     };
   };
+
+  virtualisation.waydroid.enable = true;
 }
