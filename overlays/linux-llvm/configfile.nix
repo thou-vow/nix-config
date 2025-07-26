@@ -87,19 +87,19 @@ in
     passthru =
       prevAttrs.passthru or {}
       // {
-        edit = configfile.overrideAttrs (prevAttrs': {
-          depsBuildBuild =
-            prevAttrs'.depsBuildBuild
-            ++ (with pkgsBuildBuild; [
-              pkg-config
-              ncurses
-            ]);
+        edit = stdenv.mkDerivation {
+          inherit (linux) src;
 
-          postPatch =
-            prevAttrs'.postPatch or ""
-            + ''
-              cp "${linux.configfile}" ".config.old"
-            '';
-        });
+          patches = (builtins.map (kernelPatch: kernelPatch.patch) linux.kernelPatches) ++ patches;
+
+          depsBuildBuild = with pkgsBuildBuild; [
+            pkg-config
+            ncurses
+          ];
+
+          postPatch = ''
+            cp "${linux.configfile}" ".config.old"
+          '';
+        };
       };
   })

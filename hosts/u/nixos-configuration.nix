@@ -132,6 +132,7 @@
   };
 
   services = {
+    lvm.enable = false;
     openssh.enable = true;
     pipewire = {
       enable = true;

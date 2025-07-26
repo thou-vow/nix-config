@@ -14,8 +14,14 @@
     boot = {
       initrd = {
         includeDefaultModules = false;
-        kernelModules = ["xhci_pci" "ahci" "uas"];
+        kernelModules = [
+          "xhci_pci"
+          "ahci"
+          "uas"
+          "sd_mod"
+        ];
       };
+      kernelModules = ["kvm-intel"];
       kernelPackages = pkgs.linuxPackagesFor (pkgs.linux-llvm.override {
         linux = pkgs.linux_latest;
         suffix = "attuned";
@@ -30,6 +36,7 @@
           netfilterRPFilter = true;
         };
       });
+      # kernelPackages = pkgs.linuxPackages_latest;
       kernelParams = [
         "ath9k_core.nohwcrypt=1"
         "pcie_aspm=off"
@@ -51,7 +58,7 @@
     systemd.services =
       lib.mapAttrs' (name: value:
         lib.nameValuePair "hm-activation-${name}" {
-          path = [config.nix.package pkgs.toybox];
+          path = [config.nix.package];
 
           serviceConfig.ExecStart = ''
             ${
