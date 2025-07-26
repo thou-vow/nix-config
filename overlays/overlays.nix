@@ -14,7 +14,5 @@
         version = "21";
         src = src.${final.system};
       });
-
-    linux-llvm = final.callPackage ./linux-llvm/linux-llvm.nix {};
   })
 ]

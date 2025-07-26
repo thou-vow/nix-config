@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -22,21 +23,10 @@
         ];
       };
       kernelModules = ["kvm-intel"];
-      kernelPackages = pkgs.linuxPackagesFor (pkgs.linux-llvm.override {
-        linux = pkgs.linux_latest;
-        suffix = "attuned";
-        useO3 = true;
-        mArch = "skylake";
-        withLTO = "thin";
-        disableDebug = true;
-        prependStructuredConfig = import ./kernel-localyesconfig.nix lib;
-        features = {
-          efiBootStub = true;
-          ia32Emulation = true;
-          netfilterRPFilter = true;
-        };
-      });
-      # kernelPackages = pkgs.linuxPackages_latest;
+      kernelPackages = inputs.chaotic.legacyPackages.${pkgs.system}.linuxPackages_cachyos-lto.cachyOverride {
+        mArch = "GENERIC_V3";
+        withoutDebug = true;
+      };
       kernelParams = [
         "ath9k_core.nohwcrypt=1"
         "pcie_aspm=off"
