@@ -1,8 +1,8 @@
-name: Build & Push to Cachix
-
+name: ⏰ Update Binary Cache
 on:
-  push:
-    branches: [master]
+  schedule:
+    - cron: '0 */18 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -11,17 +11,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Nix
-        uses: cachix/install-nix-action@v30
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            accept-flake-config = true
 
-      - name: Configure Cachix
-        uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v16
         with:
           name: thou-vow
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Build packages x86_64 Linux
-        run: nix build -L .#nixosConfigurations.u.config.specialisation.attuned.configuration.boot.kernelPackages.kernel
+      - name: Update flake.lock
+        run: nix flake update --accept-flake-config
 
-      - name: Push outputs
+      - name: Build specific packages
+        run: |
+          nix build -L --accept-flake-config .#nixosConfigurations.u.config.specialisation.attuned.configuration.boot.kernelPackages.kernel
+
+      - name: Push outputs to Cachix
         run: cachix push thou-vow ./result/*
