@@ -6,24 +6,12 @@
   ...
 }: {
   imports = [
-    inputs.impermanence.homeManagerModules.impermanence
-    ./modes/modes.nix
-    ../../mods/home/home.nix
+    ./attuned-specialisation-home.nix
+    ./no-specialisation-home.nix
+    ./selected-modules.nix
   ];
 
-  mods = {
-    flakePath = "/flake";
-    brave.enable = true;
-    fastfetch.enable = true;
-    fish.enable = true;
-    flatpak.enable = true;
-    helix.enable = true;
-    hyprland.enable = true;
-    kitty.enable = true;
-    nh.enable = true;
-    prismlauncher.enable = true;
-    yazi.enable = true;
-  };
+  mods.flakePath = "/flake";
 
   fonts.fontconfig = {
     enable = true;
@@ -38,6 +26,7 @@
   home = {
     username = "thou";
     homeDirectory = "/home/${config.home.username}";
+
     packages = with pkgs; [
       azahar
       clock-rs
@@ -57,15 +46,13 @@
       typstyle
       unimatrix
     ];
+
     persistence = {
       "/nix/persist/plain/home/${config.home.username}" = {
         defaultDirectoryMethod = "symlink";
         directories = [
-          ".config/BraveSoftware"
-          ".local/share/flatpak"
+          ".cache/nix"
           ".ssh"
-          ".steam"
-          ".var"
           "Documents"
           "Downloads"
           "Games"
@@ -81,13 +68,13 @@
         defaultDirectoryMethod = "symlink";
         directories = [
           ".local/share/nix"
-          ".local/share/PrismLauncher"
           "Desktop"
           "Projects"
         ];
         allowOther = true;
       };
     };
+
     sessionVariables = {
       BROWSER = lib.getExe pkgs.brave;
       EDITOR = lib.getExe pkgs.helix;

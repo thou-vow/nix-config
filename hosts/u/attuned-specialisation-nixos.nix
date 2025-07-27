@@ -23,14 +23,15 @@
         ];
       };
       kernelModules = ["kvm-intel"];
+
       kernelPackages = pkgs.linuxPackagesFor (pkgs.linux-llvm.override {
         linux = inputs.chaotic.packages.${pkgs.system}.linux_cachyos-lto;
         llvmPackages = pkgs.llvmPackages_latest;
         suffix = "attuned";
         useO3 = true;
         mArch = "skylake";
-        prependStructuredConfig = import ./kernel-localyesconfig.nix lib;
-        withLTO = "thin";
+        prependStructuredConfig = import ./attuned-kernel-localyesconfig.nix lib;
+        withLTO = "full";
         disableDebug = true;
         features = {
           efiBootStub = true;
@@ -38,6 +39,7 @@
           netfilterRPFilter = true;
         };
       });
+
       kernelParams = [
         "ath9k_core.nohwcrypt=1"
         "pcie_aspm=off"

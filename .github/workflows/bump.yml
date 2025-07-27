@@ -1,8 +1,8 @@
-name: ⏰ Bump Binary Cache
+name: Bump dependencies
 on:
-  schedule:
-    - cron: '0 */18 * * *'
   workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'
 
 jobs:
   build:
@@ -28,5 +28,5 @@ jobs:
         run: |
           nix build -L --accept-flake-config .#nixosConfigurations.u.config.specialisation.attuned.configuration.boot.kernelPackages.kernel
 
-      - name: Push outputs to Cachix
+      - name: Push to Cachix
         run: cachix push thou-vow ./result/*

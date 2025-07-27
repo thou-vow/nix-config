@@ -64,20 +64,32 @@
         ) (import ./overlays/overlays.nix))
     );
 
+    nixosModules.nixos = import ./mods/nixos/nixos.nix;
+
+    homeManagerModules.home = import ./mods/home/home.nix;
+
     formatter = nixpkgs.lib.genAttrs systems (system: eachPkgs.${system}.alejandra);
 
     nixosConfigurations = {
       "u" = nixpkgs.lib.nixosSystem {
         pkgs = eachPkgs."x86_64-linux";
         specialArgs = {inherit inputs;};
-        modules = [./hosts/u/nixos-configuration.nix];
+        modules = [
+          ./hosts/u/nixos-configuration.nix
+          inputs.self.nixosModules.nixos
+          inputs.impermanence.nixosModules.impermanence
+        ];
       };
     };
     homeConfigurations = {
       "thou@u" = home-manager.lib.homeManagerConfiguration {
         pkgs = eachPkgs."x86_64-linux";
         extraSpecialArgs = {inherit inputs;};
-        modules = [./hosts/thou.u/home-configuration.nix];
+        modules = [
+          ./hosts/thou.u/home-configuration.nix
+          inputs.self.homeManagerModules.home
+          inputs.impermanence.homeManagerModules.impermanence
+        ];
       };
     };
   };

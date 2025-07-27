@@ -1,10 +1,7 @@
 {
   config,
-  inputs,
   ...
 }: {
-  imports = [inputs.impermanence.nixosModules.impermanence];
-
   boot.loader = {
     efi.efiSysMountPoint = "/boot";
     grub = {
@@ -36,7 +33,6 @@
       ];
       users.thou = {
         directories = [
-          ".local/share/waydroid"
           ".local/state/nix"
         ];
       };

@@ -6,9 +6,9 @@
   ...
 }: {
   imports = [
-    ./core.nix
-    ./modes/modes.nix
-    ../../mods/nixos/nixos.nix
+    ./attuned-specialisation-nixos.nix
+    ./drive-format.nix
+    ./no-specialisation-nixos.nix
   ];
 
   mods = {
