@@ -1,4 +1,4 @@
-name: ⏰ Update Binary Cache
+name: ⏰ Bump Binary Cache
 on:
   schedule:
     - cron: '0 */18 * * *'

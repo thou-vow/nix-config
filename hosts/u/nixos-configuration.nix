@@ -186,6 +186,4 @@
       shell = pkgs.fish;
     };
   };
-
-  virtualisation.waydroid.enable = true;
 }

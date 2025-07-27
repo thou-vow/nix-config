@@ -23,19 +23,21 @@
         ];
       };
       kernelModules = ["kvm-intel"];
-      kernelPackages =
-        (inputs.chaotic.legacyPackages.${pkgs.system}.linuxPackages_cachyos-lto.cachyOverride {
-          mArch = "NATIVE";
-          withoutDebug = true;
-        }).extend (final: prev: {
-          kernel = prev.kernel.overrideAttrs (prevAttrs: {
-            postPatch =
-              prevAttrs.postPatch
-              + ''
-                sed -i 's/-march=native/-march=skylake/' arch/x86/Makefile
-              '';
-          });
-        });
+      kernelPackages = pkgs.linuxPackagesFor (pkgs.linux-llvm.override {
+        linux = inputs.chaotic.packages.${pkgs.system}.linux_cachyos-lto;
+        llvmPackages = pkgs.llvmPackages_latest;
+        suffix = "attuned";
+        useO3 = true;
+        mArch = "skylake";
+        prependStructuredConfig = import ./kernel-localyesconfig.nix lib;
+        withLTO = "thin";
+        disableDebug = true;
+        features = {
+          efiBootStub = true;
+          ia32Emulation = true;
+          netfilterRPFilter = true;
+        };
+      });
       kernelParams = [
         "ath9k_core.nohwcrypt=1"
         "pcie_aspm=off"
