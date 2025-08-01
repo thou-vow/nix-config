@@ -29,8 +29,10 @@ jobs:
           name: thou-vow
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      
-      - run: nix flake update --accept-flake-config
+      - uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          gc-max-store-size-linux: 30G
 
       - run: |
           nix --extra-experimental-features "pipe-operator" build -L \
