@@ -20,6 +20,8 @@
 
   boot = {
     kernel.sysctl = {
+      "kernel.kexec_load_disabled" = 1;
+      "kernel.nmi_watchdog" = 0;
       "vm.swappiness" = 10;
       "vm.dirty_background_ratio" = 2;
       "vm.dirty_ratio" = 5;
@@ -110,7 +112,6 @@
       (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
 
     settings = {
-      # auto-optimise-store = true;
       experimental-features = ["flakes" "nix-command" "pipe-operator"];
       flake-registry = "";
       system-features = ["gccarch-skylake"];

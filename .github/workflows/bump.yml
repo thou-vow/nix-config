@@ -1,4 +1,5 @@
-name: Bump dependencies
+name: Bump and cache dependencies
+
 on:
   workflow_dispatch:
   schedule:
@@ -11,24 +12,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: cachix/install-nix-action@v31
+      - uses: wimpysworld/nothing-but-nix@main
         with:
-          extra_nix_config: |
+          hatchet-protocol: rampage
+          nix-permission-edict: true
+
+      - uses: canidae-solutions/lix-quick-install-action@v3
+        with:
+          lix_conf: |
             accept-flake-config = true
+            always-allow-substitutes = true
+            experimental-features = flakes nix-command pipe-operator
 
       - uses: cachix/cachix-action@v16
         with:
           name: thou-vow
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Update flake.lock
-        run: nix flake update --accept-flake-config
+      
+      - run: nix flake update --accept-flake-config
 
-      - name: Build specific packages
-        run: |
-          nix build -L --accept-flake-config \
-            .#nixosConfigurations.u.config.specialisation.attuned.configuration.boot.kernelPackages.kernel \
-            .#homeConfigurations.thou@u.config.specialisation.attuned.configuration.mods.niri.package
+      - run: |
+          nix --extra-experimental-features "pipe-operator" build -L \
+            .#nixosConfigurations.u.config.specialisation.attuned.configuration.system.build.toplevel \
+            .#homeConfigurations.thou@u.config.specialisation.attuned.configuration.home.activationPackage
 
-      - name: Push to Cachix
-        run: cachix push thou-vow ./result/*
+      - run: cachix push thou-vow ./result/*
