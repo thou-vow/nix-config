@@ -37,7 +37,7 @@
     systemd.services =
       lib.mapAttrs' (name: value:
         lib.nameValuePair "hm-activation-${name}" {
-          path = [config.nix.package pkgs.home-manager pkgs.toybox];
+          path = [config.nix.package];
 
           serviceConfig.ExecStart = ''
             ${

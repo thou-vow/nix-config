@@ -8,9 +8,9 @@
     fish.enable = true;
     flatpak.enable = true;
     helix.enable = true;
-    hyprland.enable = true;
     kitty.enable = true;
     nh.enable = true;
+    niri.enable = true;
     prismlauncher.enable = true;
     yazi.enable = true;
   };

@@ -6,8 +6,8 @@
   ...
 }: {
   imports = [
-    ./attuned-specialisation-home.nix
-    ./no-specialisation-home.nix
+    ./attuned-specialisation.nix
+    ./no-specialisation.nix
     ./selected-modules.nix
   ];
 
@@ -51,7 +51,6 @@
       "/nix/persist/plain/home/${config.home.username}" = {
         defaultDirectoryMethod = "symlink";
         directories = [
-          ".cache/nix"
           ".ssh"
           "Documents"
           "Downloads"
@@ -78,6 +77,7 @@
     sessionVariables = {
       BROWSER = lib.getExe pkgs.brave;
       EDITOR = lib.getExe pkgs.helix;
+      TERMINAL = "${lib.getExe pkgs.kitty} -1";
       VISUAL = lib.getExe pkgs.helix;
     };
     stateVersion = "25.05";
@@ -99,12 +99,5 @@
     kitty.keybindings = {
       "alt+e" = "launch --stdin-source=@screen_scrollback ${lib.getExe pkgs.helix}";
     };
-  };
-
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-hyprland
-    ];
   };
 }

@@ -26,7 +26,9 @@ jobs:
 
       - name: Build specific packages
         run: |
-          nix build -L --accept-flake-config .#nixosConfigurations.u.config.specialisation.attuned.configuration.boot.kernelPackages.kernel
+          nix build -L --accept-flake-config \
+            .#nixosConfigurations.u.config.specialisation.attuned.configuration.boot.kernelPackages.kernel \
+            .#homeConfigurations.thou@u.config.specialisation.attuned.configuration.mods.niri.package
 
       - name: Push to Cachix
         run: cachix push thou-vow ./result/*

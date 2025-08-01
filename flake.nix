@@ -20,6 +20,8 @@
     helix.url = "github:helix-editor/helix";
 
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+
+    niri.url = "github:sodiboo/niri-flake";
   };
 
   nixConfig = {
@@ -27,12 +29,14 @@
       "https://thou-vow.cachix.org"
       "https://chaotic-nyx.cachix.org"
       "https://helix.cachix.org"
+      "https://niri.cachix.org"
       "https://nix-community.cachix.org"
     ];
     extra-trusted-public-keys = [
       "thou-vow.cachix.org-1:n6zUvWYOI7kh0jgd+ghWhxeMd9tVdYF2KdOvufJ/Qy4="
       "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
       "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
+      "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
@@ -66,7 +70,7 @@
 
     nixosModules.nixos = import ./mods/nixos/nixos.nix;
 
-    homeManagerModules.home = import ./mods/home/home.nix;
+    homeModules.home = import ./mods/home/home.nix;
 
     formatter = nixpkgs.lib.genAttrs systems (system: eachPkgs.${system}.alejandra);
 
@@ -87,7 +91,7 @@
         extraSpecialArgs = {inherit inputs;};
         modules = [
           ./hosts/thou.u/home-configuration.nix
-          inputs.self.homeManagerModules.home
+          inputs.self.homeModules.home
           inputs.impermanence.homeManagerModules.impermanence
         ];
       };

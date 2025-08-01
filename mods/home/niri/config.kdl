@@ -1,0 +1,141 @@
+input {
+    keyboard {
+        xkb {
+            layout "br,us"
+            options "caps:escape_shifted_capslock,grp:win_space_toggle"
+        }
+
+        repeat-delay 200
+        repeat-rate 60
+        numlock
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+        scroll-method "two-finger"
+        click-method "clickfinger"
+    }
+
+    warp-mouse-to-focus mode="center-xy-always"
+}
+
+output "eDP-1" {
+    mode "1366x768"
+}
+
+layout {
+    gaps 10
+
+    focus-ring {
+        width 2
+    }
+
+    border {
+        off
+    }
+
+    shadow {
+        on
+    }
+
+    struts {
+        left 11
+        right 11
+    }
+}
+
+prefer-no-csd
+
+hotkey-overlay {
+    hide-not-bound
+    skip-at-startup
+}
+
+clipboard {
+    disable-primary
+}
+
+gestures {
+    hot-corners {
+        off
+    }
+}
+
+binds {
+    Super+Escape hotkey-overlay-title="Suspend session" repeat=false { suspend; }
+    Super+Shift+Escape hotkey-overlay-title="Quit session" repeat=false { quit; }
+
+    XF86AudioMicMute allow-when-locked=true hotkey-overlay-title="Toggle microphone" {
+        spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    XF86AudioMute allow-when-locked=true hotkey-overlay-title="Toggle volume" {
+        spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
+    }
+    XF86AudioLowerVolume allow-when-locked=true hotkey-overlay-title="Decrease volume" {
+        spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.01-";
+    }
+    XF86AudioRaiseVolume allow-when-locked=true hotkey-overlay-title="Increase volume" {
+        spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.01+";
+    }
+    XF86MonBrightnessDown allow-when-locked=true hotkey-overlay-title="Decrease brightness" {
+        spawn "brightnessctl" "set" "1%-";
+    }
+    XF86MonBrightnessUp allow-when-locked=true hotkey-overlay-title="Increase brightness" {
+        spawn "brightnessctl" "set" "1%+";
+    }
+
+    Print repeat=false { screenshot; }
+    Shift+Print repeat=false { screenshot-window; }
+
+    Super+T hotkey-overlay-title="Open terminal" repeat=false { spawn "kitty" "-1"; }
+    Super+W hotkey-overlay-title="Open browser" repeat=false { spawn "brave" "--ozone-platform=wayland"; }
+
+    Super+Equal { set-column-width "+5%"; }
+    Super+Shift+Equal { set-window-height "+5%"; }
+    Super+Minus { set-column-width "-5%"; }
+    Super+Shift+Minus { set-window-height "-5%"; }
+    Super+Tab repeat=false { switch-focus-between-floating-and-tiling; }
+    Super+I repeat=false { toggle-column-tabbed-display; }
+    Super+Q repeat=false { close-window; }
+    Super+O repeat=false { toggle-overview; }
+    Super+F repeat=false { toggle-window-floating; }
+    Super+Z repeat=false { fullscreen-window; }
+    Super+C { center-column; }
+    Super+M repeat=false { maximize-column; }
+    Super+Shift+Slash repeat=false { show-hotkey-overlay; }
+
+    Super+A cooldown-ms=150 { consume-or-expel-window-left; }
+    Super+S cooldown-ms=150 { consume-or-expel-window-right; }
+    Super+H cooldown-ms=150 { focus-column-left; }
+    Super+Shift+H cooldown-ms=150  { focus-column-first; }
+    Super+Ctrl+H cooldown-ms=150  { move-column-left; }
+    Super+J cooldown-ms=150 { focus-window-down; }
+    Super+Shift+J cooldown-ms=150  { focus-window-bottom; }
+    Super+Ctrl+J cooldown-ms=150  { move-window-down; }
+    Super+K cooldown-ms=150 { focus-window-up; }
+    Super+Shift+K cooldown-ms=150  { focus-window-top; }
+    Super+Ctrl+K cooldown-ms=150  { move-window-up; }
+    Super+L cooldown-ms=150 { focus-column-right; }
+    Super+Shift+L cooldown-ms=150  { focus-column-last; }
+    Super+Ctrl+L cooldown-ms=150  { move-column-right; }
+
+    Super+P cooldown-ms=150 { focus-workspace-up; }
+    Super+Ctrl+P cooldown-ms=150 { move-column-to-workspace-up; }
+    Super+N cooldown-ms=150 { focus-workspace-down; }
+    Super+Ctrl+N cooldown-ms=150 { move-column-to-workspace-down; }
+}
+
+// HD
+window-rule {
+    geometry-corner-radius 6
+    clip-to-geometry true
+}
+
+window-rule {
+    match app-id="kitty"
+    default-column-width { proportion 0.55; }
+}
+window-rule {
+    match app-id="brave"
+    default-column-width { proportion 0.7; }
+}

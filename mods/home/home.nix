@@ -11,9 +11,9 @@
     ./fish/fish.nix
     ./flatpak.nix
     ./helix/helix.nix
-    ./hyprland/hyprland.nix
     ./kitty/kitty.nix
     ./nh.nix
+    ./niri/niri.nix
     ./prismlauncher.nix
     ./yazi/yazi.nix
   ];

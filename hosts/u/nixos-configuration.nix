@@ -6,9 +6,9 @@
   ...
 }: {
   imports = [
-    ./attuned-specialisation-nixos.nix
+    ./attuned-specialisation.nix
     ./drive-format.nix
-    ./no-specialisation-nixos.nix
+    ./no-specialisation.nix
   ];
 
   mods = {
@@ -28,7 +28,7 @@
     kernelParams = [
       "mitigations=off"
       "zswap.enabled=1"
-      "zswap.max_pool_percent=65"
+      "zswap.max_pool_percent=60"
       "zswap.shrinker_enabled=0"
     ];
   };

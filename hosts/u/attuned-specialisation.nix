@@ -26,7 +26,6 @@
 
       kernelPackages = pkgs.linuxPackagesFor (pkgs.linux-llvm.override {
         linux = inputs.chaotic.packages.${pkgs.system}.linux_cachyos-lto;
-        llvmPackages = pkgs.llvmPackages_latest;
         suffix = "attuned";
         useO3 = true;
         mArch = "skylake";
