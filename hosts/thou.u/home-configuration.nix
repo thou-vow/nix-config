@@ -84,6 +84,11 @@
   };
 
   programs = {
+    git = {
+      enable = true;
+      userName = "thou-vow";
+      userEmail = "thou.vow.etoile@gmail.com";
+    };
     helix = {
       languages.language-server.nixd.config.nixd.options = {
         nixos.expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options'';

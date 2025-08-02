@@ -1,5 +1,5 @@
-[
-  (final: prev: {
+{
+  graalvm-oracle_21 = final: prev: {
     graalvm-oracle_21 = let
       src = {
         "x86_64-linux" = final.fetchurl {
@@ -14,7 +14,10 @@
         version = "21";
         src = src.${final.system};
       });
+  };
 
+  linux-llvm = final: prev: {
     linux-llvm = final.callPackage ./linux-llvm/linux-llvm.nix {};
-  })
-]
+  };
+}
+

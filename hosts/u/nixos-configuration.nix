@@ -16,7 +16,7 @@
     nh.enable = true;
   };
 
-  nixpkgs.overlays = inputs.self.overlays;
+  nixpkgs.overlays = builtins.attrValues inputs.self.overlays;
 
   boot = {
     kernel.sysctl = {

@@ -65,12 +65,12 @@
         {}
         (builtins.map (
           f: let pkgs = eachPkgs.${system}; in f pkgs pkgs
-        ) (import ./overlays/overlays.nix))
+        ) (builtins.attrValues (import ./overlays/overlays.nix)))
     );
 
     nixosModules.nixos = import ./mods/nixos/nixos.nix;
 
-    homeModules.home = import ./mods/home/home.nix;
+    homeManagerModules.home = import ./mods/home/home.nix;
 
     formatter = nixpkgs.lib.genAttrs systems (system: eachPkgs.${system}.alejandra);
 
@@ -91,7 +91,7 @@
         extraSpecialArgs = {inherit inputs;};
         modules = [
           ./hosts/thou.u/home-configuration.nix
-          inputs.self.homeModules.home
+          inputs.self.homeManagerModules.home
           inputs.impermanence.homeManagerModules.impermanence
         ];
       };
