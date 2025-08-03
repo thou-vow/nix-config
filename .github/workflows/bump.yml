@@ -20,9 +20,6 @@ jobs:
       - uses: canidae-solutions/lix-quick-install-action@v3
         with:
           lix_conf: |
-            accept-flake-config = true
-            always-allow-substitutes = true
-            experimental-features = flakes nix-command pipe-operator
 
       - uses: cachix/cachix-action@v16
         with:
@@ -30,7 +27,10 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - run: |
-          nix --extra-experimental-features "pipe-operator" build -L \
+          nix flake update
+
+      - run: |
+          nix --extra-experimental-features "flakes nix-command pipe-operator" --accept-flake-config build -L \
             .#nixosConfigurations.u.config.specialisation.attuned.configuration.system.build.toplevel \
             .#homeConfigurations.thou@u.config.specialisation.attuned.configuration.home.activationPackage
 

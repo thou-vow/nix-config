@@ -9,18 +9,14 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     impermanence.url = "github:nix-community/impermanence";
-
-    helix.url = "github:helix-editor/helix";
-
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
+    helix.url = "github:helix-editor/helix";
     niri.url = "github:sodiboo/niri-flake";
   };
 

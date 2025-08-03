@@ -8,7 +8,7 @@
   imports = [
     ./attuned-specialisation.nix
     ./no-specialisation.nix
-    ./selected-modules.nix
+    ./mod-prefs/mod-prefs.nix
   ];
 
   mods.flakePath = "/flake";
@@ -89,20 +89,6 @@
       userName = "thou-vow";
       userEmail = "thou.vow.etoile@gmail.com";
     };
-    helix = {
-      languages.language-server.nixd.config.nixd.options = {
-        nixos.expr = ''(builtins.getFlake "${inputs.self}").nixosConfigurations."u".options'';
-        home-manager.expr = ''(builtins.getFlake "${inputs.self}").homeConfigurations."thou@u".options'';
-      };
-      settings.editor.statusline.mode = {
-        normal = "NORMAL";
-        insert = "INSERT";
-        select = "SELECT";
-      };
-    };
     home-manager.enable = true;
-    kitty.keybindings = {
-      "alt+e" = "launch --stdin-source=@screen_scrollback ${lib.getExe pkgs.helix}";
-    };
   };
 }

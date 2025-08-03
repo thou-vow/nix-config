@@ -30,6 +30,8 @@
       enableAllHardware = true;
     };
 
+    nix.package = pkgs.lixPackageSets.latest.lix;
+
     swapDevices = [
       {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}
     ];

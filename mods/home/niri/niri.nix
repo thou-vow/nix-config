@@ -29,13 +29,13 @@
       ];
 
     xdg = {
-      configFile."niri/config.kdl".source =
-        config.lib.file.mkOutOfStoreSymlink "${config.mods.flakePath}/mods/home/niri/config.kdl";
       portal = {
         enable = true;
-        extraPortals = [pkgs.xdg-desktop-portal-gnome];
         configPackages = [
           config.mods.niri.package
+        ];
+        extraPortals = [
+          pkgs.xdg-desktop-portal-gnome
         ];
       };
     };

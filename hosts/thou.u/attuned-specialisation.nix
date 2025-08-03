@@ -7,14 +7,20 @@
     mods = {
       niri = {
         package = inputs.niri.packages.${pkgs.system}.niri-unstable.overrideAttrs (prevAttrs: {
-          # cargoBuildFlags = prevAttrs.cargoBuildFlags or [] ++ ["-v"];
-
           RUSTFLAGS =
-            prevAttrs.RUSTFLAGS
+            prevAttrs.RUSTFLAGS or []
             ++ [
               "-C target-cpu=skylake"
               "-C opt-level=3"
               "-C lto=fat"
+            ];
+        });
+        xwayland-satellite.package = inputs.niri.packages.${pkgs.system}.xwayland-satellite-unstable.overrideAttrs (prevAttrs: {
+          RUSTFLAGS =
+            prevAttrs.RUSTFLAGS or []
+            ++ [
+              "-C target-cpu=skylake"
+              "-C opt-level=3"
             ];
         });
       };
