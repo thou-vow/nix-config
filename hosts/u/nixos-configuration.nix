@@ -16,7 +16,7 @@
     nh.enable = true;
   };
 
-  nixpkgs.overlays = builtins.attrValues inputs.self.overlays;
+  nixpkgs.overlays = [];
 
   boot = {
     kernel.sysctl = {
@@ -30,7 +30,7 @@
     kernelParams = [
       "mitigations=off"
       "zswap.enabled=1"
-      "zswap.max_pool_percent=60"
+      "zswap.max_pool_percent=65"
       "zswap.shrinker_enabled=0"
     ];
   };

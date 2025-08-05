@@ -18,7 +18,7 @@
   config = lib.mkIf config.mods.helix.enable {
     programs.helix = {
       enable = true;
-      package = inputs.helix.packages.${pkgs.system}.helix;
+      package = pkgs.helix_git;
       settings.theme = "theme";
     };
 

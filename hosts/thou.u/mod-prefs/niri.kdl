@@ -89,6 +89,7 @@ binds {
 
     Super+T hotkey-overlay-title="Open terminal" repeat=false { spawn "kitty" "-1"; }
     Super+W hotkey-overlay-title="Open browser" repeat=false { spawn "brave" "--ozone-platform=wayland"; }
+    Super+Return hotkey-overlay-title="Open fuzzel" repeat=false { spawn "fuzzel"; }
 
     Super+Equal { set-column-width "+5%"; }
     Super+Shift+Equal { set-window-height "+5%"; }

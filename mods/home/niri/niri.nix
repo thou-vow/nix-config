@@ -7,12 +7,6 @@
 }: {
   options.mods.niri = {
     enable = lib.mkEnableOption "Enable niri.";
-    package = lib.mkPackageOption inputs.niri.packages.${pkgs.system} "niri" {
-      default = "niri-unstable";
-    };
-    xwayland-satellite.package = lib.mkPackageOption inputs.niri.packages.${pkgs.system} "xwayland-satellite" {
-      default = "xwayland-satellite-unstable";
-    };
   };
 
   config = lib.mkIf config.mods.niri.enable {
@@ -20,19 +14,17 @@
       [
         brightnessctl
         dash
+        niri_git
         wireplumber
         wl-clipboard
-      ]
-      ++ [
-        config.mods.niri.package
-        config.mods.niri.xwayland-satellite.package
+        xwayland-satellite
       ];
 
     xdg = {
       portal = {
         enable = true;
         configPackages = [
-          config.mods.niri.package
+          pkgs.niri_git
         ];
         extraPortals = [
           pkgs.xdg-desktop-portal-gnome

@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -29,6 +28,8 @@
 
     packages = with pkgs; [
       azahar
+      brave
+      cemu
       clock-rs
       bc
       discord
@@ -51,6 +52,9 @@
       "/nix/persist/plain/home/${config.home.username}" = {
         defaultDirectoryMethod = "symlink";
         directories = [
+          ".config/BraveSoftware"
+          ".config/Cemu"
+          ".local/share/Cemu"
           ".ssh"
           "Documents"
           "Downloads"

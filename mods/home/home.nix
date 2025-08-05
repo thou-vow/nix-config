@@ -6,15 +6,16 @@
   ...
 }: {
   imports = [
-    ./brave.nix
     ./fastfetch/fastfetch.nix
     ./fish/fish.nix
     ./flatpak.nix
+    ./fuzzel/fuzzel.nix
     ./helix/helix.nix
     ./kitty/kitty.nix
     ./nh.nix
     ./niri/niri.nix
     ./prismlauncher.nix
+    ./waybar/waybar.nix
     ./yazi/yazi.nix
   ];
 

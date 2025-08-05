@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: {
   options.mods.nh.enable = lib.mkEnableOption "Enable nh.";

@@ -25,7 +25,7 @@
       kernelModules = ["kvm-intel"];
 
       kernelPackages = pkgs.linuxPackagesFor (pkgs.linux-llvm.override {
-        linux = inputs.chaotic.packages.${pkgs.system}.linux_cachyos-lto;
+        linux = pkgs.linux_cachyos-lto;
         suffix = "attuned";
         useO3 = true;
         mArch = "skylake";

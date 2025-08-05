@@ -6,15 +6,16 @@
   ...
 }: {
   mods = {
-    brave.enable = true;
     fastfetch.enable = true;
     fish.enable = true;
     flatpak.enable = true;
+    fuzzel.enable = true;
     helix.enable = true;
     kitty.enable = true;
     nh.enable = true;
     niri.enable = true;
     prismlauncher.enable = true;
+    waybar.enable = true;
     yazi.enable = true;
   };
 

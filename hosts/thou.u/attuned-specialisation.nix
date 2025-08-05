@@ -1,34 +1,32 @@
 {
   inputs,
-  pkgs,
   ...
 }: {
   specialisation.attuned.configuration = {
-    mods = {
-      niri = {
-        package = inputs.niri.packages.${pkgs.system}.niri-unstable.overrideAttrs (prevAttrs: {
-          RUSTFLAGS =
-            prevAttrs.RUSTFLAGS or []
-            ++ [
-              "-C target-cpu=skylake"
-              "-C opt-level=3"
-              "-C lto=fat"
-            ];
-        });
-        xwayland-satellite.package = inputs.niri.packages.${pkgs.system}.xwayland-satellite-unstable.overrideAttrs (prevAttrs: {
-          RUSTFLAGS =
-            prevAttrs.RUSTFLAGS or []
-            ++ [
-              "-C target-cpu=skylake"
-              "-C opt-level=3"
-            ];
-        });
-      };
-    };
-
     nixpkgs.overlays =
       inputs.self.nixosConfigurations."u".config.specialisation.attuned.configuration.nixpkgs.overlays
       ++ [
+        (final: prev: {
+          niri_git = prev.niri_git.overrideAttrs (prevAttrs: {
+            env =
+              prevAttrs.env
+              // {
+                RUSTFLAGS =
+                  prevAttrs.env.RUSTFLAGS
+                  + "-C target-cpu=skylake -C opt-level=3 -C lto=fat";
+              };
+          });
+
+          xwayland-satellite = prev.xwayland-satellite.overrideAttrs (prevAttrs: {
+            env =
+              prevAttrs.env or {}
+              // {
+                RUSTFLAGS =
+                  prevAttrs.env.RUSTFLAGS or ""
+                + "-C target-cpu=skylake -C opt-level=3";
+              };
+          });
+        })
       ];
 
     xdg.dataFile."home-manager/specialisation".text = "attuned";
