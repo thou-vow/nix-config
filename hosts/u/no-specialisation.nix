@@ -6,12 +6,6 @@
   ...
 }: {
   config = lib.mkIf (config.specialisation != {}) {
-    nixpkgs.overlays = [
-      (final: prev: {
-        nix = final.lixPackageSets.latest.lix;
-      })
-    ];
-
     boot = {
       initrd.availableKernelModules = [
         "ehci_pci"

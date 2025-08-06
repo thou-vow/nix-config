@@ -12,7 +12,6 @@
     fuzzel.enable = true;
     helix.enable = true;
     kitty.enable = true;
-    nh.enable = true;
     niri.enable = true;
     prismlauncher.enable = true;
     waybar.enable = true;

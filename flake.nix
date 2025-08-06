@@ -16,18 +16,21 @@
     impermanence.url = "github:nix-community/impermanence";
 
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    helix.url = "github:helix-editor/helix";
   };
 
   nixConfig = {
     extra-substituters = [
-      "https://thou-vow.cachix.org"
       "https://chaotic-nyx.cachix.org"
+      "https://helix.cachix.org"
       "https://nix-community.cachix.org"
+      "https://thou-vow.cachix.org"
     ];
     extra-trusted-public-keys = [
-      "thou-vow.cachix.org-1:n6zUvWYOI7kh0jgd+ghWhxeMd9tVdYF2KdOvufJ/Qy4="
       "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+      "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "thou-vow.cachix.org-1:n6zUvWYOI7kh0jgd+ghWhxeMd9tVdYF2KdOvufJ/Qy4="
     ];
   };
 
@@ -38,53 +41,57 @@
     ...
   } @ inputs: let
     systems = ["x86_64-linux"];
-
-    eachPkgs = nixpkgs.lib.genAttrs systems (
-      system:
-        import nixpkgs {
-          config.allowUnfree = true;
-          localSystem.system = system;
-          overlays =
-            builtins.attrValues self.overlays
-            ++ [
-              inputs.chaotic.overlays.default
-            ];
-        }
-    );
   in {
-    overlays = import ./overlays/overlays.nix;
+    overlays = {
+      default = import ./overlays/default/default.nix inputs;
+      attuned = import ./overlays/attuned/attuned.nix inputs;
+    };
 
     packages = nixpkgs.lib.genAttrs systems (
-      system:
-        builtins.foldl' (acc: elem:
-          nixpkgs.lib.recursiveUpdate acc elem)
-        {}
-        (builtins.map (
-          f: let pkgs = eachPkgs.${system}; in f pkgs pkgs
-        ) (builtins.attrValues (import ./overlays/overlays.nix)))
+      system: let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+        self.overlays.default pkgs pkgs
     );
 
-    formatter = nixpkgs.lib.genAttrs systems (system: eachPkgs.${system}.alejandra);
+    formatter =
+      nixpkgs.lib.genAttrs systems (system:
+        nixpkgs.legacyPackages.${system}.alejandra);
 
     nixosConfigurations = {
       "u" = nixpkgs.lib.nixosSystem {
-        pkgs = eachPkgs."x86_64-linux";
         specialArgs = {inherit inputs;};
         modules = [
           ./hosts/u/nixos-configuration.nix
           ./mods/nixos/nixos.nix
           inputs.impermanence.nixosModules.impermanence
+          {
+            mods.pkgs = {
+              system = "x86_64-linux";
+              overlays = [inputs.chaotic.overlays.default self.overlays.default];
+            };
+
+            specialisation.attuned.configuration.mods.pkgs.overlays = [self.overlays.attuned];
+          }
         ];
       };
     };
     homeConfigurations = {
       "thou@u" = home-manager.lib.homeManagerConfiguration {
-        pkgs = eachPkgs."x86_64-linux";
+        pkgs = nixpkgs.legacyPackages."x86_64-linux"; # Placeholder
         extraSpecialArgs = {inherit inputs;};
         modules = [
           ./hosts/thou.u/home-configuration.nix
           ./mods/home/home.nix
           inputs.impermanence.homeManagerModules.impermanence
+          {
+            mods.pkgs = {
+              system = "x86_64-linux";
+              overlays = [inputs.chaotic.overlays.default self.overlays.default];
+            };
+
+            specialisation.attuned.configuration.mods.pkgs.overlays = [self.overlays.attuned];
+          }
         ];
       };
     };

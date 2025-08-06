@@ -6,11 +6,7 @@
   ...
 }: {
   specialisation.attuned.configuration = {
-    nixpkgs.overlays = [
-      (final: prev: {
-        nix = final.lixPackageSets.latest.lix;
-      })
-    ];
+    mods.pkgs.overlays = [inputs.self.overlays.attuned];
 
     boot = {
       initrd = {
@@ -24,20 +20,7 @@
       };
       kernelModules = ["kvm-intel"];
 
-      kernelPackages = pkgs.linuxPackagesFor (pkgs.linux-llvm.override {
-        linux = pkgs.linux_cachyos-lto;
-        suffix = "attuned";
-        useO3 = true;
-        mArch = "skylake";
-        prependStructuredConfig = import ./attuned-kernel-localyesconfig.nix lib;
-        withLTO = "full";
-        disableDebug = true;
-        features = {
-          efiBootStub = true;
-          ia32Emulation = true;
-          netfilterRPFilter = true;
-        };
-      });
+      kernelPackages = pkgs.linuxPackagesFor (pkgs.linux-llvm);
 
       kernelParams = [
         "ath9k_core.nohwcrypt=1"

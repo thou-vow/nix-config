@@ -14,9 +14,15 @@
   mods = {
     flakePath = "/flake";
     nh.enable = true;
+    pkgs = {
+      overlays = [
+        (final: prev: {
+          nix = final.lixPackageSets.latest.lix;
+        })
+      ];
+      system = "x86_64-linux";
+    };
   };
-
-  nixpkgs.overlays = [];
 
   boot = {
     kernel.sysctl = {
@@ -112,6 +118,7 @@
       (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
 
     settings = {
+      accept-flake-config = true;
       experimental-features = ["flakes" "nix-command" "pipe-operator"];
       flake-registry = "";
       system-features = ["gccarch-skylake"];

@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -18,7 +17,7 @@
   config = lib.mkIf config.mods.helix.enable {
     programs.helix = {
       enable = true;
-      package = pkgs.helix_git;
+      package = pkgs.helix_mod;
       settings.theme = "theme";
     };
 
