@@ -65,33 +65,42 @@
           ./hosts/u/nixos-configuration.nix
           ./mods/nixos/nixos.nix
           inputs.impermanence.nixosModules.impermanence
-          {
-            mods.pkgs = {
-              system = "x86_64-linux";
-              overlays = [inputs.chaotic.overlays.default self.overlays.default];
-            };
+          ({config, ...}: {
+            _module.args.pkgs = nixpkgs.lib.mkForce (import nixpkgs {
+              config.allowUnfree = true;
+              localSystem.system = "x86_64-linux";
+              overlays =
+                [inputs.chaotic.overlays.default self.overlays.default]
+                ++ config.nixpkgs.overlays;
+            });
 
-            specialisation.attuned.configuration.mods.pkgs.overlays = [self.overlays.attuned];
-          }
+            # NixOS' Specialisations don't support overlays yet...
+            # specialisation.attuned.configuration.nixpkgs.overlays =
+            #   nixpkgs.lib.mkOrder 1 [self.overlays.attuned];
+          })
         ];
       };
     };
     homeConfigurations = {
       "thou@u" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages."x86_64-linux"; # Placeholder
+        pkgs = nixpkgs.legacyPackages."x86_64-linux"; # Dummy field
         extraSpecialArgs = {inherit inputs;};
         modules = [
           ./hosts/thou.u/home-configuration.nix
           ./mods/home/home.nix
           inputs.impermanence.homeManagerModules.impermanence
-          {
-            mods.pkgs = {
-              system = "x86_64-linux";
-              overlays = [inputs.chaotic.overlays.default self.overlays.default];
-            };
+          ({config, ...}: {
+            _module.args.pkgs = nixpkgs.lib.mkForce (import nixpkgs {
+              config.allowUnfree = true;
+              localSystem.system = "x86_64-linux";
+              overlays =
+                [inputs.chaotic.overlays.default self.overlays.default]
+                ++ config.nixpkgs.overlays;
+            });
 
-            specialisation.attuned.configuration.mods.pkgs.overlays = [self.overlays.attuned];
-          }
+            specialisation.attuned.configuration.nixpkgs.overlays =
+              nixpkgs.lib.mkOrder 1 [self.overlays.attuned];
+          })
         ];
       };
     };

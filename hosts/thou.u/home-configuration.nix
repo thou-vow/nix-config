@@ -1,29 +1,17 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
 }: {
   imports = [
-    ./attuned-specialisation.nix
+    ./attuned-home.nix
     ./mod-prefs/mod-prefs.nix
   ];
 
   mods = {
     flakePath = "/flake";
-    pkgs = {
-      overlays = lib.mkBefore [inputs.chaotic.overlays.default inputs.self.overlays.default];
-      system = "x86_64-linux";
-    };
   };
-
-  nixpkgs.overlays =
-    lib.mkBefore
-    [
-      inputs.chaotic.overlays.default
-      inputs.self.overlays.default
-    ];
 
   fonts.fontconfig = {
     enable = true;

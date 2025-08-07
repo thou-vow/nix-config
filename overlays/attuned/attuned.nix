@@ -5,7 +5,7 @@ inputs: final: prev: {
       // {
         RUSTFLAGS =
           prevAttrs.env.RUSTFLAGS or ""
-          + "-C target-cpu=skylake -C opt-level=3 -C lto=fat";
+          + " -C target-cpu=skylake -C opt-level=3 -C lto=fat";
       };
   });
 
@@ -15,24 +15,9 @@ inputs: final: prev: {
       // {
         RUSTFLAGS =
           prevAttrs.env.RUSTFLAGS or ""
-          + "-C target-cpu=skylake -C opt-level=3 -C lto=fat";
+          + " -C target-cpu=skylake -C opt-level=3 -C lto=fat";
       };
   });
-
-  linux-llvm = final.linux-llvm.override {
-    linux = final.linux_cachyos-lto;
-    suffix = "attuned";
-    useO3 = true;
-    mArch = "skylake";
-    prependStructuredConfig = import ./kernel-localyesconfig.nix final.lib;
-    withLTO = "full";
-    disableDebug = true;
-    features = {
-      efiBootStub = true;
-      ia32Emulation = true;
-      netfilterRPFilter = true;
-    };
-  };
 
   xwayland-satellite = prev.xwayland-satellite.overrideAttrs (prevAttrs: {
     env =
@@ -40,7 +25,7 @@ inputs: final: prev: {
       // {
         RUSTFLAGS =
           prevAttrs.env.RUSTFLAGS or ""
-          + "-C target-cpu=skylake -C opt-level=3";
+          + " -C target-cpu=skylake -C opt-level=3";
       };
   });
 }

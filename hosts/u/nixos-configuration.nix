@@ -6,7 +6,7 @@
   ...
 }: {
   imports = [
-    ./attuned-specialisation.nix
+    ./attuned-nixos.nix
     ./drive-format.nix
     ./no-specialisation.nix
   ];
@@ -14,15 +14,13 @@
   mods = {
     flakePath = "/flake";
     nh.enable = true;
-    pkgs = {
-      overlays = [
-        (final: prev: {
-          nix = final.lixPackageSets.latest.lix;
-        })
-      ];
-      system = "x86_64-linux";
-    };
   };
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      nix = final.lixPackageSets.latest.lix;
+    })
+  ];
 
   boot = {
     kernel.sysctl = {
@@ -157,7 +155,7 @@
     };
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 
   systemd = {
     oomd.enable = false;

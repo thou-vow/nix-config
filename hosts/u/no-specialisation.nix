@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: {
-  config = lib.mkIf (config.specialisation != {}) {
+  config = inputs.nixpkgs.lib.mkIf (config.specialisation != {}) {
     boot = {
       initrd.availableKernelModules = [
         "ehci_pci"
