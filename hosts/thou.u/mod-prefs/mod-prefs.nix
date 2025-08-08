@@ -18,21 +18,15 @@
     yazi.enable = true;
   };
 
-  home.persistence = {
-    "/nix/persist/plain/home/${config.home.username}" = {
-      directories = [
-        ".config/BraveSoftware"
-        ".local/share/flatpak"
-        ".local/share/zoxide"
-        ".steam"
-        ".var"
-      ];
-    };
-    "/nix/persist/zstd3/home/${config.home.username}" = {
-      directories = [
-        ".local/share/PrismLauncher"
-      ];
-    };
+  home.persistence."/persist${config.home.homeDirectory}" = {
+    directories = [
+      ".config/BraveSoftware"
+      # ".local/share/flatpak"
+      ".local/share/PrismLauncher"
+      ".local/share/zoxide"
+      ".steam"
+      ".var"
+    ];
   };
 
   programs = {

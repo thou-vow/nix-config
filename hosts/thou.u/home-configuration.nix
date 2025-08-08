@@ -49,34 +49,26 @@
       unimatrix
     ];
 
-    persistence = {
-      "/nix/persist/plain/home/${config.home.username}" = {
-        defaultDirectoryMethod = "symlink";
-        directories = [
-          ".config/BraveSoftware"
-          ".config/Cemu"
-          ".local/share/Cemu"
-          ".ssh"
-          "Documents"
-          "Downloads"
-          "Games"
-          "Music"
-          "Pictures"
-          "Public"
-          "Templates"
-          "Videos"
-        ];
-        allowOther = true;
-      };
-      "/nix/persist/zstd3/home/${config.home.username}" = {
-        defaultDirectoryMethod = "symlink";
-        directories = [
-          ".local/share/nix"
-          "Desktop"
-          "Projects"
-        ];
-        allowOther = true;
-      };
+    persistence."/persist${config.home.homeDirectory}" = {
+      defaultDirectoryMethod = "symlink";
+      directories = [
+        ".config/BraveSoftware"
+        ".config/Cemu"
+        ".local/share/Cemu"
+        ".local/share/nix"
+        ".ssh"
+        "Desktop"
+        "Documents"
+        "Downloads"
+        "Games"
+        "Music"
+        "Pictures"
+        "Projects"
+        "Public"
+        "Templates"
+        "Videos"
+      ];
+      allowOther = true;
     };
 
     sessionVariables = {

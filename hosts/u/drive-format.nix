@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}: {
+{config, ...}: {
   boot.loader = {
     efi.efiSysMountPoint = "/boot";
     grub = {
@@ -12,30 +9,19 @@
     };
   };
 
-  environment.persistence = {
-    "/nix/persist/zstd3" = {
-      enable = true;
-      hideMounts = true;
+  environment.persistence."/persist" = {
+    enable = true;
+    hideMounts = true;
+    directories = [
+      "/etc/NetworkManager/system-connections"
+      "/flake"
+      "/root/.local/share/nix"
+      "/var/log"
+    ];
+    users.thou = {
       directories = [
-        "/flake"
-        "/root/.local/share/nix"
-        "/var/log"
+        ".local/state/nix"
       ];
-    };
-    "/nix/persist/plain" = {
-      enable = true;
-      hideMounts = true;
-      directories = [
-        "/etc/NetworkManager/system-connections"
-        "/etc/ssh/ssh_host_ed25519_key"
-        "/var/cache"
-        "/var/lib"
-      ];
-      users.thou = {
-        directories = [
-          ".local/state/nix"
-        ];
-      };
     };
   };
 
@@ -50,12 +36,6 @@
       fsType = "vfat";
       options = ["fmask=0077" "dmask=0077"];
     };
-    "/nix/persist/zstd3" = {
-      device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part4";
-      fsType = "btrfs";
-      neededForBoot = true;
-      options = ["subvol=nix_persist_zstd3" "compress=zstd:3" "noatime"];
-    };
     "/nix/store" = {
       device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part4";
       fsType = "btrfs";
@@ -66,11 +46,11 @@
       fsType = "btrfs";
       options = ["subvol=nix_var" "compress=zstd:5" "noatime" "nodatasum"];
     };
-    "/nix/persist/plain" = {
-      device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part5";
-      fsType = "ext4";
+    "/persist" = {
+      device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part4";
+      fsType = "btrfs";
       neededForBoot = true;
-      options = ["commit=60" "data=writeback" "journal_async_commit" "noatime"];
+      options = ["subvol=nix_persist_zstd3" "compress=zstd:3" "noatime"];
     };
   };
 }
