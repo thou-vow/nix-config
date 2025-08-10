@@ -43,15 +43,19 @@
     systems = ["x86_64-linux"];
   in {
     overlays = {
-      default = import ./overlays/default/default.nix inputs;
+      base = import ./overlays/base/base.nix inputs;
       attuned = import ./overlays/attuned/attuned.nix inputs;
     };
 
-    packages = nixpkgs.lib.genAttrs systems (
+    legacyPackages = nixpkgs.lib.genAttrs systems (
       system: let
-        pkgs = nixpkgs.legacyPackages.${system};
+        externPkgs = nixpkgs.legacyPackages.${system}.appendOverlays [inputs.chaotic.overlays.default];
+        basePkgs = externPkgs.appendOverlays [self.overlays.base];
       in
-        self.overlays.default pkgs pkgs
+        self.overlays.base externPkgs externPkgs
+        // {
+          attunedPackages = self.overlays.attuned basePkgs basePkgs;
+        }
     );
 
     formatter =
@@ -70,7 +74,7 @@
               config.allowUnfree = true;
               localSystem.system = "x86_64-linux";
               overlays =
-                [inputs.chaotic.overlays.default self.overlays.default]
+                [inputs.chaotic.overlays.default self.overlays.base]
                 ++ config.nixpkgs.overlays;
             });
 
@@ -94,7 +98,7 @@
               config.allowUnfree = true;
               localSystem.system = "x86_64-linux";
               overlays =
-                [inputs.chaotic.overlays.default self.overlays.default]
+                [inputs.chaotic.overlays.default self.overlays.base]
                 ++ config.nixpkgs.overlays;
             });
 

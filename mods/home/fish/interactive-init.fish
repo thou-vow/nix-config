@@ -1,4 +1,4 @@
 abbr --add -- cd z
-abbr --add -- exit e
+abbr --add -- e exit
 
 pokeget random --hide-name

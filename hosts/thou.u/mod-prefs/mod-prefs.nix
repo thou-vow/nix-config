@@ -8,6 +8,7 @@
   mods = {
     anyrun.enable = true;
     atuin.enable = true;
+    dunst.enable = true;
     fastfetch.enable = true;
     fish.enable = true;
     flatpak.enable = true;

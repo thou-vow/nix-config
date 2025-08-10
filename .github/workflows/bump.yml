@@ -12,14 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: wimpysworld/nothing-but-nix@main
-        with:
-          hatchet-protocol: rampage
-          nix-permission-edict: true
-
-      - uses: canidae-solutions/lix-quick-install-action@v3
-        with:
-          lix_conf: |
+      - uses: cachix/install-nix-action@v31
 
       - uses: cachix/cachix-action@v16
         with:
@@ -30,8 +23,11 @@ jobs:
           nix flake update
 
       - run: |
-          nix --extra-experimental-features "flakes nix-command pipe-operator" --accept-flake-config build -L \
-            .#nixosConfigurations.u.config.specialisation.attuned.configuration.system.build.toplevel \
-            .#homeConfigurations.thou@u.config.specialisation.attuned.configuration.home.activationPackage
+          nix --extra-experimental-features "flakes nix-command" --accept-flake-config \
+            build -L --impure --expr \
+            'let
+              flake = builtins.getFlake (builtins.toString ./.);
+            in
+              flake.legacyPackages.x86_64-linux.attunedPackages'
 
       - run: cachix push thou-vow ./result/*
