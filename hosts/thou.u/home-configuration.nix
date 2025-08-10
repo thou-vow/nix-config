@@ -87,5 +87,6 @@
       userEmail = "thou.vow.etoile@gmail.com";
     };
     home-manager.enable = true;
+    nix-search-tv.enable = true;
   };
 }

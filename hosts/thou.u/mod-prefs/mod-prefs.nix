@@ -6,6 +6,8 @@
   ...
 }: {
   mods = {
+    anyrun.enable = true;
+    atuin.enable = true;
     fastfetch.enable = true;
     fish.enable = true;
     flatpak.enable = true;
@@ -14,6 +16,7 @@
     kitty.enable = true;
     niri.enable = true;
     prismlauncher.enable = true;
+    television.enable = true;
     waybar.enable = true;
     yazi.enable = true;
   };
@@ -21,7 +24,8 @@
   home.persistence."/persist${config.home.homeDirectory}" = {
     directories = [
       ".config/BraveSoftware"
-      # ".local/share/flatpak"
+      ".local/share/atuin"
+      ".local/share/flatpak"
       ".local/share/PrismLauncher"
       ".local/share/zoxide"
       ".steam"

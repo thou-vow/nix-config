@@ -49,6 +49,8 @@
 
       ripgrep.enable = true;
 
+      television.enable = true;
+      
       zoxide = {
         enable = true;
         enableFishIntegration = true;

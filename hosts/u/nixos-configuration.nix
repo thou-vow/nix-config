@@ -41,22 +41,22 @@
 
   console = {
     colors = [
-      "121622"
-      "ea8f80"
-      "6ac27f"
-      "c7a84d"
-      "92a8eb"
-      "db8ad4"
-      "52bcce"
-      "aeb8d4"
-      "7683a8"
-      "f5b3a7"
-      "7ae092"
-      "e5c25f"
-      "b3c4f5"
-      "eaafe4"
-      "6bd8ea"
-      "ced4e6"
+      "0a1218"
+      "e36351"
+      "4ba764"
+      "ad8d2c"
+      "6e89ec"
+      "d356cc"
+      "2fa1b3"
+      "3c5567"
+      "20303c"
+      "e36351"
+      "4ba764"
+      "ad8d2c"
+      "6e89ec"
+      "d356cc"
+      "2fa1b3"
+      "ebf2f6"
     ];
     font = "Lat2-Terminus16";
     useXkbConfig = true;
@@ -66,9 +66,7 @@
     systemPackages = with pkgs; [
       btop
       cachix
-      home-manager
       ncdu
-      nh
       pciutils
       unzip
       usbutils

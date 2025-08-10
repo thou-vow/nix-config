@@ -44,7 +44,7 @@
     "/nix/var" = {
       device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part4";
       fsType = "btrfs";
-      options = ["subvol=nix_var" "compress=zstd:5" "noatime" "nodatasum"];
+      options = ["subvol=nix_var" "compress=zstd:5" "noatime"];
     };
     "/persist" = {
       device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part4";

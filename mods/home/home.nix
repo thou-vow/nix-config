@@ -6,6 +6,8 @@
   ...
 }: {
   imports = [
+    ./anyrun/anyrun.nix
+    ./atuin.nix
     ./fastfetch/fastfetch.nix
     ./fish/fish.nix
     ./flatpak.nix
@@ -14,6 +16,7 @@
     ./kitty/kitty.nix
     ./niri/niri.nix
     ./prismlauncher.nix
+    ./television/television.nix
     ./waybar/waybar.nix
     ./yazi/yazi.nix
   ];

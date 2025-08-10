@@ -24,11 +24,19 @@ output "eDP-1" {
     mode "1366x768"
 }
 
+overview {
+    backdrop-color "#060810"
+}
+
 layout {
+    background-color "#121622"
+    
     gaps 10
 
     focus-ring {
         width 2
+        active-color "#f4dbe2"
+        urgent-color "#f5b3a7"
     }
 
     border {
@@ -37,6 +45,12 @@ layout {
 
     shadow {
         on
+        spread 25
+        softness 25
+    }
+
+    tab-indicator {
+        width 3
     }
 
     struts {
