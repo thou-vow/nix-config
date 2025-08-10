@@ -3,9 +3,8 @@ inputs: final: prev: {
     env =
       prevAttrs.env or {}
       // {
-        CFLAGS = prevAttrs.env.CFLAGS or "" + " -O3 -march=skylake -flto";
-        CXXFLAGS = prevAttrs.env.CXXFLAGS or "" + " -O3 -march=skylake -flto";
-        LDFLAGS = prevAttrs.env.LDFLAGS or "" + " -flto";
+        CFLAGS = prevAttrs.env.CFLAGS or "" + " -O3 -march=skylake";
+        CXXFLAGS = prevAttrs.env.CXXFLAGS or "" + " -O3 -march=skylake";
       };
   });
 
