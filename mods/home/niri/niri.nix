@@ -14,7 +14,7 @@
       [
         brightnessctl
         dash
-        niri_git
+        niri-unstable
         wireplumber
         wl-clipboard
         xwayland-satellite-unstable
@@ -24,7 +24,7 @@
       portal = {
         enable = true;
         configPackages = [
-          pkgs.niri-unstablet
+          pkgs.niri-unstable
         ];
         extraPortals = [
           pkgs.xdg-desktop-portal-gnome
