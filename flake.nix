@@ -17,18 +17,21 @@
 
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     helix.url = "github:helix-editor/helix";
+    niri.url = "github:sodiboo/niri-flake";
   };
 
   nixConfig = {
     extra-substituters = [
       "https://chaotic-nyx.cachix.org"
       "https://helix.cachix.org"
+      "https://niri.cachix.org"
       "https://nix-community.cachix.org"
       "https://thou-vow.cachix.org"
     ];
     extra-trusted-public-keys = [
       "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
       "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
+      "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "thou-vow.cachix.org-1:n6zUvWYOI7kh0jgd+ghWhxeMd9tVdYF2KdOvufJ/Qy4="
     ];
@@ -41,22 +44,34 @@
     ...
   } @ inputs: let
     systems = ["x86_64-linux"];
-  in {
-    overlays = {
-      base = import ./overlays/base/base.nix inputs;
-      attuned = import ./overlays/attuned/attuned.nix inputs;
-    };
 
+    externalOverlays = [inputs.chaotic.overlays.default inputs.niri.overlays.niri];
+    baseOverlays = externalOverlays ++ [self.overlays.base];
+  in {
     legacyPackages = nixpkgs.lib.genAttrs systems (
       system: let
-        externPkgs = nixpkgs.legacyPackages.${system}.appendOverlays [inputs.chaotic.overlays.default];
-        basePkgs = externPkgs.appendOverlays [self.overlays.base];
+        preBasePkgs = nixpkgs.legacyPackages.${system}.appendOverlays externalOverlays;
+        basePkgs = nixpkgs.legacyPackages.${system}.appendOverlays baseOverlays;
       in
-        self.overlays.base externPkgs externPkgs
+        import ./pkgs/base/base.nix inputs basePkgs preBasePkgs
         // {
-          attunedPackages = self.overlays.attuned basePkgs basePkgs;
+          attunedPackages =
+            import ./pkgs/attuned/attuned.nix inputs (
+              basePkgs.appendOverlays [self.overlays.attuned]
+            )
+            basePkgs;
         }
     );
+
+    overlays = let
+      recursivelyUpdatePkgsWithMyOwn = prev: name: value:
+        if nixpkgs.lib.attrsets.isDerivation value
+        then value
+        else prev.${name} // builtins.mapAttrs recursivelyUpdatePkgsWithMyOwn value;
+    in {
+      base = final: prev: import ./pkgs/base/base.nix inputs final prev;
+      attuned = final: prev: import ./pkgs/attuned/attuned.nix inputs final prev;
+    };
 
     formatter =
       nixpkgs.lib.genAttrs systems (system:
@@ -73,9 +88,7 @@
             _module.args.pkgs = nixpkgs.lib.mkForce (import nixpkgs {
               config.allowUnfree = true;
               localSystem.system = "x86_64-linux";
-              overlays =
-                [inputs.chaotic.overlays.default self.overlays.base]
-                ++ config.nixpkgs.overlays;
+              overlays = baseOverlays ++ config.nixpkgs.overlays;
             });
 
             # NixOS' Specialisations don't support overlays yet...
@@ -97,9 +110,7 @@
             _module.args.pkgs = nixpkgs.lib.mkForce (import nixpkgs {
               config.allowUnfree = true;
               localSystem.system = "x86_64-linux";
-              overlays =
-                [inputs.chaotic.overlays.default self.overlays.base]
-                ++ config.nixpkgs.overlays;
+              overlays = baseOverlays ++ config.nixpkgs.overlays;
             });
 
             specialisation.attuned.configuration.nixpkgs.overlays =

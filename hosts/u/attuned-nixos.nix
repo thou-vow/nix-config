@@ -18,7 +18,7 @@
       };
       kernelModules = ["kvm-intel"];
 
-      kernelPackages = pkgs.linuxPackagesFor (inputs.self.packages.${pkgs.system}.attuned.linux-llvm);
+      kernelPackages = pkgs.linuxPackagesFor (inputs.self.legacyPackages.${pkgs.system}.attunedPackages.linux-llvm);
 
       kernelParams = [
         "ath9k_core.nohwcrypt=1"
@@ -32,6 +32,8 @@
     hardware.enableRedistributableFirmware = true;
 
     networking.networkmanager.wifi.powersave = false;
+
+    nix.package = inputs.self.legacyPackages.${pkgs.system}.attunedPackages.lixPackageSets.latest.lix;
 
     swapDevices = [
       {device = "/dev/disk/by-id/wwn-0x50014ee6b2ede306-part7";}

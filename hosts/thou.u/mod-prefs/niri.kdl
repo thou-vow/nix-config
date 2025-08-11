@@ -110,8 +110,8 @@ binds {
     Super+Minus { set-column-width "-5%"; }
     Super+Shift+Minus { set-window-height "-5%"; }
     Super+Tab repeat=false { switch-focus-between-floating-and-tiling; }
-    Super+I repeat=false { toggle-column-tabbed-display; }
     Super+Q repeat=false { close-window; }
+    Super+I repeat=false { toggle-column-tabbed-display; }
     Super+O repeat=false { toggle-overview; }
     Super+F repeat=false { toggle-window-floating; }
     Super+Z repeat=false { fullscreen-window; }

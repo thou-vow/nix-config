@@ -1,5 +1,5 @@
 inputs: final: prev: {
-  cemu = inputs.nixpkgs.legacyPackages.${final.system}.cemu.overrideAttrs (prevAttrs: {
+  cemu = prev.cemu.overrideAttrs (prevAttrs: {
     env =
       prevAttrs.env or {}
       // {
@@ -33,13 +33,31 @@ inputs: final: prev: {
     };
   };
 
-  niri_git = prev.niri_git.overrideAttrs (prevAttrs: {
+  lixPackageSets.latest.lix = prev.lixPackageSets.latest.lix.overrideAttrs (prevAttrs: {
     env =
       prevAttrs.env or {}
       // {
-        RUSTFLAGS =
-          prevAttrs.env.RUSTFLAGS or ""
-          + " -C target-cpu=skylake -C opt-level=3 -C lto=fat";
+        CFLAGS = prevAttrs.env.CFLAGS or "" + " -O3 -march=skylake";
+        CXXFLAGS = prevAttrs.env.CXXFLAGS or "" + " -O3 -march=skylake";
       };
+  });
+
+  niri-unstable = prev.niri-unstable.overrideAttrs (prevAttrs: {
+    RUSTFLAGS =
+      prevAttrs.RUSTFLAGS or []
+      ++ [
+        "-C target-cpu=skylake"
+        "-C opt-level=3"
+        "-C lto=fat"
+      ];
+  });
+
+  xwayland-satellite-unstable = prev.xwayland-satellite-unstable.overrideAttrs (prevAttrs: {
+    RUSTFLAGS =
+      prevAttrs.RUSTFLAGS or []
+      ++ [
+        "-C target-cpu=skylake"
+        "-C opt-level=3"
+      ];
   });
 }

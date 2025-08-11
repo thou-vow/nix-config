@@ -17,14 +17,14 @@
         niri_git
         wireplumber
         wl-clipboard
-        xwayland-satellite
+        xwayland-satellite-unstable
       ];
 
     xdg = {
       portal = {
         enable = true;
         configPackages = [
-          pkgs.niri_git
+          pkgs.niri-unstablet
         ];
         extraPortals = [
           pkgs.xdg-desktop-portal-gnome

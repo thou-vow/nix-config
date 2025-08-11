@@ -18,7 +18,7 @@
 
   nixpkgs.overlays = [
     (final: prev: {
-      nix = final.lixPackageSets.latest.lix;
+      nix = final.lix;
     })
   ];
 
