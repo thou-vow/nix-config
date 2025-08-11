@@ -33,15 +33,6 @@ inputs: final: prev: {
     };
   };
 
-  lixPackageSets.latest.lix = prev.lixPackageSets.latest.lix.overrideAttrs (prevAttrs: {
-    env =
-      prevAttrs.env or {}
-      // {
-        CFLAGS = prevAttrs.env.CFLAGS or "" + " -O3 -march=skylake";
-        CXXFLAGS = prevAttrs.env.CXXFLAGS or "" + " -O3 -march=skylake";
-      };
-  });
-
   niri-unstable = prev.niri-unstable.overrideAttrs (prevAttrs: {
     RUSTFLAGS =
       prevAttrs.RUSTFLAGS or []

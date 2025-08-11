@@ -33,8 +33,6 @@
 
     networking.networkmanager.wifi.powersave = false;
 
-    nix.package = inputs.self.legacyPackages.${pkgs.system}.attunedPackages.lixPackageSets.latest.lix;
-
     swapDevices = [
       {device = "/dev/disk/by-id/wwn-0x50014ee6b2ede306-part7";}
       {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}
