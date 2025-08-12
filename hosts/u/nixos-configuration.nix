@@ -18,7 +18,7 @@
 
   nixpkgs.overlays = [
     (final: prev: {
-      nix = final.lix;
+      nix = final.lixPackageSets.latest.lix;
     })
   ];
 
@@ -26,13 +26,13 @@
     kernel.sysctl = {
       "kernel.kexec_load_disabled" = 1;
       "kernel.nmi_watchdog" = 0;
+      "kernel.split_lock_mitigate" = 0;
       "vm.swappiness" = 10;
       "vm.dirty_background_ratio" = 2;
       "vm.dirty_ratio" = 5;
       "vm.vfs_cache_pressure" = 25;
     };
     kernelParams = [
-      "mitigations=off"
       "zswap.enabled=1"
       "zswap.max_pool_percent=65"
       "zswap.shrinker_enabled=0"
@@ -68,11 +68,16 @@
       cachix
       ncdu
       pciutils
+      steam-run
       unzip
       usbutils
       util-linux
       zip
     ];
+
+    variables = {
+      "MESA_SHADER_CACHE_MAX_SIZE" = "10G";
+    };
   };
 
   hardware = {
@@ -127,6 +132,10 @@
     firefox.enable = true;
     fish.enable = true;
     git.enable = true;
+    nix-ld = {
+      enable = true;
+      libraries = [];
+    };
   };
 
   security = {

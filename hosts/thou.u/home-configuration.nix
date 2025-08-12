@@ -37,6 +37,8 @@
       gcc
       gimp
       krita
+      lsfg-vk
+      lsfg-vk-ui
       lutris
       nerd-fonts.victor-mono
       noto-fonts
@@ -54,6 +56,7 @@
       directories = [
         ".config/BraveSoftware"
         ".config/Cemu"
+        ".config/lsfg-vk"
         ".local/share/Cemu"
         ".local/share/nix"
         ".ssh"

@@ -24,6 +24,11 @@ output "eDP-1" {
     mode "1366x768"
 }
 
+environment {
+    NIXOS_OZONE_WL "1"
+    QT_QPA_PLATFORM "wayland"
+}
+
 overview {
     backdrop-color "#060810"
 }

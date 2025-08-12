@@ -19,8 +19,8 @@ jobs:
           name: thou-vow
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - run: |
-          nix flake update
+      - run: nix flake update
+          
 
       - run: |
           nix --extra-experimental-features "flakes nix-command pipe-operators" --accept-flake-config \

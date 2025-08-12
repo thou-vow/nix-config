@@ -22,6 +22,8 @@
 
       kernelParams = [
         "ath9k_core.nohwcrypt=1"
+        "i915.mitigations=off"
+        "mitigations=off"
         "pcie_aspm=off"
       ];
       loader.grub.configurationName = "Attuned";
@@ -29,13 +31,30 @@
 
     environment.etc."specialisation".text = "attuned";
 
-    hardware.enableRedistributableFirmware = true;
+    hardware = {
+      enableRedistributableFirmware = true;
+      graphics = {
+        package = pkgs.mesa_git;
+        package32 = pkgs.mesa32_git;
+      };
+    };
 
     networking.networkmanager.wifi.powersave = false;
 
     swapDevices = [
       {device = "/dev/disk/by-id/wwn-0x50014ee6b2ede306-part7";}
       {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}
+    ];
+
+    system.replaceDependencies.replacements = [
+      {
+        oldDependency = pkgs.mesa.out;
+        newDependency = pkgs.mesa_git.out;
+      }
+      {
+        oldDependency = pkgs.pkgsi686Linux.mesa.out;
+        newDependency = pkgs.mesa32_git.out;
+      }
     ];
 
     systemd.services =

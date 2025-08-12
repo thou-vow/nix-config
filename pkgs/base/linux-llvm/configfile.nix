@@ -1,5 +1,4 @@
 {
-  flex,
   lib,
   linux,
   pkgsBuildBuild,

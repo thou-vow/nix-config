@@ -20,6 +20,8 @@
     ];
     users.thou = {
       directories = [
+        ".cache/mesa_shader_cache"
+        ".cache/nix"
         ".local/state/nix"
       ];
     };

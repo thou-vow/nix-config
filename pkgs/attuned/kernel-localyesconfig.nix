@@ -16,7 +16,6 @@ lib: with lib.kernel; {
   "ACPI_MDIO" = yes;
   "ACPI_NFIT" = no;
   "ACPI_PFRUT" = no;
-  "ACPI_PLATFORM_PROFILE" = yes;
   "ACPI_PROCESSOR_AGGREGATOR" = yes;
   "ACPI_QUICKSTART" = no;
   "ACPI_SBS" = no;
@@ -56,10 +55,12 @@ lib: with lib.kernel; {
   "AMD_ATL" = no;
   "AMD_HSMP_ACPI" = no;
   "AMD_HSMP_PLAT" = no;
+  "AMD_ISP_PLATFORM" = no;
   "AMD_PHY" = no;
   "AMD_PMC" = no;
   "AMD_PTDMA" = no;
   "AMD_QDMA" = no;
+  "AMD_SBRMI_I2C" = no;
   "AMD_SFH_HID" = no;
   "AMD_XGBE" = no;
   "AMILO_RFKILL" = no;
@@ -72,6 +73,7 @@ lib: with lib.kernel; {
   "AQTION" = no;
   "AQUANTIA_PHY" = no;
   "AR5523" = no;
+  "AS21XXX_PHY" = no;
   "ASUS_LAPTOP" = no;
   "ASUS_TF103C_DOCK" = no;
   "ASUS_WIRELESS" = no;
@@ -136,6 +138,7 @@ lib: with lib.kernel; {
   "BATMAN_ADV" = no;
   "BATTERY_88PM860X" = no;
   "BATTERY_BQ27XXX" = no;
+  "BATTERY_CHAGALL" = no;
   "BATTERY_CW2015" = no;
   "BATTERY_DA9030" = no;
   "BATTERY_DA9052" = no;
@@ -176,6 +179,7 @@ lib: with lib.kernel; {
   "BLK_DEV_RBD" = no;
   "BLK_DEV_SR" = no;
   "BLK_DEV_UBLK" = no;
+  "BLK_DEV_ZONED_LOOP" = no;
   "BNA" = no;
   "BNX2" = no;
   "BNX2X" = no;
@@ -243,6 +247,7 @@ lib: with lib.kernel; {
   "CHARGER_MANAGER" = no;
   "CHARGER_MAX77976" = no;
   "CHARGER_MAX8903" = no;
+  "CHARGER_MAX8971" = no;
   "CHARGER_RT9455" = no;
   "CHARGER_RT9467" = no;
   "CHARGER_RT9471" = no;
@@ -324,6 +329,7 @@ lib: with lib.kernel; {
   "CRYPTO_DEV_PADLOCK" = no;
   "CRYPTO_DEV_QAT_420XX" = no;
   "CRYPTO_DEV_QAT_4XXX" = no;
+  "CRYPTO_DEV_QAT_6XXX" = no;
   "CRYPTO_DEV_QAT_C3XXX" = no;
   "CRYPTO_DEV_QAT_C3XXXVF" = no;
   "CRYPTO_DEV_QAT_C62X" = no;
@@ -350,11 +356,9 @@ lib: with lib.kernel; {
   "CRYPTO_MICHAEL_MIC" = no;
   "CRYPTO_NHPOLY1305_AVX2" = no;
   "CRYPTO_NHPOLY1305_SSE2" = no;
-  "CRYPTO_NULL" = yes;
-  "CRYPTO_NULL2" = yes;
+  "CRYPTO_NULL" = no;
   "CRYPTO_PCBC" = no;
   "CRYPTO_PCRYPT" = no;
-  "CRYPTO_POLY1305" = no;
   "CRYPTO_POLYVAL" = yes;
   "CRYPTO_POLYVAL_CLMUL_NI" = yes;
   "CRYPTO_RMD160" = no;
@@ -364,16 +368,13 @@ lib: with lib.kernel; {
   "CRYPTO_SERPENT_AVX_X86_64" = no;
   "CRYPTO_SERPENT_SSE2_X86_64" = no;
   "CRYPTO_SHA1_SSSE3" = yes;
-  "CRYPTO_SHA256_SSSE3" = yes;
   "CRYPTO_SHA512_SSSE3" = yes;
-  "CRYPTO_SIMD" = yes;
   "CRYPTO_SM3_AVX_X86_64" = no;
   "CRYPTO_SM3_GENERIC" = no;
   "CRYPTO_SM4_AESNI_AVX2_X86_64" = no;
   "CRYPTO_SM4_AESNI_AVX_X86_64" = no;
   "CRYPTO_SM4_GENERIC" = no;
   "CRYPTO_STREEBOG" = no;
-  "CRYPTO_TEST" = no;
   "CRYPTO_TWOFISH" = no;
   "CRYPTO_TWOFISH_AVX_X86_64" = no;
   "CRYPTO_TWOFISH_X86_64" = no;
@@ -392,11 +393,12 @@ lib: with lib.kernel; {
   "CX_ECAT" = no;
   "DA9052_WATCHDOG" = no;
   "DA9055_WATCHDOG" = no;
+  "DASHARO_ACPI" = no;
   "DAVICOM_PHY" = no;
   "DCDBAS" = yes;
   "DE2104X" = no;
   "DELL_LAPTOP" = yes;
-  "DELL_PC" = yes;
+  "DELL_PC" = no;
   "DELL_RBTN" = yes;
   "DELL_SMBIOS" = yes;
   "DELL_SMO8800" = no;
@@ -440,6 +442,7 @@ lib: with lib.kernel; {
   "DRM_BUDDY" = yes;
   "DRM_CIRRUS_QEMU" = no;
   "DRM_DISPLAY_HELPER" = yes;
+  "DRM_EFIDRM" = no;
   "DRM_EXEC" = yes;
   "DRM_GM12U320" = no;
   "DRM_GMA500" = no;
@@ -461,11 +464,15 @@ lib: with lib.kernel; {
   "DRM_RADEON" = no;
   "DRM_SCHED" = yes;
   "DRM_SSD130X" = no;
+  "DRM_ST7571_I2C" = no;
+  "DRM_ST7586" = no;
+  "DRM_ST7735R" = no;
   "DRM_SUBALLOC_HELPER" = yes;
   "DRM_TTM" = yes;
   "DRM_TTM_HELPER" = yes;
   "DRM_UDL" = no;
   "DRM_VBOXVIDEO" = no;
+  "DRM_VESADRM" = no;
   "DRM_VGEM" = no;
   "DRM_VIRTIO_GPU" = no;
   "DRM_VKMS" = no;
@@ -504,7 +511,6 @@ lib: with lib.kernel; {
   "E1000" = no;
   "E1000E" = no;
   "EBC_C384_WDT" = no;
-  "ECHO" = no;
   "ECRYPT_FS" = no;
   "EDAC_AMD64" = no;
   "EDAC_E752X" = no;
@@ -658,7 +664,6 @@ lib: with lib.kernel; {
   "HID_APPLEIR" = no;
   "HID_APPLETB_BL" = no;
   "HID_APPLETB_KBD" = no;
-  "HID_ASUS" = no;
   "HID_AUREAL" = no;
   "HID_BELKIN" = no;
   "HID_BETOP_FF" = no;
@@ -759,6 +764,7 @@ lib: with lib.kernel; {
   "HID_ZEROPLUS" = no;
   "HID_ZYDACRON" = no;
   "HINIC" = no;
+  "HINIC3" = no;
   "HMC6352" = no;
   "HOTPLUG_PCI_ACPI_IBM" = no;
   "HOTPLUG_PCI_CPCI_GENERIC" = no;
@@ -932,8 +938,10 @@ lib: with lib.kernel; {
   "INTEL_MEI_VSC_HW" = no;
   "INTEL_MEI_WDT" = no;
   "INTEL_OAKTRAIL" = no;
+  "INTEL_OC_WATCHDOG" = yes;
   "INTEL_PCH_THERMAL" = yes;
   "INTEL_PMC_CORE" = yes;
+  "INTEL_PMC_SSRAM_TELEMETRY" = yes;
   "INTEL_PMT_CLASS" = yes;
   "INTEL_PMT_CRASHLOG" = no;
   "INTEL_PMT_TELEMETRY" = yes;
@@ -1221,6 +1229,7 @@ lib: with lib.kernel; {
   "MAX31827" = no;
   "MAX63XX_WATCHDOG" = no;
   "MAX8925_POWER" = no;
+  "MAXLINEAR_86110_PHY" = no;
   "MAXLINEAR_GPHY" = no;
   "MCB" = no;
   "MCTP_SERIAL" = no;
@@ -1229,8 +1238,6 @@ lib: with lib.kernel; {
   "MDIO_BCM_UNIMAC" = no;
   "MDIO_BITBANG" = no;
   "MDIO_BUS" = yes;
-  "MDIO_DEVICE" = yes;
-  "MDIO_DEVRES" = yes;
   "MDIO_MSCC_MIIM" = no;
   "MDIO_MVUSB" = no;
   "MDIO_THUNDER" = no;
@@ -1342,6 +1349,7 @@ lib: with lib.kernel; {
   "MLX4_EN" = no;
   "MLX5_CORE" = no;
   "MLXFW" = no;
+  "MLXREG_DPU" = no;
   "MLXREG_HOTPLUG" = no;
   "MLXREG_IO" = no;
   "MLXREG_LC" = no;
@@ -1710,6 +1718,8 @@ lib: with lib.kernel; {
   "OPENVSWITCH" = no;
   "ORANGEFS_FS" = no;
   "OVERLAY_FS" = no;
+  "OVPN" = no;
+  "OXP_EC" = no;
   "P54_COMMON" = no;
   "PACKET_DIAG" = no;
   "PANASONIC_LAPTOP" = no;
@@ -1762,7 +1772,7 @@ lib: with lib.kernel; {
   "PCI_ENDPOINT_TEST" = no;
   "PCI_MESON" = no;
   "PCI_PF_STUB" = no;
-  "PCI_PWRCTL_SLOT" = no;
+  "PCI_PWRCTRL_SLOT" = no;
   "PCI_SW_SWITCHTEC" = no;
   "PCNET32" = no;
   "PCS_XPCS" = no;
@@ -1805,6 +1815,8 @@ lib: with lib.kernel; {
   "PLFXLC" = no;
   "PLX_DMA" = no;
   "PMBUS" = no;
+  "PORTWELL_EC" = no;
+  "POWER_RESET_TORADEX_EC" = no;
   "POWER_SEQUENCING" = no;
   "PPP" = no;
   "PPS" = no;
@@ -1855,6 +1867,7 @@ lib: with lib.kernel; {
   "REGULATOR_AAT2870" = no;
   "REGULATOR_ACT8865" = no;
   "REGULATOR_AD5398" = no;
+  "REGULATOR_ADP5055" = no;
   "REGULATOR_AS3711" = no;
   "REGULATOR_AW37503" = no;
   "REGULATOR_DA9052" = no;
@@ -2245,7 +2258,6 @@ lib: with lib.kernel; {
   "SENSORS_NZXT_KRAKEN3" = no;
   "SENSORS_NZXT_SMART2" = no;
   "SENSORS_OCC_P8_I2C" = no;
-  "SENSORS_OXP" = no;
   "SENSORS_PC87360" = no;
   "SENSORS_PC87427" = no;
   "SENSORS_PCF8591" = no;
@@ -2253,7 +2265,6 @@ lib: with lib.kernel; {
   "SENSORS_POWR1220" = no;
   "SENSORS_PT5161L" = no;
   "SENSORS_PWM_FAN" = no;
-  "SENSORS_SBRMI" = no;
   "SENSORS_SBTSI" = no;
   "SENSORS_SCH5627" = no;
   "SENSORS_SCH5636" = no;
@@ -2387,6 +2398,7 @@ lib: with lib.kernel; {
   "SND_GINA20" = no;
   "SND_GINA24" = no;
   "SND_HDA" = yes;
+  "SND_HDA_ACPI" = no;
   "SND_HDA_CODEC_ANALOG" = no;
   "SND_HDA_CODEC_CA0110" = no;
   "SND_HDA_CODEC_CA0132" = no;
@@ -2523,6 +2535,7 @@ lib: with lib.kernel; {
   "SND_SOC_CS43130" = no;
   "SND_SOC_CS4341" = no;
   "SND_SOC_CS4349" = no;
+  "SND_SOC_CS48L32" = no;
   "SND_SOC_CS530X_I2C" = no;
   "SND_SOC_CS53L30" = no;
   "SND_SOC_CX2072X" = no;
@@ -2536,6 +2549,8 @@ lib: with lib.kernel; {
   "SND_SOC_ES8326" = no;
   "SND_SOC_ES8328_I2C" = no;
   "SND_SOC_ES8328_SPI" = no;
+  "SND_SOC_ES8375" = no;
+  "SND_SOC_ES8389" = no;
   "SND_SOC_FSL_XCVR" = no;
   "SND_SOC_GTM601" = no;
   "SND_SOC_HDA" = yes;
@@ -2619,6 +2634,8 @@ lib: with lib.kernel; {
   "SND_SOC_RT5640" = no;
   "SND_SOC_RT5659" = no;
   "SND_SOC_RT9120" = no;
+  "SND_SOC_RT9123" = no;
+  "SND_SOC_RT9123P" = no;
   "SND_SOC_RTQ9128" = no;
   "SND_SOC_SDCA_OPTIONAL" = yes;
   "SND_SOC_SGTL5000" = no;
@@ -2785,6 +2802,7 @@ lib: with lib.kernel; {
   "TCG_ATMEL" = no;
   "TCG_INFINEON" = no;
   "TCG_NSC" = no;
+  "TCG_SVSM" = no;
   "TCG_TIS_I2C" = no;
   "TCG_TIS_I2C_ATMEL" = no;
   "TCG_TIS_I2C_CR50" = no;
@@ -2834,9 +2852,8 @@ lib: with lib.kernel; {
   "TINYDRM_MI0283QT" = no;
   "TINYDRM_REPAPER" = no;
   "TINYDRM_SHARP_MEMORY" = no;
-  "TINYDRM_ST7586" = no;
-  "TINYDRM_ST7735R" = no;
   "TIPC" = no;
+  "TI_FPC202" = no;
   "TLAN" = no;
   "TLS" = no;
   "TOPSTAR_LAPTOP" = no;
@@ -2925,6 +2942,7 @@ lib: with lib.kernel; {
   "TSNEP" = no;
   "TULIP" = no;
   "TUN" = yes;
+  "TUXEDO_NB04_WMI_AB" = no;
   "TWL4030_WATCHDOG" = no;
   "TXGBE" = no;
   "TYPEC" = no;
@@ -3156,6 +3174,8 @@ lib: with lib.kernel; {
   "VIDEO_OG01A1B" = no;
   "VIDEO_OV01A10" = no;
   "VIDEO_OV02A10" = no;
+  "VIDEO_OV02C10" = no;
+  "VIDEO_OV02E10" = no;
   "VIDEO_OV08D10" = no;
   "VIDEO_OV08X40" = no;
   "VIDEO_OV13858" = no;
@@ -3202,6 +3222,8 @@ lib: with lib.kernel; {
   "VIDEO_TW68" = no;
   "VIDEO_TW686X" = no;
   "VIDEO_USBTV" = no;
+  "VIDEO_VD55G1" = no;
+  "VIDEO_VD56G3" = no;
   "VIDEO_VICODEC" = no;
   "VIDEO_VIM2M" = no;
   "VIDEO_VIMC" = no;
@@ -3213,6 +3235,7 @@ lib: with lib.kernel; {
   "VIRTIO_MEM" = no;
   "VIRTIO_MMIO" = no;
   "VIRTIO_NET" = no;
+  "VIRTIO_RTC" = no;
   "VIRT_WIFI" = no;
   "VITESSE_PHY" = no;
   "VLAN_8021Q" = no;
