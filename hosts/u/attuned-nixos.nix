@@ -18,7 +18,8 @@
       };
       kernelModules = ["kvm-intel"];
 
-      kernelPackages = pkgs.linuxPackagesFor (inputs.self.legacyPackages.${pkgs.system}.attunedPackages.linux-llvm);
+      kernelPackages = pkgs.linuxPackages_cachyos-lto;
+      # kernelPackages = pkgs.linuxPackagesFor (inputs.self.legacyPackages.${pkgs.system}.attunedPackages.linux-llvm);
 
       kernelParams = [
         "ath9k_core.nohwcrypt=1"
