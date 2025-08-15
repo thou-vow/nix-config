@@ -76,7 +76,7 @@
     ];
 
     variables = {
-      "MESA_SHADER_CACHE_MAX_SIZE" = "10G";
+      MESA_SHADER_CACHE_MAX_SIZE = "10G";
     };
   };
 

@@ -24,6 +24,11 @@
       enableAllHardware = true;
     };
 
+    networking.nameservers = [
+      "8.8.4.4"
+      "8.8.8.8"
+    ];
+
     swapDevices = [
       {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}
     ];

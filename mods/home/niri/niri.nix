@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -14,6 +13,7 @@
       [
         brightnessctl
         dash
+        nautilus
         niri-unstable
         wireplumber
         wl-clipboard

@@ -33,7 +33,6 @@
       cemu
       clock-rs
       bc
-      discord
       gcc
       gimp
       krita
@@ -49,6 +48,7 @@
       typst
       typstyle
       unimatrix
+      vesktop
     ];
 
     persistence."/persist${config.home.homeDirectory}" = {
@@ -79,6 +79,8 @@
       EDITOR = lib.getExe pkgs.helix;
       TERMINAL = "${lib.getExe pkgs.kitty} -1";
       VISUAL = lib.getExe pkgs.helix;
+
+      LSFG_PROCESS = "3x";
     };
     stateVersion = "25.05";
   };

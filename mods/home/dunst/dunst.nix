@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: {
   options.mods.dunst.enable = lib.mkEnableOption "Enable dunst.";

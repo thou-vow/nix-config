@@ -31,7 +31,9 @@
         '';
 
         preferAbbrs = true;
-        shellAbbrs = config.programs.fish.shellAliases;
+        shellAbbrs = config.programs.fish.shellAliases // {
+          "cd" = "z";
+        };
       };
 
       bat.enable = true;

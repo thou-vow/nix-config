@@ -23,7 +23,10 @@ inputs: final: prev: {
     suffix = "attuned";
     useO3 = true;
     mArch = "skylake";
-    prependStructuredConfig = import ./kernel-localyesconfig.nix final.lib;
+    prependStructuredConfig = (import ./kernel-localyesconfig.nix final.lib) // (with final.lib.kernel; {
+      # "DRM_XE" = no;      
+      # "KVM_AMD" = no;
+    });
     withLTO = "full";
     disableDebug = true;
     features = {

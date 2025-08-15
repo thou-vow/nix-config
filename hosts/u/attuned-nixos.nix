@@ -18,12 +18,12 @@
       };
       kernelModules = ["kvm-intel"];
 
-      kernelPackages = pkgs.linuxPackages_cachyos-lto;
-      # kernelPackages = pkgs.linuxPackagesFor (inputs.self.legacyPackages.${pkgs.system}.attunedPackages.linux-llvm);
+      kernelPackages = pkgs.linuxPackagesFor (
+        inputs.self.legacyPackages.${pkgs.system}.attunedPackages.linux-llvm
+      );
 
       kernelParams = [
         "ath9k_core.nohwcrypt=1"
-        "i915.mitigations=off"
         "mitigations=off"
         "pcie_aspm=off"
       ];
@@ -41,6 +41,12 @@
     };
 
     networking.networkmanager.wifi.powersave = false;
+
+    services.scx = {
+      enable = true;
+      scheduler = "scx_rusty";
+      package = pkgs.scx_git.full;
+    };
 
     swapDevices = [
       {device = "/dev/disk/by-id/wwn-0x50014ee6b2ede306-part7";}
@@ -80,6 +86,24 @@
         })
       # Only for users within home-manager group
       (lib.filterAttrs (_: value: lib.lists.any (group: group == "home-manager") value.extraGroups)
-        config.users.users);
+        config.users.users)
+      // {
+        # Setting i915.mitigations=off parameter freezes inital ramdisk for the custom kernel
+        # So, it's done at runtime instead
+        disable-i915-mitigations = {
+          description = "Set i915 (Intel Graphics) mitigations off at runtime";
+          wantedBy = ["multi-user.target"];
+          before = ["graphical.target"];
+          serviceConfig = {
+            ExecStart = ''${pkgs.writeShellScript "disable-i915-mitigations" ''
+                if [ -w /sys/module/i915/parameters/mitigations ]; then
+                  echo off > /sys/module/i915/parameters/mitigations
+                fi
+              ''}'';
+            Type = "oneshot";
+            RemainAfterExit = "yes";
+          };
+        };
+      };
   };
 }

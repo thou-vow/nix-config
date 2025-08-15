@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs";
+    flake-input-patcher.url = "github:jfly/flake-input-patcher";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -37,12 +38,16 @@
     ];
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    ...
-  } @ inputs: let
+  outputs = unpatchedInputs: let
+    # Sadly, hardcoded into a single system
+    patcher = unpatchedInputs.flake-input-patcher.lib."x86_64-linux";
+
+    inputs = patcher.patch unpatchedInputs {
+      # For the home.replaceDependencies option
+      home-manager.patches = [./home-manager-replace-dependencies.diff];
+    };
+    inherit (inputs) self nixpkgs home-manager;
+
     systems = ["x86_64-linux"];
 
     externalOverlays = [inputs.chaotic.overlays.default inputs.niri.overlays.niri];
