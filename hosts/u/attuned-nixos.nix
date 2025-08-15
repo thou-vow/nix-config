@@ -53,17 +53,6 @@
       {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}
     ];
 
-    system.replaceDependencies.replacements = [
-      {
-        oldDependency = pkgs.mesa.out;
-        newDependency = pkgs.mesa_git.out;
-      }
-      {
-        oldDependency = pkgs.pkgsi686Linux.mesa.out;
-        newDependency = pkgs.mesa32_git.out;
-      }
-    ];
-
     systemd.services =
       lib.mapAttrs' (name: value:
         lib.nameValuePair "hm-activation-${name}" {
