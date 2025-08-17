@@ -224,7 +224,10 @@
       };
   };
 
-  time.timeZone = "America/Sao_Paulo";
+  time = {
+    hardwareClockInLocalTime = true;
+    timeZone = "America/Sao_Paulo";
+  };
 
   users.users = {
     root.password = "123";

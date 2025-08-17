@@ -46,6 +46,16 @@ inputs: final: prev: {
       ];
   });
 
+  rust-analyzer-unwrapped = prev.rust-analyzer-unwrapped.overrideAttrs (prevAttrs: {
+    env =
+      prevAttrs.env or {}
+      // {
+        RUSTFLAGS =
+          prevAttrs.env.RUSTFLAGS or ""
+          + " -C target-cpu=skylake -C opt-level=3";
+      };
+  });
+
   xwayland-satellite-unstable = prev.xwayland-satellite-unstable.overrideAttrs (prevAttrs: {
     RUSTFLAGS =
       prevAttrs.RUSTFLAGS or []
