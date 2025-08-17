@@ -23,8 +23,8 @@ jobs:
           nix flake update
 
       - run: |
-          cachix watch-store
-          nix --extra-experimental-features "flakes nix-command pipe-operators" --accept-flake-config \
+          cachix watch-exec -m xz -l 3 thou-vow -- \
+            nix --extra-experimental-features "flakes nix-command pipe-operators" --accept-flake-config \
             build -L --impure --inputs-from . --expr \
             'let
               lib = (builtins.getFlake "nixpkgs").lib;
