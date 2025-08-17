@@ -5,6 +5,7 @@
   pkgs,
   ...
 }: {
+  # No specialisation configuration
   config = inputs.nixpkgs.lib.mkIf (config.specialisation != {}) {
     boot = {
       initrd.availableKernelModules = [
@@ -16,14 +17,20 @@
         "sd_mod"
         "usbhid"
       ];
+
       kernelPackages = pkgs.linuxPackages_cachyos-lto;
     };
 
     hardware = {
+      cpu = {
+        amd.updateMicrocode = true;
+        intel.updateMicrocode = true;
+      };
       enableAllFirmware = true;
       enableAllHardware = true;
     };
 
+    # Sometimes the default nameservers don't work
     networking.nameservers = [
       "8.8.4.4"
       "8.8.8.8"
@@ -32,29 +39,5 @@
     swapDevices = [
       {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}
     ];
-
-    systemd.services =
-      lib.mapAttrs' (name: value:
-        lib.nameValuePair "hm-activation-${name}" {
-          path = [config.nix.package];
-
-          serviceConfig.ExecStart = ''
-            ${
-              pkgs.writeShellScript "hm-activation" ''
-                #!${lib.getExe pkgs.dash}
-
-                for gen in $(
-                  nix-store -q --referrers \
-                    /home/${name}/.local/state/nix/profiles/home-manager
-                ); do if [ -d "$gen/specialisation" ]; then
-                    "$gen/activate"
-                  fi
-                done
-              ''
-            }'';
-        })
-      # Only for users within home-manager group
-      (lib.filterAttrs (_: value: builtins.any (group: group == "home-manager") value.extraGroups)
-        config.users.users);
   };
 }

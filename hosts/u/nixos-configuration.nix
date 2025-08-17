@@ -24,17 +24,23 @@
 
   boot = {
     kernel.sysctl = {
-      "kernel.kexec_load_disabled" = 1;
+      # Mostly performance improvements
       "kernel.nmi_watchdog" = 0;
       "kernel.split_lock_mitigate" = 0;
       "vm.swappiness" = 10;
       "vm.dirty_background_ratio" = 2;
       "vm.dirty_ratio" = 5;
+
+      # Virtual file system cache persists longer
       "vm.vfs_cache_pressure" = 25;
     };
     kernelParams = [
       "zswap.enabled=1"
+
+      # Heard that above 70% has a high penalty
       "zswap.max_pool_percent=65"
+
+      # Had a bad experience with cold memory shrink
       "zswap.shrinker_enabled=0"
     ];
   };
@@ -80,14 +86,9 @@
     };
   };
 
-  hardware = {
-    cpu.intel.updateMicrocode =
-      config.hardware.enableRedistributableFirmware
-      || config.hardware.enableAllFirmware;
-    graphics = {
-      enable = true;
-      enable32Bit = true;
-    };
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
   };
 
   i18n = {
@@ -111,18 +112,21 @@
   };
 
   nix = {
+    # Builds run with low priority so the system stays responsive
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedClass = "idle";
+
+    # So the <angle-brackets> syntax uses flake inputs
     nixPath =
       lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
 
+    # So the flake registry uses flake inputs
     registry =
       lib.mapAttrs (_: value: {flake = value;})
       (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
 
     settings = {
-      accept-flake-config = true;
       experimental-features = ["flakes" "nix-command" "pipe-operator"];
-      flake-registry = "";
-      system-features = ["gccarch-skylake"];
       trusted-users = ["@wheel"];
     };
   };
@@ -141,10 +145,14 @@
   security = {
     rtkit.enable = true;
     polkit.enable = true;
-    sudo.package = pkgs.sudo.override {withInsults = true;};
+    sudo.extraConfig = ''
+      Defaults pwfeedback
+      Defaults insults
+    '';
   };
 
   services = {
+    ananicy.enable = true;
     lvm.enable = false;
     openssh.enable = true;
     pipewire = {
@@ -166,24 +174,54 @@
 
   systemd = {
     oomd.enable = false;
-    services =
-      lib.mapAttrs' (name: value:
-        lib.nameValuePair "hm-activation-${name}" {
-          description = "Run ${name} Home Manager activation";
 
-          wantedBy = ["user-runtime-dir@${builtins.toString value.uid}.service"];
-          before = ["user@${builtins.toString value.uid}.service"];
+    services = let
+      # Since the Home Manager configuration is standalone, to regenerate it automatically,
+      #   in impermanence, a service is needed.
+      # This runs between the login and shell in TTY, and also preserves specialisations.
+      homeManagerActivateServices =
+        lib.mapAttrs' (name: value:
+          lib.nameValuePair "home-manager-activation-${name}" {
+            description = "Run ${name} Home Manager activation";
 
-          serviceConfig = {
-            # ExecStart is defined in the modes
-            RemainAfterExit = "yes";
-            Type = "oneshot";
-            User = name;
-          };
-        })
-      # Only for users within home-manager group
-      (lib.filterAttrs (_: value: builtins.any (group: group == "home-manager") value.extraGroups)
-        config.users.users);
+            wantedBy = ["user-runtime-dir@${builtins.toString value.uid}.service"];
+            before = ["user@${builtins.toString value.uid}.service"];
+
+            path = [config.nix.package pkgs.dash];
+
+            serviceConfig = {
+              # Script to activate Home Manager's latest generation, considering specialisations.
+              ExecStart = let
+                currentSpecialisation = config.environment.etc."specialisation".text or null;
+                activatePath =
+                  lib.optionalString (currentSpecialisation != null) "specialisation/${currentSpecialisation}/"
+                  + "activate";
+
+                script = pkgs.writeShellScript "home-manager-activation" ''
+                  #!/usr/bin/env dash
+
+                  for gen in $(
+                    nix-store -q --referrers \
+                      $HOME/.local/state/nix/profiles/home-manager
+                  ); do if [ -d "$gen/specialisation" ]; then
+                      $gen/${activatePath}
+                    fi
+                  done
+                '';
+              in "${script}";
+              RemainAfterExit = "yes";
+              Type = "oneshot";
+              User = name;
+            };
+          })
+        # Only for users within home-manager group.
+        (lib.filterAttrs (_: value: builtins.any (group: group == "home-manager") value.extraGroups)
+          config.users.users);
+    in
+      homeManagerActivateServices
+      // {
+        # More system services could go here.
+      };
   };
 
   time.timeZone = "America/Sao_Paulo";

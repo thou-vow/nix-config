@@ -30,12 +30,6 @@
             language-servers = ["nixd"];
           }
           {
-            name = "rust";
-            indent = commonIndent;
-            formatter.command = lib.getExe pkgs.rustfmt; 
-            language-servers = ["rust-analyzer"];
-          }
-          {
             name = "typescript";
             indent = commonIndent;
             language-servers = ["typescript-language-server"];
@@ -56,9 +50,6 @@
               formatting.command = [(lib.getExe pkgs.alejandra)];
               nixpkgs.expr = ''import (builtins.getFlake "${inputs.self}").inputs.nixpkgs {}'';
             };
-          };
-          rust-analyzer = {
-            command = lib.getExe pkgs.rust-analyzer;
           };
           tinymist = {
             command = lib.getExe pkgs.tinymist;

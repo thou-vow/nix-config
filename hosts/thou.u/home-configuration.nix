@@ -13,6 +13,12 @@
     flakePath = "/flake";
   };
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      nix = final.lixPackageSets.latest.lix;
+    })
+  ];
+
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {

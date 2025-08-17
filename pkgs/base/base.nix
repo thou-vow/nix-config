@@ -1,4 +1,5 @@
 inputs: final: prev: {
+  # Oracle GraalVM (nixpkgs only has 17 and 23).
   graalvm-oracle_21 = let
     src = {
       "x86_64-linux" = final.fetchurl {
@@ -14,6 +15,7 @@ inputs: final: prev: {
       src = src.${final.system};
     });
 
+  # Plans to modify this helix derivation.
   helix_mod = inputs.helix.packages.${final.system}.helix;
 
   linux-llvm = final.callPackage ./linux-llvm/linux-llvm.nix {};

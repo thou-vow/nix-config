@@ -19,10 +19,11 @@ jobs:
           name: thou-vow
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - run: nix flake update
-          
+      - run: |
+          nix flake update
 
       - run: |
+          cachix watch-store
           nix --extra-experimental-features "flakes nix-command pipe-operators" --accept-flake-config \
             build -L --impure --inputs-from . --expr \
             'let
@@ -30,7 +31,7 @@ jobs:
               flake = builtins.getFlake (builtins.toString ./.);
 
               collectDerivations = value:
-                if lib.attrsets.isDerivation value
+                if lib.isDerivation value
                 then [value]
                 else
                   value
@@ -40,5 +41,3 @@ jobs:
               flake.legacyPackages."x86_64-linux".attunedPackages
               |> lib.attrValues
               |> lib.concatMap collectDerivations'
-
-      - run: cachix push thou-vow ./result/*
