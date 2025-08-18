@@ -52,7 +52,6 @@
       steam
       python3
       typst
-      typstyle
       unimatrix
       vesktop
     ];

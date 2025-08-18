@@ -120,7 +120,7 @@
     nixPath =
       lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
 
-    # So the flake registry uses flake inputs
+    # So the flake#registry uses flake inputs
     registry =
       lib.mapAttrs (_: value: {flake = value;})
       (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
@@ -152,7 +152,6 @@
   };
 
   services = {
-    ananicy.enable = true;
     lvm.enable = false;
     openssh.enable = true;
     pipewire = {

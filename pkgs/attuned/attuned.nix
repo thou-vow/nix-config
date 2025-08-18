@@ -23,10 +23,12 @@ inputs: final: prev: {
     suffix = "attuned";
     useO3 = true;
     mArch = "skylake";
-    prependStructuredConfig = (import ./kernel-localyesconfig.nix final.lib) // (with final.lib.kernel; {
-      # "DRM_XE" = no;      
-      # "KVM_AMD" = no;
-    });
+    prependStructuredConfig =
+      (import ./kernel-localyesconfig.nix final.lib)
+      // (with final.lib.kernel; {
+        # "DRM_XE" = no;
+        # "KVM_AMD" = no;
+      });
     withLTO = "full";
     disableDebug = true;
     features = {
@@ -64,4 +66,19 @@ inputs: final: prev: {
         "-C opt-level=3"
       ];
   });
+
+  mesa_git = (prev.mesa_git.overrideAttrs (prevAttrs: {
+    env =
+      prevAttrs.env or {}
+      // {
+        CFLAGS = prevAttrs.env.CFLAGS or "" + " -O3 -march=skylake";
+        CXXFLAGS = prevAttrs.env.CXXFLAGS or "" + " -O3 -march=skylake";
+      };
+
+    mesonFlags = prev.mesonFlags ++ [
+      "-Dgallium-drivers=iris"
+      "-Dvulkan-drivers=intel"
+      "-Dvalgrind=disabled"
+    ];
+  })).override {stdenv = final.clangStdenv;};
 }

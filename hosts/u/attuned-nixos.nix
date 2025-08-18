@@ -1,7 +1,5 @@
 {
-  config,
   inputs,
-  lib,
   pkgs,
   ...
 }: {
@@ -53,10 +51,6 @@
 
     # Needed for Wi-Fi to not suddenly stop working...
     networking.networkmanager.wifi.powersave = false;
-
-    services = {
-      ananicy.rulesProvider = pkgs.ananicy-rules-cachyos_git;
-    };
 
     swapDevices = [
       {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}

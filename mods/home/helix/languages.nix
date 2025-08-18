@@ -8,10 +8,17 @@
   config = lib.mkIf config.mods.helix.enable {
     home.packages = with pkgs; [
       alejandra
+      jdt-language-server
+      kdlfmt
       nixd
       rust-analyzer
+      rustfmt
+      tinymist
       typescript-language-server
-      typst-fmt
+      typstyle
+      vscode-json-languageserver
+      yaml-language-server
+      yamlfmt
     ];
 
     programs.helix = {
@@ -25,6 +32,9 @@
           lib.map (language: language // {indent = commonIndent;}) [
             {
               name = "java";
+            }
+            {
+              name = "javascript";
             }
             {
               name = "json";
@@ -44,7 +54,7 @@
             }
             {
               name = "typst";
-              formatter.command = "typst-fmt";
+              formatter.command = "typstyle";
             }
             {
               name = "yaml";

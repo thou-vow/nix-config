@@ -1,27 +1,20 @@
 name: Bump and cache dependencies
-
 on:
   workflow_dispatch:
   schedule:
     - cron: '0 9 */2 * *'
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: cachix/install-nix-action@v31
-
       - uses: cachix/cachix-action@v16
         with:
           name: thou-vow
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
       - run: |
           nix flake update
-
       - run: |
           cachix watch-exec -m xz -l 3 thou-vow -- \
             nix --extra-experimental-features "flakes nix-command pipe-operators" --accept-flake-config \
