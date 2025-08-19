@@ -23,7 +23,7 @@
 
     # Some packages.
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    helix.url = "github:mattwparas/helix/steel-event-system";
+    helix.url = "github:helix-editor/helix";
     niri.url = "github:sodiboo/niri-flake";
   };
 

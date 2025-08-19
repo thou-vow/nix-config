@@ -8,7 +8,7 @@ inputs: final: prev: {
       };
   });
 
-  helix_steel = prev.helix_steel.overrideAttrs (prevAttrs: {
+  helix_git = prev.helix_git.overrideAttrs (prevAttrs: {
     env =
       prevAttrs.env or {}
       // {
@@ -26,8 +26,8 @@ inputs: final: prev: {
     prependStructuredConfig =
       (import ./kernel-localyesconfig.nix final.lib)
       // (with final.lib.kernel; {
-        # "DRM_XE" = no;
-        # "KVM_AMD" = no;
+        "DRM_XE" = no;
+        "KVM_AMD" = no;
       });
     withLTO = "full";
     disableDebug = true;

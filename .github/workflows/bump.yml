@@ -31,6 +31,6 @@ jobs:
                   |> lib.attrValues
                   |> lib.concatMap collectDerivations;
             in
-              (flake.legacyPackages."x86_64-linux".attunedPackages
+              flake.legacyPackages."x86_64-linux".attunedPackages
               |> lib.attrValues
-              |> lib.concatMap collectDerivations) ++ [flake.legacyPackages."x86_64-linux".helix_steel]'
+              |> lib.concatMap collectDerivations'

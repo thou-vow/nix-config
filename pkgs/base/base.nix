@@ -15,7 +15,7 @@ inputs: final: prev: {
       src = src.${final.system};
     });
 
-  helix_steel = inputs.helix.packages.${final.system}.helix;
+  helix_git = inputs.helix.packages.${final.system}.helix;
 
   linux-llvm = final.callPackage ./linux-llvm/linux-llvm.nix {};
 }

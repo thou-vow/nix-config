@@ -21,7 +21,7 @@
 
     programs.helix = {
       enable = true;
-      package = pkgs.helix_steel;
+      package = pkgs.helix_git;
       settings.theme = "theme";
     };
 
