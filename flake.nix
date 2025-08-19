@@ -23,7 +23,7 @@
 
     # Some packages.
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    helix.url = "github:helix-editor/helix";
+    helix.url = "github:mattwparas/helix/steel-event-system";
     niri.url = "github:sodiboo/niri-flake";
   };
 
@@ -50,8 +50,6 @@
     home-manager,
     ...
   } @ inputs: let
-    inherit (nixpkgs) lib;
-
     systems = ["x86_64-linux"];
 
     # Overlays from the inputs are the first ones to be applied.
@@ -61,7 +59,7 @@
     baseOverlays = externalOverlays ++ [self.overlays.base];
   in {
     # Packages defined on this flake. Use with `nix build`, `nix run`, `nix shell`.
-    legacyPackages = lib.genAttrs systems (
+    legacyPackages = nixpkgs.lib.genAttrs systems (
       system: let
         pkgsExtOverlays = nixpkgs.legacyPackages.${system}.appendOverlays externalOverlays;
         pkgsBaseOverlays = nixpkgs.legacyPackages.${system}.appendOverlays baseOverlays;
@@ -84,9 +82,9 @@
       # Which means they aren't like `linuxPackages = prev.linuxPackages // { ... };`.
       # So, we update the previously defined sets here.
       recursivelyUpdatePkgsWithMyOwn = prev: name: value:
-        if lib.isDerivation value
+        if nixpkgs.lib.isDerivation value
         then value
-        else prev.${name} // lib.mapAttrs recursivelyUpdatePkgsWithMyOwn value;
+        else prev.${name} // nixpkgs.lib.mapAttrs recursivelyUpdatePkgsWithMyOwn value;
     in {
       base = final: prev: import ./pkgs/base/base.nix inputs final prev;
       attuned = final: prev: import ./pkgs/attuned/attuned.nix inputs final prev;
@@ -94,13 +92,13 @@
 
     # This flake's formatter. Use with `nix fmt`.
     formatter =
-      lib.genAttrs systems (system:
+      nixpkgs.lib.genAttrs systems (system:
         nixpkgs.legacyPackages.${system}.alejandra);
 
     # Configurations hosted on an external HDD (mainly used on my Dell Inspiron 5566)
     # The 'attuned' specialisation uses some packages and settings optimizing for it.
     # On the contrary, the no specialisation mode's goal is wider compatibility.
-    nixosConfigurations."u" = lib.nixosSystem {
+    nixosConfigurations."u" = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs;};
       modules = [
         ./hosts/u/nixos-configuration.nix
@@ -108,7 +106,7 @@
         inputs.impermanence.nixosModules.impermanence
         ({config, ...}: {
           # I could use `nixpkgs.pkgs` here, but I prefer to keep it similar to Home Manager.
-          _module.args.pkgs = lib.mkForce (import nixpkgs {
+          _module.args.pkgs = nixpkgs.lib.mkForce (import nixpkgs {
             config.allowUnfree = true;
             localSystem.system = "x86_64-linux";
             overlays = baseOverlays ++ config.nixpkgs.overlays;
@@ -130,7 +128,7 @@
         ({config, ...}: {
           # I use this because it's possible to define a separate pkgs instance
           #   for specialisations, which might be useful for me.
-          _module.args.pkgs = lib.mkForce (import nixpkgs {
+          _module.args.pkgs = nixpkgs.lib.mkForce (import nixpkgs {
             config.allowUnfree = true;
             localSystem.system = "x86_64-linux";
             overlays = baseOverlays ++ config.nixpkgs.overlays;
@@ -139,7 +137,7 @@
           # Overlays applied to attuned specialisation.
           # They are the soonest to be applied, just after baseOverlays.
           specialisation.attuned.configuration.nixpkgs.overlays =
-            lib.mkOrder 1 [self.overlays.attuned];
+            nixpkgs.lib.mkOrder 1 [self.overlays.attuned];
         })
       ];
     };

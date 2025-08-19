@@ -15,9 +15,13 @@
   };
 
   config = lib.mkIf config.mods.helix.enable {
+    home.packages = with pkgs; [
+      steel
+    ];
+
     programs.helix = {
       enable = true;
-      package = pkgs.helix_mod;
+      package = pkgs.helix_steel;
       settings.theme = "theme";
     };
 

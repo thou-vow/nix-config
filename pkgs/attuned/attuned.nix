@@ -8,7 +8,7 @@ inputs: final: prev: {
       };
   });
 
-  helix_mod = prev.helix_mod.overrideAttrs (prevAttrs: {
+  helix_steel = prev.helix_steel.overrideAttrs (prevAttrs: {
     env =
       prevAttrs.env or {}
       // {

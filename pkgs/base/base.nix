@@ -15,8 +15,7 @@ inputs: final: prev: {
       src = src.${final.system};
     });
 
-  # Plans to modify this helix derivation.
-  helix_mod = inputs.helix.packages.${final.system}.helix;
+  helix_steel = inputs.helix.packages.${final.system}.helix;
 
   linux-llvm = final.callPackage ./linux-llvm/linux-llvm.nix {};
 }
