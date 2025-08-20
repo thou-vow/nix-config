@@ -24,7 +24,6 @@
 
   home.persistence."/persist${config.home.homeDirectory}" = {
     directories = [
-      ".config/BraveSoftware"
       ".local/share/atuin"
       ".local/share/flatpak"
       ".local/share/PrismLauncher"

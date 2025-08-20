@@ -18,19 +18,18 @@ jobs:
       - run: |
           cachix watch-exec -m xz -l 3 thou-vow -- \
             nix --extra-experimental-features "flakes nix-command pipe-operators" --accept-flake-config \
-            build -L --impure --inputs-from . --expr \
+            build -L --impure --expr \
             'let
-              lib = (builtins.getFlake "nixpkgs").lib;
-              flake = builtins.getFlake (builtins.toString ./.);
-
-              collectDerivations = value:
-                if lib.isDerivation value
-                then [value]
-                else
-                  value
-                  |> lib.attrValues
-                  |> lib.concatMap collectDerivations;
+              packages = (builtins.getFlake (builtins.toString ./.)).legacyPackages;
             in
-              flake.legacyPackages."x86_64-linux".attunedPackages
-              |> lib.attrValues
-              |> lib.concatMap collectDerivations'
+              (with packages."x86_64-linux"; [
+                helix-steel
+              ])
+              ++ (with packages."x86_64-linux".attunedPackages; [
+                cemu
+                helix-steel
+                linux-llvm
+                niri-unstable
+                rust-analyzer-unwrapped
+                xwayland-satellite-unstable
+              ])'

@@ -15,7 +15,9 @@ inputs: final: prev: {
       src = src.${final.system};
     });
 
-  helix_git = inputs.helix.packages.${final.system}.helix;
+  helix-steel = inputs.helix-steel.packages.${final.system}.helix.overrideAttrs (prevAttrs: {
+    patches = prevAttrs.patches or [] ++ [./helix-enable-steel.diff];
+  });
 
   linux-llvm = final.callPackage ./linux-llvm/linux-llvm.nix {};
 }

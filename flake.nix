@@ -23,21 +23,19 @@
 
     # Some packages.
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    helix.url = "github:helix-editor/helix";
+    helix-steel.url = "github:mattwparas/helix/steel-event-system";
     niri.url = "github:sodiboo/niri-flake";
   };
 
   nixConfig = {
     extra-substituters = [
       "https://chaotic-nyx.cachix.org"
-      "https://helix.cachix.org"
       "https://niri.cachix.org"
       "https://nix-community.cachix.org"
       "https://thou-vow.cachix.org"
     ];
     extra-trusted-public-keys = [
       "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
-      "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
       "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "thou-vow.cachix.org-1:n6zUvWYOI7kh0jgd+ghWhxeMd9tVdYF2KdOvufJ/Qy4="
@@ -65,11 +63,11 @@
         pkgsBaseOverlays = nixpkgs.legacyPackages.${system}.appendOverlays baseOverlays;
       in
         # I use an overlay interface for convenience (I like it).
-        import ./pkgs/base/base.nix inputs pkgsBaseOverlays pkgsExtOverlays
+        import ./packages/base/base.nix inputs pkgsBaseOverlays pkgsExtOverlays
         // {
           # The package sets are made upon the base packages.
           attunedPackages =
-            import ./pkgs/attuned/attuned.nix inputs (
+            import ./packages/attuned/attuned.nix inputs (
               pkgsBaseOverlays.appendOverlays [self.overlays.attuned]
             )
             pkgsBaseOverlays;
@@ -86,8 +84,8 @@
         then value
         else prev.${name} // nixpkgs.lib.mapAttrs recursivelyUpdatePkgsWithMyOwn value;
     in {
-      base = final: prev: import ./pkgs/base/base.nix inputs final prev;
-      attuned = final: prev: import ./pkgs/attuned/attuned.nix inputs final prev;
+      base = final: prev: import ./packages/base/base.nix inputs final prev;
+      attuned = final: prev: import ./packages/attuned/attuned.nix inputs final prev;
     };
 
     # This flake's formatter. Use with `nix fmt`.

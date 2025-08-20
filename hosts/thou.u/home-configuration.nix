@@ -80,10 +80,10 @@
     };
 
     sessionVariables = {
-      BROWSER = lib.getExe pkgs.brave;
-      EDITOR = lib.getExe pkgs.helix;
-      TERMINAL = "${lib.getExe pkgs.kitty} -1";
-      VISUAL = lib.getExe pkgs.helix;
+      BROWSER = "brave";
+      EDITOR = "hx";
+      TERMINAL = "kitty -1";
+      VISUAL = "hx";
 
       LSFG_PROCESS = "3x";
     };

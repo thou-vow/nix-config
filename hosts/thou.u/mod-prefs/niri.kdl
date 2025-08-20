@@ -2,6 +2,7 @@ input {
     keyboard {
         xkb {
             layout "br,us"
+            model "thinkpad"
             options "caps:escape_shifted_capslock,grp:win_space_toggle"
         }
 

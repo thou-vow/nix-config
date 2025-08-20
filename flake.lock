@@ -37,7 +37,7 @@
         "url": "https://flakehub.com/f/DeterminateSystems/flake-schemas/%3D0.1.5.tar.gz"
       }
     },
-    "helix": {
+    "helix-steel": {
       "inputs": {
         "nixpkgs": "nixpkgs_2",
         "rust-overlay": "rust-overlay_2"
@@ -85,11 +85,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1755569926,
-        "narHash": "sha256-s7D28zPHlFWVZ7dDxm0L1o5+t423rMJUfgCMGUeyYSk=",
+        "lastModified": 1755625756,
+        "narHash": "sha256-t57ayMEdV9g1aCfHzoQjHj1Fh3LDeyblceADm2hsLHM=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "c613ac14f5600033bf84ae75c315d5ce24a0229b",
+        "rev": "dd026d86420781e84d0732f2fa28e1c051117b59",
         "type": "github"
       },
       "original": {
@@ -232,11 +232,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1755569649,
-        "narHash": "sha256-qwdHLj5x2MR5dnW7LS/T3juqN0DkStKJ1QxojDytRe8=",
+        "lastModified": 1755651354,
+        "narHash": "sha256-8lVBMZICfNCKVaHZvY8MLis9jQCN6JAABMKpwY/1jC4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "ecfc95f0db4ece823c3899fb4907a33952ab0b3f",
+        "rev": "b40f6ad296fa44ef1616f62e62a9bd6d7acd8ce7",
         "type": "github"
       },
       "original": {
@@ -312,7 +312,7 @@
     "root": {
       "inputs": {
         "chaotic": "chaotic",
-        "helix": "helix",
+        "helix-steel": "helix-steel",
         "home-manager": "home-manager_2",
         "impermanence": "impermanence",
         "niri": "niri",
@@ -345,7 +345,7 @@
     "rust-overlay_2": {
       "inputs": {
         "nixpkgs": [
-          "helix",
+          "helix-steel",
           "nixpkgs"
         ]
       },
