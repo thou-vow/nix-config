@@ -28,7 +28,7 @@ jobs:
               ++ (with packages."x86_64-linux".attunedPackages; [
                 cemu
                 helix-steel
-                linuxPackages_cachyos-lto.kernel
+                linux-llvm
                 niri-unstable
                 rust-analyzer-unwrapped
                 xwayland-satellite-unstable

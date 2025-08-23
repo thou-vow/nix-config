@@ -25,24 +25,23 @@
 
   boot = {
     kernel.sysctl = {
-      # Mostly performance improvements
+      # Mostly performance improvements.
       "kernel.nmi_watchdog" = 0;
       "kernel.split_lock_mitigate" = 0;
       "vm.swappiness" = 10;
       "vm.dirty_background_ratio" = 2;
       "vm.dirty_ratio" = 5;
 
-      # Virtual file system cache persists longer
+      # Virtual file system cache persists longer.
       "vm.vfs_cache_pressure" = 25;
     };
-    kernelPackages = pkgs.linuxPackages_cachyos-lto;
     kernelParams = [
       "zswap.enabled=1"
 
-      # Heard that above 70% has a high penalty
+      # Heard that above 70% has a high penalty.
       "zswap.max_pool_percent=65"
 
-      # Had a bad experience with cold memory shrink
+      # Had a bad experience with cold memory shrink.
       "zswap.shrinker_enabled=0"
     ];
   };

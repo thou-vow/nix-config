@@ -1,6 +1,5 @@
 {
   inputs,
-  lib,
   pkgs,
   ...
 }: {
@@ -18,16 +17,16 @@
       };
       kernelModules = ["kvm-intel"];
 
-      kernelPackages = 
+      kernelPackages = pkgs.linuxPackagesFor (
         # Since NixOS specialisation overlays aren't a thing,
-        #  this is passed instead of `pkgs.linuxPackages_cachyos-lto`.
-        lib.mkForce inputs.self.legacyPackages.${pkgs.system}.attunedPackages.linuxPackages_cachyos-lto;
+        #  this is passed instead of `pkgs.linux-llvm`.
+        inputs.self.legacyPackages.${pkgs.system}.attunedPackages.linux-llvm
+      );
 
       kernelParams = [
-        # Disable CPU and GPU security mitigations for more performance.
+        # Disable CPU security mitigations for more performance.
         # (I might be overconfident that I'm safe...)
         "mitigations=off"
-        "i915.mitigations=off"
 
         # I think these are needed for Wi-Fi to work properly
         "ath9k_core.nohwcrypt=1"
@@ -59,5 +58,27 @@
       # Memory swap on the internal HDD too.
       {device = "/dev/disk/by-id/wwn-0x50014ee6b2ede306-part7";}
     ];
+
+    systemd.services = {
+      # Setting i915.mitigations=off kernel parameter (to disable GPU security mitigations)
+      #  freezes inital ramdisk for the custom kernel.
+      # So, it's done instead with this service.
+      disable-i915-mitigations = {
+        description = "Set i915 (Intel Graphics) mitigations off at runtime";
+        wantedBy = ["multi-user.target"];
+        before = ["graphical.target"];
+        serviceConfig = {
+          ExecStart = let
+            script = pkgs.writeShellScript "disable-i915-mitigations" ''
+              if [ -w /sys/module/i915/parameters/mitigations ]; then
+                echo off > /sys/module/i915/parameters/mitigations
+              fi
+            '';
+          in "${script}";
+          Type = "oneshot";
+          RemainAfterExit = "yes";
+        };
+      };
+    };
   };
 }

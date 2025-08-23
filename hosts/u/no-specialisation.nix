@@ -6,15 +6,19 @@
 }: {
   # No specialisation configuration
   config = inputs.nixpkgs.lib.mkIf (config.specialisation != {}) {
-    boot.initrd.availableKernelModules = [
-      "ehci_pci"
-      "xhci_pci"
-      "ahci"
-      "usb_storage"
-      "uas"
-      "sd_mod"
-      "usbhid"
-    ];
+    boot = {
+      initrd.availableKernelModules = [
+        "ehci_pci"
+        "xhci_pci"
+        "ahci"
+        "usb_storage"
+        "uas"
+        "sd_mod"
+        "usbhid"
+      ];
+
+      kernelPackages = pkgs.linuxPackages_cachyos-lto;
+    };
 
     hardware = {
       cpu = {
