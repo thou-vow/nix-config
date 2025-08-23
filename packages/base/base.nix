@@ -16,7 +16,7 @@ inputs: final: prev: {
     });
 
   helix-steel = inputs.helix-steel.packages.${final.system}.helix.overrideAttrs (prevAttrs: {
-    patches = prevAttrs.patches or [] ++ [./helix-enable-steel.diff];
+    cargoBuildFeatures = prevAttrs.cargoBuildFeatures or [] ++ ["steel"];
   });
 
   linux-llvm = final.callPackage ./linux-llvm/linux-llvm.nix {};

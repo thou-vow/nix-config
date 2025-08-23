@@ -18,6 +18,7 @@
       "/home/thou/.local/state/nix"
       "/root/.local/share/nix"
       "/var/lib/nixos"
+      "/var/lib/nixos-containers"
       "/var/log"
     ];
   };
