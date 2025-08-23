@@ -97,46 +97,38 @@
     # The 'attuned' specialisation uses some packages and settings optimizing for it.
     # On the contrary, the no specialisation mode's goal is wider compatibility.
     nixosConfigurations."u" = nixpkgs.lib.nixosSystem {
+      pkgs = import nixpkgs {
+        config.allowUnfree = true;
+        localSystem.system = "x86_64-linux";
+        overlays = baseOverlays;
+      };
       specialArgs = {inherit inputs;};
       modules = [
         ./hosts/u/nixos-configuration.nix
         ./mods/nixos/nixos.nix
-        inputs.impermanence.nixosModules.impermanence
-        ({config, ...}: {
-          # I could use `nixpkgs.pkgs` here, but I prefer to keep it similar to Home Manager.
-          _module.args.pkgs = nixpkgs.lib.mkForce (import nixpkgs {
-            config.allowUnfree = true;
-            localSystem.system = "x86_64-linux";
-            overlays = baseOverlays ++ config.nixpkgs.overlays;
-          });
-
+        {
           # NixOS' specialisations don't support overlays yet...
           # specialisation.attuned.configuration.nixpkgs.overlays =
           #  lib.mkOrder 1 [self.overlays.attuned];
-        })
+        }
       ];
     };
     homeConfigurations."thou@u" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages."x86_64-linux"; # Unused
+      pkgs = import nixpkgs {
+        config.allowUnfree = true;
+        localSystem.system = "x86_64-linux";
+        overlays = baseOverlays;
+      };
       extraSpecialArgs = {inherit inputs;};
       modules = [
         ./hosts/thou.u/home-configuration.nix
         ./mods/home/home.nix
-        inputs.impermanence.homeManagerModules.impermanence
-        ({config, ...}: {
-          # I use this because it's possible to define a separate pkgs instance
-          #   for specialisations, which might be useful for me.
-          _module.args.pkgs = nixpkgs.lib.mkForce (import nixpkgs {
-            config.allowUnfree = true;
-            localSystem.system = "x86_64-linux";
-            overlays = baseOverlays ++ config.nixpkgs.overlays;
-          });
-
+        {
           # Overlays applied to attuned specialisation.
           # They are the soonest to be applied, just after baseOverlays.
           specialisation.attuned.configuration.nixpkgs.overlays =
             nixpkgs.lib.mkOrder 1 [self.overlays.attuned];
-        })
+        }
       ];
     };
   };

@@ -9,6 +9,7 @@
     ./attuned-nixos.nix
     ./drive-format.nix
     ./no-specialisation.nix
+    inputs.impermanence.nixosModules.impermanence
   ];
 
   mods = {
@@ -34,6 +35,7 @@
       # Virtual file system cache persists longer
       "vm.vfs_cache_pressure" = 25;
     };
+    kernelPackages = pkgs.linuxPackages_cachyos-lto;
     kernelParams = [
       "zswap.enabled=1"
 
@@ -69,6 +71,8 @@
   };
 
   environment = {
+    binsh = lib.getExe pkgs.dash;
+    
     systemPackages = with pkgs; [
       btop
       cachix
@@ -83,6 +87,7 @@
 
     variables = {
       MESA_SHADER_CACHE_MAX_SIZE = "10G";
+      NIXPKGS_ALLOW_UNFREE = "1";
     };
   };
 
@@ -138,7 +143,9 @@
     git.enable = true;
     nix-ld = {
       enable = true;
-      libraries = [];
+      libraries = with pkgs; [
+        (runCommand "steamrun-lib" {} "mkdir $out; ln -s ${steam-run.fhsenv}/usr/lib64 $out/lib")
+      ];
     };
   };
 

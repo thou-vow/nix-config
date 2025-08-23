@@ -18,25 +18,20 @@ inputs: final: prev: {
       };
   });
 
-  linux-llvm = prev.linux-llvm.override {
-    linux = prev.linux_cachyos-lto;
-    suffix = "attuned";
-    useO3 = true;
-    mArch = "skylake";
-    prependStructuredConfig =
-      (import ./kernel-localyesconfig.nix final.lib)
-      // (with final.lib.kernel; {
-        "DRM_XE" = no;
-        "KVM_AMD" = no;
+  linuxPackages_cachyos-lto =
+    (prev.linuxPackages_cachyos-lto.cachyOverride {
+      useLTO = "thin";
+      withoutDebug = true;
+    }).extend (final: prev: {
+      kernel = prev.kernel.overrideAttrs (prevAttrs: {
+        makeFlags =
+          prevAttrs.makeFlags
+          ++ [
+            "KCFLAGS+=-march=skylake"
+            "KRUSTFLAGS+=-Ctarget-cpu=skylake"
+          ];
       });
-    withLTO = "full";
-    disableDebug = true;
-    features = {
-      efiBootStub = true;
-      ia32Emulation = true;
-      netfilterRPFilter = true;
-    };
-  };
+    });
 
   niri-unstable = prev.niri-unstable.overrideAttrs (prevAttrs: {
     RUSTFLAGS =

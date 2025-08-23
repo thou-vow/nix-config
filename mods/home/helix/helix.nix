@@ -25,7 +25,12 @@
       settings.theme = "theme";
     };
 
-    xdg.configFile."helix/themes".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.mods.flakePath}/mods/home/helix/themes";
+    xdg.configFile = {
+      "helix/helix.scm".text = ''
+      '';
+      "helix/init.scm".source = config.lib.file.mkOutOfStoreSymlink "${config.mods.flakePath}/mods/home/helix/init.scm";
+      "helix/themes".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.mods.flakePath}/mods/home/helix/themes";
+    };
   };
 }

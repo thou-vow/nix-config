@@ -15,16 +15,11 @@
     directories = [
       "/etc/NetworkManager/system-connections"
       "/flake"
+      "/home/thou/.local/state/nix"
       "/root/.local/share/nix"
+      "/var/lib/nixos"
       "/var/log"
     ];
-    users.thou = {
-      directories = [
-        ".cache/mesa_shader_cache"
-        ".cache/nix"
-        ".local/state/nix"
-      ];
-    };
   };
 
   fileSystems = {

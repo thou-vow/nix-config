@@ -6,7 +6,6 @@
   ...
 }: {
   imports = [
-    ./anyrun/anyrun.nix
     ./atuin.nix
     ./dunst/dunst.nix
     ./fastfetch/fastfetch.nix

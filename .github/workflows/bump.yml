@@ -1,4 +1,4 @@
-name: Bump and cache dependencies
+name: Bump and cache some packages
 on:
   workflow_dispatch:
   schedule:
@@ -17,7 +17,7 @@ jobs:
           nix flake update
       - run: |
           cachix watch-exec -m xz -l 3 thou-vow -- \
-            nix --extra-experimental-features "flakes nix-command pipe-operators" --accept-flake-config \
+            nix --accept-flake-config \
             build -L --impure --expr \
             'let
               packages = (builtins.getFlake (builtins.toString ./.)).legacyPackages;
@@ -28,7 +28,7 @@ jobs:
               ++ (with packages."x86_64-linux".attunedPackages; [
                 cemu
                 helix-steel
-                linux-llvm
+                linuxPackages_cachyos-lto.kernel
                 niri-unstable
                 rust-analyzer-unwrapped
                 xwayland-satellite-unstable
