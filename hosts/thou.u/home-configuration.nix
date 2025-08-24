@@ -12,6 +12,7 @@
   mods = {
     flakePath = "/flake";
     atuin.enable = true;
+    brave.enable = true;
     dunst.enable = true;
     fastfetch.enable = true;
     fish.enable = true;
@@ -48,9 +49,9 @@
 
     packages = with pkgs; [
       azahar
-      brave
       cemu
       bc
+      distrobox
       equibop
       gcc
       krita
@@ -70,7 +71,6 @@
       directories = [
         ".cache/mesa_shader_cache"
         ".cache/nix"
-        ".config/BraveSoftware"
         ".config/Cemu"
         ".config/lsfg-vk"
         ".local/share/Cemu"
@@ -87,7 +87,9 @@
         "Templates"
         "Videos"
 
+        ".config/BraveSoftware"
         ".local/share/atuin"
+        ".local/share/containers"
         ".local/share/flatpak"
         ".local/share/PrismLauncher"
         ".local/share/steel"

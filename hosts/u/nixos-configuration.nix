@@ -77,7 +77,6 @@
       cachix
       ncdu
       pciutils
-      steam-run
       unzip
       usbutils
       util-linux
@@ -244,5 +243,10 @@
       password = "123";
       shell = pkgs.fish;
     };
+  };
+
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
   };
 }

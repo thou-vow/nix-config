@@ -7,6 +7,7 @@
 }: {
   imports = [
     ./atuin.nix
+    ./brave.nix
     ./dunst/dunst.nix
     ./fastfetch/fastfetch.nix
     ./fish/fish.nix

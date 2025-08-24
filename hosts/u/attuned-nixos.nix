@@ -20,7 +20,7 @@
       kernelPackages = pkgs.linuxPackagesFor (
         # Since NixOS specialisation overlays aren't a thing,
         #  this is passed instead of `pkgs.linux-llvm`.
-        inputs.self.legacyPackages.${pkgs.system}.attunedPackages.linux-llvm
+        inputs.nix-packages.legacyPackages.${pkgs.system}.attunedPackages.linux-llvm
       );
 
       kernelParams = [

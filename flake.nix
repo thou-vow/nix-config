@@ -2,6 +2,8 @@
   description = "Nix environments for thou";
 
   inputs = {
+    nix-packages.url = "github:thou-vow/nix-packages";
+
     # Unstable (bleeding edge) and master branch (even more on the edge) packages.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs";
@@ -23,7 +25,6 @@
 
     # Some packages.
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    helix-steel.url = "github:mattwparas/helix/steel-event-system";
     niri.url = "github:sodiboo/niri-flake";
   };
 
@@ -43,7 +44,6 @@
   };
 
   outputs = {
-    self,
     nixpkgs,
     home-manager,
     ...
@@ -52,42 +52,8 @@
 
     # Overlays from the inputs are the first ones to be applied.
     externalOverlays = [inputs.chaotic.overlays.default inputs.niri.overlays.niri];
-
-    # And then the base overlays from this flake are applied.
-    baseOverlays = externalOverlays ++ [self.overlays.base];
+    baseOverlays = externalOverlays ++ [inputs.nix-packages.overlays.default];
   in {
-    # Packages defined on this flake. Use with `nix build`, `nix run`, `nix shell`.
-    legacyPackages = nixpkgs.lib.genAttrs systems (
-      system: let
-        pkgsExtOverlays = nixpkgs.legacyPackages.${system}.appendOverlays externalOverlays;
-        pkgsBaseOverlays = nixpkgs.legacyPackages.${system}.appendOverlays baseOverlays;
-      in
-        # I use an overlay interface for convenience (I like it).
-        import ./packages/base/base.nix inputs pkgsBaseOverlays pkgsExtOverlays
-        // {
-          # The package sets are made upon the base packages.
-          attunedPackages =
-            import ./packages/attuned/attuned.nix inputs (
-              pkgsBaseOverlays.appendOverlays [self.overlays.attuned]
-            )
-            pkgsBaseOverlays;
-        }
-    );
-
-    # Overlays based on the packages defined on this flake.
-    overlays = let
-      # Package sets of this flake aren't updated versions of previously defined sets
-      # Which means they aren't like `linuxPackages = prev.linuxPackages // { ... };`.
-      # So, we update the previously defined sets here.
-      recursivelyUpdatePkgsWithMyOwn = prev: name: value:
-        if nixpkgs.lib.isDerivation value
-        then value
-        else prev.${name} // nixpkgs.lib.mapAttrs recursivelyUpdatePkgsWithMyOwn value;
-    in {
-      base = final: prev: import ./packages/base/base.nix inputs final prev;
-      attuned = final: prev: import ./packages/attuned/attuned.nix inputs final prev;
-    };
-
     # This flake's formatter. Use with `nix fmt`.
     formatter =
       nixpkgs.lib.genAttrs systems (system:
@@ -109,7 +75,7 @@
         {
           # NixOS' specialisations don't support overlays yet...
           # specialisation.attuned.configuration.nixpkgs.overlays =
-          #  lib.mkOrder 1 [self.overlays.attuned];
+          #  lib.mkOrder 1 [inputs.nix-packages.overlays.attuned];
         }
       ];
     };
@@ -127,7 +93,7 @@
           # Overlays applied to attuned specialisation.
           # They are the soonest to be applied, just after baseOverlays.
           specialisation.attuned.configuration.nixpkgs.overlays =
-            nixpkgs.lib.mkOrder 1 [self.overlays.attuned];
+            nixpkgs.lib.mkOrder 1 [inputs.nix-packages.overlays.attuned];
         }
       ];
     };
