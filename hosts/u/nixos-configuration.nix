@@ -7,13 +7,14 @@
 }: {
   imports = [
     ./attuned-nixos.nix
+    ./default-nixos.nix
     ./drive-format.nix
-    ./no-specialisation.nix
     inputs.impermanence.nixosModules.impermanence
   ];
 
   mods = {
     flakePath = "/flake";
+    fhs.enable = true;
     nh.enable = true;
   };
 
@@ -70,8 +71,6 @@
   };
 
   environment = {
-    binsh = lib.getExe pkgs.dash;
-    
     systemPackages = with pkgs; [
       btop
       cachix
@@ -139,12 +138,6 @@
     firefox.enable = true;
     fish.enable = true;
     git.enable = true;
-    nix-ld = {
-      enable = true;
-      libraries = with pkgs; [
-        (runCommand "steamrun-lib" {} "mkdir $out; ln -s ${steam-run.fhsenv}/usr/lib64 $out/lib")
-      ];
-    };
   };
 
   security = {
@@ -191,7 +184,7 @@
             wantedBy = ["user-runtime-dir@${builtins.toString value.uid}.service"];
             before = ["user@${builtins.toString value.uid}.service"];
 
-            path = [config.nix.package pkgs.dash];
+            path = [config.nix.package];
 
             serviceConfig = {
               # Script to activate Home Manager's latest generation, considering specialisations.
@@ -202,7 +195,7 @@
                   + "activate";
 
                 script = pkgs.writeShellScript "home-manager-activation" ''
-                  #!/usr/bin/env dash
+                  #!${pkgs.dash}
 
                   for gen in $(
                     nix-store -q --referrers \

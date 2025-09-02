@@ -3,6 +3,7 @@
   ...
 }: {
   imports = [
+    ./fhs.nix
     ./nh.nix
   ];
 

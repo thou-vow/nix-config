@@ -1,33 +1,23 @@
 {
+  lib,
   inputs,
   pkgs,
   ...
 }: {
   specialisation.attuned.configuration = {
     boot = {
-      # All kernel modules needed at stage 2 and initrd are declared here.
+      # All kernel modules are statically linked
       initrd = {
-        includeDefaultModules = false;
-        kernelModules = [
-          "xhci_pci"
-          "ahci"
-          "uas"
-          "sd_mod"
-        ];
+        availableKernelModules = lib.mkForce [];
+        kernelModules = lib.mkForce [];
       };
-      kernelModules = ["kvm-intel"];
+      kernelModules = lib.mkForce [];
 
       kernelPackages = pkgs.linuxPackagesFor (
-        # Since NixOS specialisation overlays aren't a thing,
-        #  this is passed instead of `pkgs.linux-llvm`.
         inputs.nix-packages.legacyPackages.${pkgs.system}.attunedPackages.linux-llvm
       );
 
       kernelParams = [
-        # Disable CPU security mitigations for more performance.
-        # (I might be overconfident that I'm safe...)
-        "mitigations=off"
-
         # I think these are needed for Wi-Fi to work properly
         "ath9k_core.nohwcrypt=1"
         "pcie_aspm=off"
@@ -44,8 +34,8 @@
       enableRedistributableFirmware = true;
       graphics = {
         # Maybe worth the risk of breaking?
-        package = pkgs.mesa_git;
-        package32 = pkgs.mesa32_git;
+        package = inputs.chaotic.packages.${pkgs.system}.mesa_git;
+        package32 = inputs.chaotic.packages.${pkgs.system}.mesa32_git;
       };
     };
 
@@ -53,10 +43,16 @@
     networking.networkmanager.wifi.powersave = false;
 
     swapDevices = [
-      {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}
+      {
+        device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";
+        priority = 0;
+      }
 
       # Memory swap on the internal HDD too.
-      {device = "/dev/disk/by-id/wwn-0x50014ee6b2ede306-part7";}
+      {
+        device = "/dev/disk/by-id/wwn-0x50014ee6b2ede306-part7";
+        priority = 0;
+      }
     ];
 
     systemd.services = {

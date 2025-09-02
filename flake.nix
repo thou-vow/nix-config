@@ -4,8 +4,8 @@
   inputs = {
     nix-packages.url = "github:thou-vow/nix-packages";
 
-    # Unstable (bleeding edge) and master branch (even more on the edge) packages.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.follows = "nix-packages/nixpkgs";
+    nixpkgs-stable.follows = "nix-packages/nixpkgs-stable";
     nixpkgs-master.url = "github:nixos/nixpkgs";
 
     # For declarative home management.
@@ -24,8 +24,8 @@
     impermanence.url = "github:nix-community/impermanence";
 
     # Some packages.
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    niri.url = "github:sodiboo/niri-flake";
+    chaotic.follows = "nix-packages/chaotic";
+    niri.follows = "nix-packages/niri";
   };
 
   nixConfig = {
@@ -48,53 +48,41 @@
     home-manager,
     ...
   } @ inputs: let
+    inherit (nixpkgs) lib;
+
     systems = ["x86_64-linux"];
 
-    # Overlays from the inputs are the first ones to be applied.
-    externalOverlays = [inputs.chaotic.overlays.default inputs.niri.overlays.niri];
-    baseOverlays = externalOverlays ++ [inputs.nix-packages.overlays.default];
+    eachPkgs = lib.genAttrs systems (
+      system:
+        import nixpkgs {
+          config.allowUnfree = true;
+          inherit system;
+        }
+    );
   in {
     # This flake's formatter. Use with `nix fmt`.
     formatter =
-      nixpkgs.lib.genAttrs systems (system:
-        nixpkgs.legacyPackages.${system}.alejandra);
+      lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
     # Configurations hosted on an external HDD (mainly used on my Dell Inspiron 5566)
     # The 'attuned' specialisation uses some packages and settings optimizing for it.
     # On the contrary, the no specialisation mode's goal is wider compatibility.
-    nixosConfigurations."u" = nixpkgs.lib.nixosSystem {
-      pkgs = import nixpkgs {
-        config.allowUnfree = true;
-        localSystem.system = "x86_64-linux";
-        overlays = baseOverlays;
-      };
+    nixosConfigurations."u" = lib.nixosSystem {
       specialArgs = {inherit inputs;};
       modules = [
         ./hosts/u/nixos-configuration.nix
         ./mods/nixos/nixos.nix
         {
-          # NixOS' specialisations don't support overlays yet...
-          # specialisation.attuned.configuration.nixpkgs.overlays =
-          #  lib.mkOrder 1 [inputs.nix-packages.overlays.attuned];
+          nixpkgs.pkgs = eachPkgs."x86_64-linux";
         }
       ];
     };
     homeConfigurations."thou@u" = home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs {
-        config.allowUnfree = true;
-        localSystem.system = "x86_64-linux";
-        overlays = baseOverlays;
-      };
+      pkgs = eachPkgs."x86_64-linux";
       extraSpecialArgs = {inherit inputs;};
       modules = [
         ./hosts/thou.u/home-configuration.nix
         ./mods/home/home.nix
-        {
-          # Overlays applied to attuned specialisation.
-          # They are the soonest to be applied, just after baseOverlays.
-          specialisation.attuned.configuration.nixpkgs.overlays =
-            nixpkgs.lib.mkOrder 1 [inputs.nix-packages.overlays.attuned];
-        }
       ];
     };
   };

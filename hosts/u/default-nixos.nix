@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   ...
 }: {
@@ -17,7 +18,7 @@
         "usbhid"
       ];
 
-      kernelPackages = pkgs.linuxPackages_cachyos-lto;
+      kernelPackages = inputs.chaotic.legacyPackages.${pkgs.system}.linuxPackages_cachyos-lto;
     };
 
     hardware = {
@@ -29,14 +30,19 @@
       enableAllHardware = true;
     };
 
-    # Sometimes the default nameservers don't work
+    # Sometimes the default don't work
     networking.nameservers = [
       "8.8.4.4"
       "8.8.8.8"
     ];
 
+    services.cloudflare-warp.enable = true;
+
     swapDevices = [
       {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}
     ];
+
+    # https://github.com/NixOS/nixpkgs/pull/423933
+    system.modulesTree = [(lib.getOutput "modules" config.boot.kernelPackages.kernel)];
   };
 }

@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  inputs,
   pkgs,
   ...
 }: {
@@ -8,8 +9,8 @@
 
   config = lib.mkIf config.mods.prismlauncher.enable {
     home = {
-      extraDependencies = with pkgs; [
-        graalvm-oracle_21
+      extraDependencies = [
+        # inputs.nix-packages.legacyPackages.${pkgs.system}.graalvm-oracle_21
       ];
       packages = with pkgs; [
         prismlauncher

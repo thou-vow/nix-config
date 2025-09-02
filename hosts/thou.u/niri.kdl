@@ -14,9 +14,10 @@ input {
     touchpad {
         tap
         natural-scroll
+        accel-speed 0.4
         scroll-method "two-finger"
         click-method "clickfinger"
-    }
+     }
 
     warp-mouse-to-focus mode="center-xy-always"
 }
@@ -108,7 +109,7 @@ binds {
     Shift+Print repeat=false { screenshot-window; }
 
     Super+T hotkey-overlay-title="Open terminal" repeat=false { spawn "kitty" "-1"; }
-    Super+W hotkey-overlay-title="Open browser" repeat=false { spawn "brave" "--ozone-platform-hint=auto"; }
+    Super+W hotkey-overlay-title="Open browser" repeat=false { spawn "brave"; }
     Super+Return hotkey-overlay-title="Open fuzzel" repeat=false { spawn "fuzzel"; }
 
     Super+Equal { set-column-width "+5%"; }
@@ -146,7 +147,6 @@ binds {
     Super+Ctrl+N cooldown-ms=150 { move-column-to-workspace-down; }
 }
 
-// HD
 window-rule {
     geometry-corner-radius 6
     clip-to-geometry true

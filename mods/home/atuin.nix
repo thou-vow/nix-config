@@ -10,6 +10,7 @@
   config = lib.mkIf config.mods.atuin.enable {
     programs.atuin = {
       enable = true;
+      daemon.enable = true;
     };
   };
 }

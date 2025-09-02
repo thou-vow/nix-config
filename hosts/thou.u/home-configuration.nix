@@ -6,6 +6,7 @@
 }: {
   imports = [
     ./attuned-home.nix
+    ./default-home.nix
     inputs.impermanence.homeManagerModules.impermanence
   ];
 
@@ -48,9 +49,8 @@
     homeDirectory = "/home/${config.home.username}";
 
     packages = with pkgs; [
-      azahar
-      cemu
       bc
+      cemu
       distrobox
       equibop
       gcc
@@ -60,10 +60,12 @@
       nerd-fonts.victor-mono
       noto-fonts
       noto-fonts-emoji
-      qbittorrent
       python3
+      qbittorrent
+      ripgrep
       steam
       typst
+      xdg-utils
     ];
 
     persistence.${"/persist" + config.home.homeDirectory} = {
@@ -74,6 +76,7 @@
         ".config/Cemu"
         ".config/lsfg-vk"
         ".local/share/Cemu"
+        ".local/share/containers"
         ".local/share/nix"
         ".ssh"
         "Desktop"
@@ -89,7 +92,6 @@
 
         ".config/BraveSoftware"
         ".local/share/atuin"
-        ".local/share/containers"
         ".local/share/flatpak"
         ".local/share/PrismLauncher"
         ".local/share/steel"
@@ -108,7 +110,7 @@
 
       LSFG_PROCESS = "3x";
     };
-    stateVersion = "25.05";
+    stateVersion = "25.11";
   };
 
   programs = {
@@ -132,9 +134,12 @@
     kitty.keybindings = {
       "alt+e" = "launch --stdin-source=@screen_scrollback hx";
     };
-    nix-search-tv.enable = true;
   };
 
-  xdg.configFile."niri/config.kdl".source =
-    config.lib.file.mkOutOfStoreSymlink "${config.mods.flakePath}/hosts/thou.u/niri.kdl";
+  xdg.configFile = let
+    flakePath = config.mods.flakePath;
+  in {
+    "niri/config.kdl".source =
+      config.lib.file.mkOutOfStoreSymlink "${flakePath}/hosts/thou.u/niri.kdl";
+  };
 }

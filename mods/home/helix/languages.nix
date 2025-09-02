@@ -8,14 +8,18 @@
   config = lib.mkIf config.mods.helix.enable {
     home.packages = with pkgs; [
       alejandra
+      fish-lsp
       jdt-language-server
       kdlfmt
+      llvmPackages_latest.lldb
+      llvmPackages_latest.clang-tools
       nixd
       rust-analyzer
       rustfmt
       tinymist
       typescript-language-server
       typstyle
+      vscode-css-languageserver
       vscode-json-languageserver
       yaml-language-server
       yamlfmt
@@ -30,6 +34,15 @@
           };
         in
           lib.map (language: language // {indent = commonIndent;}) [
+            {
+              name = "c";
+            }
+            {
+              name = "css";
+            }
+            {
+              name = "fish";
+            }
             {
               name = "java";
             }
