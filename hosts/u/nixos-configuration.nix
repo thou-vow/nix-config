@@ -125,7 +125,14 @@
     # So the flake#registry uses flake inputs
     registry =
       lib.mapAttrs (_: value: {flake = value;})
-      (lib.filterAttrs (_: value: lib.isType "flake" value) inputs);
+      (lib.filterAttrs (_: value: lib.isType "flake" value) inputs)
+      // {
+        nixpkgs-master.to = {
+          owner = "nixos";
+          repo = "nixpkgs";
+          type = "github";
+        };
+      };
 
     settings = {
       experimental-features = ["flakes" "nix-command" "pipe-operator"];
@@ -138,6 +145,7 @@
     firefox.enable = true;
     fish.enable = true;
     git.enable = true;
+    steam.enable = true;
   };
 
   security = {
@@ -238,8 +246,11 @@
     };
   };
 
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = true;
+    };
+    # waydroid.enable = true;
   };
 }

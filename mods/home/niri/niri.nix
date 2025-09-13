@@ -7,9 +7,9 @@
 }: {
   options.mods.niri = {
     enable = lib.mkEnableOption "Enable niri.";
-    package = lib.mkPackageOption inputs.niri.packages.${pkgs.system} "niri" {default = "niri-unstable";};
+    package = lib.mkPackageOption inputs.niri.packages.${pkgs.system} "niri" {default = "niri-stable";};
     xwayland-satellite.package =
-      lib.mkPackageOption inputs.niri.packages.${pkgs.system} "xwayland-satellite" {default = "xwayland-satellite-unstable";};
+      lib.mkPackageOption inputs.niri.packages.${pkgs.system} "xwayland-satellite" {default = "xwayland-satellite-stable";};
   };
 
   config = lib.mkIf config.mods.niri.enable {

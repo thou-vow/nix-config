@@ -41,7 +41,7 @@ layout {
     gaps 10
 
     focus-ring {
-        width 2
+        width 1
         active-color "#f4dbe2"
         urgent-color "#f5b3a7"
     }
@@ -109,7 +109,7 @@ binds {
     Shift+Print repeat=false { screenshot-window; }
 
     Super+T hotkey-overlay-title="Open terminal" repeat=false { spawn "kitty" "-1"; }
-    Super+W hotkey-overlay-title="Open browser" repeat=false { spawn "brave"; }
+    Super+W hotkey-overlay-title="Open browser" repeat=false { spawn "brave" "--ozone-platform-hint=wayland"; }
     Super+Return hotkey-overlay-title="Open fuzzel" repeat=false { spawn "fuzzel"; }
 
     Super+Equal { set-column-width "+5%"; }
@@ -154,7 +154,7 @@ window-rule {
 
 window-rule {
     match app-id="kitty"
-    default-column-width { proportion 0.55; }
+    default-column-width { proportion 0.6; }
 }
 window-rule {
     match app-id="brave"

@@ -19,6 +19,7 @@
       "/root/.local/share/nix"
       "/var/lib/nixos"
       "/var/lib/nixos-containers"
+      # "/var/lib/waydroid"
       "/var/log"
     ];
   };

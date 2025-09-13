@@ -6,7 +6,6 @@
 
     nixpkgs.follows = "nix-packages/nixpkgs";
     nixpkgs-stable.follows = "nix-packages/nixpkgs-stable";
-    nixpkgs-master.url = "github:nixos/nixpkgs";
 
     # For declarative home management.
     home-manager = {

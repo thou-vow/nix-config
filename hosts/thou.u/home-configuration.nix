@@ -52,6 +52,7 @@
       bc
       cemu
       distrobox
+      dolphin-emu
       equibop
       gcc
       krita
@@ -63,7 +64,6 @@
       python3
       qbittorrent
       ripgrep
-      steam
       typst
       xdg-utils
     ];
@@ -77,8 +77,11 @@
         ".config/lsfg-vk"
         ".local/share/Cemu"
         ".local/share/containers"
+        ".local/share/dolphin-emu"
         ".local/share/nix"
+        ".local/share/Steam"
         ".ssh"
+        ".steam"
         "Desktop"
         "Documents"
         "Downloads"
@@ -96,7 +99,6 @@
         ".local/share/PrismLauncher"
         ".local/share/steel"
         ".local/share/zoxide"
-        ".steam"
         ".var"
       ];
       allowOther = true;
