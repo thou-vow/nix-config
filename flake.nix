@@ -7,24 +7,21 @@
     nixpkgs.follows = "nix-packages/nixpkgs";
     nixpkgs-stable.follows = "nix-packages/nixpkgs-stable";
 
-    # For declarative home management.
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # For secrets management.
+    impermanence.url = "github:nix-community/impermanence";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Helpful modules for bind mounts and symlinks on tmpfs root.
-    impermanence.url = "github:nix-community/impermanence";
+    systems.follows = "nix-packages/systems";
+    treefmt-nix.follows = "nix-packages/treefmt-nix";
 
     # Some packages.
     chaotic.follows = "nix-packages/chaotic";
-    niri.follows = "nix-packages/niri";
+    niri-flake.follows = "nix-packages/niri-flake";
   };
 
   nixConfig = {
@@ -47,42 +44,51 @@
     home-manager,
     ...
   } @ inputs: let
-    inherit (nixpkgs) lib;
-
-    systems = ["x86_64-linux"];
-
-    eachPkgs = lib.genAttrs systems (
-      system:
-        import nixpkgs {
-          config.allowUnfree = true;
-          inherit system;
-        }
-    );
+    eachSystem = f: nixpkgs.lib.genAttrs (import inputs.systems) (system: f nixpkgs.legacyPackages.${system});
   in {
     # This flake's formatter. Use with `nix fmt`.
-    formatter =
-      lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}.alejandra);
+    formatter = eachSystem (pkgs:
+      inputs.treefmt-nix.lib.mkWrapper pkgs {
+        projectRootFile = "flake.nix";
+
+        programs = {
+          alejandra.enable = true; # Nix
+          kdlfmt.enable = true;
+          taplo.enable = true; # TOML
+        };
+      });
 
     # Configurations hosted on an external HDD (mainly used on my Dell Inspiron 5566)
     # The 'attuned' specialisation uses some packages and settings optimizing for it.
     # On the contrary, the no specialisation mode's goal is wider compatibility.
-    nixosConfigurations."u" = lib.nixosSystem {
+    nixosConfigurations."u" = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs;};
       modules = [
         ./hosts/u/nixos-configuration.nix
         ./mods/nixos/nixos.nix
-        {
-          nixpkgs.pkgs = eachPkgs."x86_64-linux";
-        }
       ];
     };
     homeConfigurations."thou@u" = home-manager.lib.homeManagerConfiguration {
-      pkgs = eachPkgs."x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = {inherit inputs;};
       modules = [
         ./hosts/thou.u/home-configuration.nix
         ./mods/home/home.nix
       ];
     };
+
+    devShells = eachSystem (pkgs: {
+      default = pkgs.mkShell {
+        buildInputs = with pkgs; [
+          alejandra
+          kdlfmt
+          taplo
+        ];
+      };
+
+      bootstrap = with pkgs; [
+        lixPackageSets.lix.latest
+      ];
+    });
   };
 }

@@ -18,12 +18,6 @@
     nh.enable = true;
   };
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      nix = final.lixPackageSets.latest.lix;
-    })
-  ];
-
   boot = {
     kernel.sysctl = {
       # Mostly performance improvements.
@@ -31,7 +25,7 @@
       "kernel.split_lock_mitigate" = 0;
       "vm.swappiness" = 10;
       "vm.dirty_background_ratio" = 2;
-      "vm.dirty_ratio" = 5;
+      "vm.dirty_ratio" = 4;
 
       # Virtual file system cache persists longer.
       "vm.vfs_cache_pressure" = 25;
@@ -40,7 +34,7 @@
       "zswap.enabled=1"
 
       # Heard that above 70% has a high penalty.
-      "zswap.max_pool_percent=65"
+      "zswap.max_pool_percent=70"
 
       # Had a bad experience with cold memory shrink.
       "zswap.shrinker_enabled=0"
@@ -74,6 +68,7 @@
     systemPackages = with pkgs; [
       btop
       cachix
+      dmidecode
       ncdu
       pciutils
       unzip
@@ -85,6 +80,7 @@
     variables = {
       MESA_SHADER_CACHE_MAX_SIZE = "10G";
       NIXPKGS_ALLOW_UNFREE = "1";
+      PERSIST = "/persist";
     };
   };
 
@@ -138,6 +134,11 @@
       experimental-features = ["flakes" "nix-command" "pipe-operator"];
       trusted-users = ["@wheel"];
     };
+  };
+
+  nixpkgs = {
+    config.allowUnfree = true;
+    hostPlatform.system = "x86_64-linux";
   };
 
   programs = {
@@ -203,8 +204,6 @@
                   + "activate";
 
                 script = pkgs.writeShellScript "home-manager-activation" ''
-                  #!${pkgs.dash}
-
                   for gen in $(
                     nix-store -q --referrers \
                       $HOME/.local/state/nix/profiles/home-manager
@@ -247,10 +246,7 @@
   };
 
   virtualisation = {
-    podman = {
-      enable = true;
-      dockerCompat = true;
-    };
-    # waydroid.enable = true;
+    podman.enable = true;
+    waydroid.enable = true;
   };
 }

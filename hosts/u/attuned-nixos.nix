@@ -6,16 +6,15 @@
 }: {
   specialisation.attuned.configuration = {
     boot = {
-      # All kernel modules are statically linked
       initrd = {
         availableKernelModules = lib.mkForce [];
         kernelModules = lib.mkForce [];
       };
       kernelModules = lib.mkForce [];
 
-      kernelPackages = pkgs.linuxPackagesFor (
-        inputs.nix-packages.legacyPackages.${pkgs.system}.attunedPackages.linux-llvm
-      );
+      kernelPackages =
+        pkgs.linuxPackagesFor
+        inputs.nix-packages.legacyPackages.${pkgs.system}.attunedPackages.custom-linux;
 
       kernelParams = [
         # I think these are needed for Wi-Fi to work properly
@@ -32,15 +31,12 @@
     hardware = {
       cpu.intel.updateMicrocode = true;
       enableRedistributableFirmware = true;
-      graphics = {
-        # Maybe worth the risk of breaking?
-        package = inputs.chaotic.packages.${pkgs.system}.mesa_git;
-        package32 = inputs.chaotic.packages.${pkgs.system}.mesa32_git;
-      };
     };
 
     # Needed for Wi-Fi to not suddenly stop working...
     networking.networkmanager.wifi.powersave = false;
+
+    nix.package = inputs.nix-packages.legacyPackages.${pkgs.system}.attunedPackages.lix;
 
     swapDevices = [
       {

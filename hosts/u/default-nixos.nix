@@ -18,7 +18,7 @@
         "usbhid"
       ];
 
-      kernelPackages = inputs.chaotic.legacyPackages.${pkgs.system}.linuxPackages_cachyos-lto;
+      kernelPackages = inputs.chaotic.legacyPackages.${pkgs.system}.linuxPackages_cachyos-lts;
     };
 
     hardware = {
@@ -36,13 +36,12 @@
       "8.8.8.8"
     ];
 
+    nix.package = pkgs.lixPackageSets.latest.lix;
+
     services.cloudflare-warp.enable = true;
 
     swapDevices = [
       {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}
     ];
-
-    # https://github.com/NixOS/nixpkgs/pull/423933
-    system.modulesTree = [(lib.getOutput "modules" config.boot.kernelPackages.kernel)];
   };
 }

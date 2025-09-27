@@ -38,7 +38,6 @@
 
       eza = {
         enable = true;
-        enableFishIntegration = true;
         extraOptions = [
           "--group-directories-first"
           "--icons"
@@ -47,14 +46,9 @@
 
       fd.enable = true;
 
-      ripgrep.enable = true;
+      fzf.enable = true;
 
-      television.enable = true;
-      
-      zoxide = {
-        enable = true;
-        enableFishIntegration = true;
-      };
+      ripgrep.enable = true;
     };
 
     home.packages = with pkgs; [

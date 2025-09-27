@@ -14,6 +14,7 @@
     flakePath = "/flake";
     atuin.enable = true;
     brave.enable = true;
+    direnv.enable = true;
     dunst.enable = true;
     fastfetch.enable = true;
     fish.enable = true;
@@ -23,16 +24,11 @@
     kitty.enable = true;
     niri.enable = true;
     prismlauncher.enable = true;
-    television.enable = true;
+    starship.enable = true;
     waybar.enable = true;
     yazi.enable = true;
+    zoxide.enable = true;
   };
-
-  nixpkgs.overlays = [
-    (final: prev: {
-      nix = final.lixPackageSets.latest.lix;
-    })
-  ];
 
   fonts.fontconfig = {
     enable = true;
@@ -55,6 +51,7 @@
       dolphin-emu
       equibop
       gcc
+      imagemagick
       krita
       lsfg-vk
       lsfg-vk-ui
@@ -73,13 +70,16 @@
       directories = [
         ".cache/mesa_shader_cache"
         ".cache/nix"
+        ".cargo"
         ".config/Cemu"
         ".config/lsfg-vk"
         ".local/share/Cemu"
         ".local/share/containers"
+        ".local/share/direnv"
         ".local/share/dolphin-emu"
         ".local/share/nix"
         ".local/share/Steam"
+        ".m2"
         ".ssh"
         ".steam"
         "Desktop"
@@ -105,6 +105,8 @@
     };
 
     sessionVariables = {
+      PERSIST_HOME = "$PERSIST" + "$HOME";
+
       BROWSER = "brave";
       EDITOR = "hx";
       TERMINAL = "kitty -1";
@@ -115,7 +117,10 @@
     stateVersion = "25.11";
   };
 
+  nixpkgs.config.allowUnfree = true;
+
   programs = {
+    direnv.nix-direnv.package = pkgs.lixPackageSets.latest.nix-direnv;
     git = {
       enable = true;
       userName = "thou-vow";

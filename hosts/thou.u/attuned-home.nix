@@ -19,13 +19,6 @@
       })
     ];
 
-    programs.helix.languages.language-server.rust-analyzer.config = {
-      cachePriming.enable = false;
-      diagnostics.experimental.enable = true;
-      lru.capacity = 32;
-      numThreads = 1;
-    };
-
     xdg.dataFile."home-manager/specialisation".text = "attuned";
   };
 }

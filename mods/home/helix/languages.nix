@@ -7,23 +7,17 @@
 }: {
   config = lib.mkIf config.mods.helix.enable {
     home.packages = with pkgs; [
-      alejandra
       clippy
       fish-lsp
       jdt-language-server
-      kdlfmt
       llvmPackages_latest.lldb
       llvmPackages_latest.clang-tools
       nixd
       rust-analyzer
-      rustfmt
-      tinymist
       typescript-language-server
-      typstyle
       vscode-css-languageserver
       vscode-json-languageserver
       yaml-language-server
-      yamlfmt
     ];
 
     programs.helix.languages = {
@@ -57,17 +51,19 @@
           }
           {
             name = "nix";
-            formatter.command = "alejandra";
           }
           {
             name = "rust";
+          }
+          {
+            name = "scheme";
+            language-servers = ["steel-language-server"];
           }
           {
             name = "typescript";
           }
           {
             name = "typst";
-            formatter.command = "typstyle";
           }
           {
             name = "yaml";
@@ -82,11 +78,9 @@
             nixpkgs.expr = ''import (builtins.getFlake "${inputs.self}").inputs.nixpkgs {}'';
           };
         };
-        tinymist.config = {
-          exportPdf = "onSave";
-          formatterMode = "typstyle";
-        };
         rust-analyzer.config.check.command = "clippy";
+        steel-language-server.command = "steel-language-server";
+        tinymist.config.exportPdf = "onSave";
       };
     };
   };

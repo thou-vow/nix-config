@@ -1,13 +1,11 @@
 {
-  config,
-  inputs,
   lib,
-  options,
   ...
 }: {
   imports = [
     ./atuin.nix
     ./brave.nix
+    ./direnv.nix
     ./dunst/dunst.nix
     ./fastfetch/fastfetch.nix
     ./fish/fish.nix
@@ -17,9 +15,10 @@
     ./kitty/kitty.nix
     ./niri/niri.nix
     ./prismlauncher.nix
-    ./television/television.nix
+    ./starship.nix
     ./waybar/waybar.nix
     ./yazi/yazi.nix
+    ./zoxide.nix
   ];
 
   options.mods = {
