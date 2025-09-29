@@ -26,16 +26,10 @@
         config.mods.niri.xwayland-satellite.package
       ];
 
-    xdg = {
-      portal = {
-        enable = true;
-        configPackages = [
-          config.mods.niri.package
-        ];
-        extraPortals = [
-          pkgs.xdg-desktop-portal-gnome
-        ];
-      };
+    xdg.portal = {
+      enable = true;
+      configPackages = [config.mods.niri.package];
+      extraPortals = [pkgs.xdg-desktop-portal-gnome];
     };
   };
 }

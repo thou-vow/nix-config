@@ -13,6 +13,9 @@
     enable = lib.mkEnableOption "Enable Helix.";
     package =
       lib.mkPackageOption inputs.nix-packages.legacyPackages.${pkgs.system} "helix" {default = "helix-steel";};
+    extraConfigFile = lib.mkOption {
+      type = lib.types.str;
+    };
   };
 
   config = lib.mkIf config.mods.helix.enable {
@@ -123,9 +126,10 @@
     };
 
     xdg.configFile = {
-      "helix/init.scm".text = ''
-        (require "${config.mods.flakePath}/mods/home/helix/init.scm")
-      '';
+      "helix/init.scm".text =
+        "(require \"${config.mods.flakePath}/mods/home/helix/init.scm\")"
+        + lib.optionalString (config.mods.helix.extraConfigFile != null)
+        "(require \"${config.mods.helix.extraConfigFile}\")";
       "helix/themes".source =
         config.lib.file.mkOutOfStoreSymlink "${config.mods.flakePath}/mods/home/helix/themes";
     };

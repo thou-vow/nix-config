@@ -85,10 +85,11 @@
           taplo
         ];
       };
-
-      bootstrap = with pkgs; [
-        lixPackageSets.lix.latest
-      ];
+      bootstrap = pkgs.mkShell {
+        buildInputs = with pkgs; [
+          lixPackageSets.lix.latest
+        ];
+      };
     });
   };
 }

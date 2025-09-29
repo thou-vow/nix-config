@@ -20,7 +20,10 @@
     fish.enable = true;
     flatpak.enable = true;
     fuzzel.enable = true;
-    helix.enable = true;
+    helix = {
+      enable = true;
+      extraConfigFile = "${config.mods.flakePath}/hosts/thou.u/helix.scm";
+    };
     kitty.enable = true;
     niri.enable = true;
     prismlauncher.enable = true;

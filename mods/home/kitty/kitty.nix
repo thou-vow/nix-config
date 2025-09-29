@@ -1,12 +1,10 @@
 {
   config,
-  inputs,
   lib,
-  pkgs,
   ...
 }: {
   options.mods.kitty = {
-    enable = lib.mkEnableOption "Enable Kitty.";
+    enable = lib.mkEnableOption "kitty";
   };
 
   config = lib.mkIf config.mods.kitty.enable {

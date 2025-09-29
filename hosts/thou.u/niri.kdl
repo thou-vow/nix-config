@@ -56,9 +56,6 @@ hotkey-overlay {
     hide-not-bound
     skip-at-startup
 }
-clipboard {
-    disable-primary
-}
 gestures {
     hot-corners {
         off

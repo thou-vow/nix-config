@@ -1,5 +1,5 @@
-(require-builtin helix/core/keymaps)
-(require "helix/configuration.scm")
+(require-builtin helix/core/keymaps as keymaps.)
+(require (prefix-in cfg. "helix/configuration.scm"))
 
 (define normal-mode (hash
   "%" "select_all"
@@ -25,6 +25,7 @@
     'R ":reload"
     't ":new"
     'p "goto_previous_buffer"
+    's "goto_file"
     'f ":format"
     'n "goto_next_buffer")
   'q "move_next_long_word_end"
@@ -147,8 +148,7 @@
     'r "rename_symbol"
     's "select_references_to_symbol_under_cursor"
     'f "format_selections"
-    'ç "code_action"
-    'c "toggle_comments")
+    'ç "code_action")
   'Ç "select_register"
   'z (hash
     'j "scroll_down"
@@ -159,11 +159,10 @@
     'v "align_view_middle")
   'x "extend_line_below"
   'X "extend_line_above"
+  'C-x '("ensure_selections_forward" "select_line_above")
+  'C-X '("ensure_selections_forward" "flip_selections" "select_line_below")
   'c "change_selection_noyank"
-  'C-c (hash
-    'C-c "save_selection"
-    'p "jump_backward"
-    'n "jump_forward")
+  'C-c "toggle_comments"
   'v "select_mode"
   'b "flip_selections"
   'B "ensure_selections_forward"
@@ -172,7 +171,7 @@
   'm (hash
     'q "@miW"
     'w "@miw"
-    'e "@e<S-e>"
+    'e "@<C-e><S-e>e"
     'r "surround_replace"
     'i "select_textobject_inner"
     'o "select_textobject_around"
@@ -193,25 +192,35 @@
   '> "indent"
   ";" "collapse_selection"
   ': "command_mode"
-  'C-: (hash
-    'o "@:open <C-r>%"
-    'g "@:cd <C-r>%"
-    'm "@:mv <C-r>%")
   '/ "search"
   '? "rsearch"
   'space (hash
     'tab "buffer_picker"
+    'e "file_explorer_in_current_directory"
+    'E "file_explorer"
+    'C-e "file_explorer_in_current_buffer_directory"
     's "symbol_picker"
     'S "workspace_symbol_picker"
     'd "diagnostics_picker"
     'D "workspace_diagnostics_picker"
     'f "file_picker_in_current_directory"
     'F "file_picker"
+    'C-f "file_picker_in_current_buffer_directory"
     'g "changed_file_picker"
     'z "suspend"
-    'c "jumplist_picker"
+    ': (hash
+      'o "@:open <C-r>%"
+      'g "@:cd <C-r>%"
+      'm "@:mv <C-r>%")
     '/ "global_search"
-    '? "command_palette")
+    '? "command_palette"
+    'backspace "jumplist_picker")
+  'down "scroll_down"
+  'up "scroll_up"
+  'backspace (hash
+    'backspace "save_selection"
+    'p "jump_backward"
+    'n "jump_forward")
   'ret (hash
     'q "wclose"
     'ret "rotate_view"
@@ -242,6 +251,8 @@
   'C-x "completion"
   'C-/ '("signature_help" "hover")
   'ret "insert_newline"
+  'down "scroll_down"
+  'up "scroll_up"
   'backspace "delete_char_backward"
   'S-backspace "delete_char_backward"
   'C-backspace "delete_word_backward"
@@ -285,15 +296,12 @@
     "goto_line_end_newline"       "extend_to_line_end_newline"
     "search_next"                 "extend_search_next"
     "search_prev"                 "extend_search_prev"))
-
   (define (transform-command str)
     (define new-value-or-false
       (hash-try-get command-map str))
     (if (not new-value-or-false)
       str
       new-value-or-false))
-
-
   (cond
     ((string? value)
       (transform-command value))
@@ -315,7 +323,7 @@
     "esc" "normal_mode")))
 
 
-(set-keybindings!
+(cfg.set-keybindings!
   (~> (hash 'normal normal-mode 'insert insert-mode 'select select-mode)
     (value->jsexpr-string)
-    (helix-string->keymap)))
+    (keymaps.helix-string->keymap)))
