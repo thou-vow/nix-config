@@ -30,11 +30,9 @@
 
     hardware = {
       cpu.intel.updateMicrocode = true;
+      graphics.package = inputs.nix-packages.legacyPackages.${pkgs.system}.attunedPackages.mesa;
       enableRedistributableFirmware = true;
     };
-
-    # Needed for Wi-Fi to not suddenly stop working...
-    networking.networkmanager.wifi.powersave = false;
 
     nix.package = inputs.nix-packages.legacyPackages.${pkgs.system}.attunedPackages.lix;
 

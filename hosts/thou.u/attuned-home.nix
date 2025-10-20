@@ -19,6 +19,10 @@
       })
     ];
 
+    programs.direnv.nix-direnv.package = pkgs.lixPackageSets.latest.nix-direnv.override {
+      nix = inputs.nix-packages.legacyPackages.${pkgs.system}.attunedPackages.lix;
+    };
+
     xdg.dataFile."home-manager/specialisation".text = "attuned";
   };
 }

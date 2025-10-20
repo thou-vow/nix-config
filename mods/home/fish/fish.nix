@@ -4,7 +4,13 @@
   pkgs,
   ...
 }: {
-  options.mods.fish.enable = lib.mkEnableOption "Enable Fish.";
+  options.mods.fish = {
+    enable = lib.mkEnableOption "fish";
+    extraInteractiveShellInitFile = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+    };
+  };
 
   config = lib.mkIf config.mods.fish.enable {
     programs = {
@@ -26,9 +32,12 @@
           }
         ];
 
-        interactiveShellInit = lib.mkAfter ''
-          source "${config.mods.flakePath}/mods/home/fish/interactive-init.fish"
-        '';
+        interactiveShellInit = lib.mkAfter (''
+            source "${config.mods.flakePath}/mods/home/fish/interactive.fish"
+          ''
+          + lib.optionalString (config.mods.fish.extraInteractiveShellInitFile != null) ''
+            source "${config.mods.fish.extraInteractiveShellInitFile}"
+          '');
 
         preferAbbrs = true;
         shellAbbrs = config.programs.fish.shellAliases;

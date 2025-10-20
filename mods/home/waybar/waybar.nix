@@ -9,12 +9,13 @@
     programs.waybar = {
       enable = true;
       settings.mainBar = {
-        include = ["${config.mods.flakePath}/mods/home/waybar/config.jsonc"] ;
-      }; 
-      style = # css
-      ''
-        @import url("file://${config.mods.flakePath}/mods/home/waybar/style.css");
-      '';
+        include = ["${config.mods.flakePath}/mods/home/waybar/config.jsonc"];
+      };
+      style =
+        # css
+        ''
+          @import url("file://${config.mods.flakePath}/mods/home/waybar/style.css");
+        '';
       systemd.enable = true;
     };
   };

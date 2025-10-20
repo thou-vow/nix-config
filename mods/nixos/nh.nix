@@ -9,7 +9,7 @@
     programs.nh.enable = true;
 
     environment.variables = {
-      NH_FLAKE = "path:${config.mods.flakePath}";
+      NH_FLAKE = config.mods.flakePath;
     };
   };
 }

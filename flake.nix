@@ -44,7 +44,9 @@
     home-manager,
     ...
   } @ inputs: let
-    eachSystem = f: nixpkgs.lib.genAttrs (import inputs.systems) (system: f nixpkgs.legacyPackages.${system});
+    systems = import inputs.systems;
+
+    eachSystem = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
   in {
     # This flake's formatter. Use with `nix fmt`.
     formatter = eachSystem (pkgs:
@@ -56,6 +58,22 @@
           kdlfmt.enable = true;
           taplo.enable = true; # TOML
         };
+
+        settings.formatter = {
+          schemat = {
+            command = pkgs.lib.getExe pkgs.bash;
+            options = [
+              "-euc"
+              ''
+                for file in "$@"; do
+                  ${pkgs.lib.getExe pkgs.schemat} $file
+                done
+              ''
+              "--"
+            ];
+            includes = ["*.scm"];
+          };
+        };
       });
 
     # Configurations hosted on an external HDD (mainly used on my Dell Inspiron 5566)
@@ -66,6 +84,12 @@
       modules = [
         ./hosts/u/nixos-configuration.nix
         ./mods/nixos/nixos.nix
+        {
+          nixpkgs = {
+            config.allowUnfree = true;
+            hostPlatform.system = "x86_64-linux";
+          };
+        }
       ];
     };
     homeConfigurations."thou@u" = home-manager.lib.homeManagerConfiguration {
@@ -74,6 +98,9 @@
       modules = [
         ./hosts/thou.u/home-configuration.nix
         ./mods/home/home.nix
+        {
+          nixpkgs.config.allowUnfree = true;
+        }
       ];
     };
 
@@ -82,6 +109,7 @@
         buildInputs = with pkgs; [
           alejandra
           kdlfmt
+          schemat
           taplo
         ];
       };

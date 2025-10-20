@@ -1,7 +1,6 @@
 {
   config,
   inputs,
-  lib,
   pkgs,
   ...
 }: {
@@ -22,6 +21,7 @@
     };
 
     hardware = {
+      bluetooth.enable = true;
       cpu = {
         amd.updateMicrocode = true;
         intel.updateMicrocode = true;
@@ -38,7 +38,10 @@
 
     nix.package = pkgs.lixPackageSets.latest.lix;
 
-    services.cloudflare-warp.enable = true;
+    services = {
+      blueman.enable = true;
+      cloudflare-warp.enable = true;
+    };
 
     swapDevices = [
       {device = "/dev/disk/by-id/wwn-0x500003988168a3bd-part3";}

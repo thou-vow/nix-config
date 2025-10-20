@@ -13,8 +13,8 @@
     enable = true;
     hideMounts = true;
     directories = [
+      config.mods.flakePath
       "/etc/NetworkManager/system-connections"
-      "/flake"
       "/home/thou/.local/state/nix"
       "/root/.local/share/nix"
       "/var/lib/nixos"

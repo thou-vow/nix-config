@@ -49,6 +49,7 @@
 "ui.cursor.primary.select" = { fg = "dark_background", bg = "bright_blue", modifiers = [
   "bold",
 ] }
+"ui.cursor.match" = { fg = "main_cursor", underline = { color = "main_cursor", style = "line" } }
 "ui.linenr" = "invisible"
 "ui.linenr.selected" = "foreground"
 "ui.statusline" = { fg = "foreground", bg = "dark_background" }

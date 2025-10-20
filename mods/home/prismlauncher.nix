@@ -1,20 +1,23 @@
 {
   config,
   lib,
-  inputs,
   pkgs,
   ...
 }: {
-  options.mods.prismlauncher.enable = lib.mkEnableOption "Enable Prismlauncher.";
+  options.mods.prismlauncher = {
+    enable = lib.mkEnableOption "Prismlauncher";
+    jdks = lib.mkOption {
+      type = lib.types.listOf lib.types.package;
+      default = [];
+      description = "JDK packages for Prismlauncher.";
+    };
+  };
 
   config = lib.mkIf config.mods.prismlauncher.enable {
-    home = {
-      extraDependencies = [
-        # inputs.nix-packages.legacyPackages.${pkgs.system}.graalvm-oracle_21
-      ];
-      packages = with pkgs; [
-        prismlauncher
-      ];
-    };
+    home.packages = with pkgs; [
+      (prismlauncher.override {
+        inherit (config.mods.prismlauncher) jdks;
+      })
+    ];
   };
 }

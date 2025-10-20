@@ -13,7 +13,7 @@
   ];
 
   mods = {
-    flakePath = "/flake";
+    flakePath = "/self";
     fhs.enable = true;
     nh.enable = true;
   };
@@ -23,18 +23,13 @@
       # Mostly performance improvements.
       "kernel.nmi_watchdog" = 0;
       "kernel.split_lock_mitigate" = 0;
-      "vm.swappiness" = 10;
+      "vm.swappiness" = 1;
       "vm.dirty_background_ratio" = 2;
       "vm.dirty_ratio" = 4;
-
-      # Virtual file system cache persists longer.
-      "vm.vfs_cache_pressure" = 25;
     };
     kernelParams = [
       "zswap.enabled=1"
-
-      # Heard that above 70% has a high penalty.
-      "zswap.max_pool_percent=70"
+      "zswap.max_pool_percent=75"
 
       # Had a bad experience with cold memory shrink.
       "zswap.shrinker_enabled=0"
@@ -106,7 +101,12 @@
 
   networking = {
     hostName = "u";
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+
+      # Needed for Wi-Fi to not suddenly stop working...
+      wifi.powersave = false;
+    };
   };
 
   nix = {
@@ -124,9 +124,13 @@
       (lib.filterAttrs (_: value: lib.isType "flake" value) inputs)
       // {
         nixpkgs-master.to = {
+          type = "github";
           owner = "nixos";
           repo = "nixpkgs";
-          type = "github";
+        };
+        self.to = {
+          type = "git";
+          url = "file://${config.mods.flakePath}";
         };
       };
 
@@ -134,11 +138,6 @@
       experimental-features = ["flakes" "nix-command" "pipe-operator"];
       trusted-users = ["@wheel"];
     };
-  };
-
-  nixpkgs = {
-    config.allowUnfree = true;
-    hostPlatform.system = "x86_64-linux";
   };
 
   programs = {
